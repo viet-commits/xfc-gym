@@ -2,10 +2,11 @@
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
-  { href: '/classes', label: 'Classes' },
-  { href: '/timetable', label: 'Timetable' },
-  { href: '/coaches', label: 'Coaches' },
-  { href: '/facilities', label: 'Facilities' },
+  { href: '/classes/', label: 'Classes' },
+  { href: '/timetable/', label: 'Timetable' },
+  { href: '/coaches/', label: 'Coaches' },
+  { href: '/facilities/', label: 'Facilities' },
+  { href: '/videos/', label: 'Videos' },
 ];
 ---
 
@@ -185,7 +186,7 @@ const navLinks = [
     </nav>
 
     <!-- CTA -->
-    <a href="/join" class="nav-cta">$39 Trial</a>
+    <a href="/join/" class="nav-cta">$39 Trial</a>
 
     <!-- Hamburger -->
     <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -204,11 +205,11 @@ const navLinks = [
       {link.label}
     </a>
   ))}
-  <a href="/join" class="mobile-cta">$39 Trial</a>
+  <a href="/join/" class="mobile-cta">$39 Trial</a>
 </div>
 
 <!-- Spacer for fixed nav -->
-<div style="height:88px;" class="nav-spacer"></div>
+<div style="height:88px; transition: height 350ms ease;" class="nav-spacer"></div>
 
 <script>
   const header = document.getElementById('nav-header');
