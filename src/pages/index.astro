@@ -9,7 +9,7 @@ const programs = [
     title: 'Mixed Martial Arts',
     desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.',
     image: '/images/instagram/sparring-cage.jpg',
-    link: '/classes',
+    link: '/classes/',
   },
   {
     id: 'kickboxing',
@@ -17,7 +17,7 @@ const programs = [
     title: 'Kickboxing / Muay Thai',
     desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.',
     image: '/images/instagram/kick-technique.jpg',
-    link: '/classes',
+    link: '/classes/',
   },
   {
     id: 'bjj',
@@ -25,7 +25,7 @@ const programs = [
     title: 'Brazilian Jiu Jitsu',
     desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.',
     image: '/images/instagram/two-on-mats.jpg',
-    link: '/classes',
+    link: '/classes/',
   },
   {
     id: 'boxing',
@@ -33,7 +33,7 @@ const programs = [
     title: 'Boxing',
     desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.',
     image: '/images/instagram/bw-training.jpg',
-    link: '/classes',
+    link: '/classes/',
   },
   {
     id: 'kids',
@@ -41,7 +41,7 @@ const programs = [
     title: 'Kids & Junior MMA',
     desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.',
     image: '/images/instagram/coach-joey-intro.jpg',
-    link: '/classes',
+    link: '/classes/',
   },
 ];
 
@@ -131,8 +131,8 @@ const starRatings = [1,2,3,4,5];
           Structured martial arts training for kids and adults. Build confidence, discipline, and real combat skills in a supportive team environment.
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/join" class="btn-primary text-base px-8">$39 Trial <Icon name="arrow-right" /></a>
-          <a href="/timetable" class="btn-outline text-base px-8">View Timetable</a>
+          <a href="/join/" class="btn-primary text-base px-8">$39 Trial <Icon name="arrow-right" /></a>
+          <a href="/timetable/" class="btn-outline text-base px-8">View Timetable</a>
         </div>
 
         <!-- Google badge -->
@@ -224,7 +224,8 @@ const starRatings = [1,2,3,4,5];
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--text-muted);
-            padding: 0.5rem 1.25rem;
+            padding: 0.75rem 1.25rem;
+            min-height: 44px;
             border: 1.5px solid rgba(255,255,255,0.1);
             background: transparent;
             cursor: pointer;
@@ -309,11 +310,11 @@ const starRatings = [1,2,3,4,5];
 
   <script>
     const programData = [
-      { label: 'MMA', title: 'Mixed Martial Arts', desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.', image: '/images/instagram/sparring-cage.jpg', link: '/classes' },
-      { label: 'Kickboxing', title: 'Kickboxing / Muay Thai', desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.', image: '/images/instagram/kick-technique.jpg', link: '/classes' },
-      { label: 'BJJ', title: 'Brazilian Jiu Jitsu', desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.', image: '/images/instagram/two-on-mats.jpg', link: '/classes' },
-      { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/instagram/bw-training.jpg', link: '/classes' },
-      { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/coach-joey-intro.jpg', link: '/classes' },
+      { label: 'MMA', title: 'Mixed Martial Arts', desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.', image: '/images/instagram/sparring-cage.jpg', link: '/classes/' },
+      { label: 'Kickboxing', title: 'Kickboxing / Muay Thai', desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.', image: '/images/instagram/kick-technique.jpg', link: '/classes/' },
+      { label: 'BJJ', title: 'Brazilian Jiu Jitsu', desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.', image: '/images/instagram/two-on-mats.jpg', link: '/classes/' },
+      { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/instagram/bw-training.jpg', link: '/classes/' },
+      { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/coach-joey-intro.jpg', link: '/classes/' },
     ];
     // Update the individual text nodes rather than rewriting innerHTML. The old
     // version injected a literal `<Icon …>` string — Astro components do not exist
@@ -361,7 +362,7 @@ const starRatings = [1,2,3,4,5];
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal-stagger">
         {featuredCoaches.map(coach => (
-          <a href="/coaches" class="group block relative overflow-hidden">
+          <a href="/coaches/" class="group block relative overflow-hidden">
             <div class="aspect-[3/4] overflow-hidden relative">
               <img src={coach.image} alt={coach.name} class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]" width="400" height="533" loading="lazy" />
               <!-- Hover overlay -->
@@ -369,7 +370,7 @@ const starRatings = [1,2,3,4,5];
                 <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed mb-3">{coach.bio}</p>
                 <div class="flex flex-wrap gap-1.5">
                   {coach.achievements.map(a => (
-                    <span class="text-xs font-inter text-xfc-gold-light/80 bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{a}</span>
+                    <span class="text-xs font-inter text-xfc-gold-light/95 bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{a}</span>
                   ))}
                 </div>
               </div>
@@ -386,7 +387,7 @@ const starRatings = [1,2,3,4,5];
       </div>
 
       <div class="text-center mt-12 reveal">
-        <a href="/coaches" class="btn-outline text-sm">Meet the Full Team <Icon name="arrow-right" /></a>
+        <a href="/coaches/" class="btn-outline text-sm">Meet the Full Team <Icon name="arrow-right" /></a>
       </div>
     </div>
   </section>
@@ -515,8 +516,8 @@ const starRatings = [1,2,3,4,5];
     }
 
     .ig-gym-arrow {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 3px;
       border: 1.5px solid var(--accent-primary);
       background: transparent;
@@ -654,7 +655,7 @@ const starRatings = [1,2,3,4,5];
       <p class="font-inter text-[var(--text-muted)] text-lg mb-8 max-w-xl mx-auto">
         Train unlimited for two weeks for only <strong class="text-white">$39</strong>. No obligation after the trial.
       </p>
-      <a href="/join" class="btn-primary text-lg px-10 py-4">$39 Trial <Icon name="arrow-right" /></a>
+      <a href="/join/" class="btn-primary text-lg px-10 py-4">$39 Trial <Icon name="arrow-right" /></a>
     </div>
   </section>
 

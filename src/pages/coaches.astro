@@ -70,7 +70,7 @@ const coaches = [
           <p class="font-montserrat font-bold text-sm text-[var(--accent-primary)] uppercase tracking-widest mb-5">{headCoach.title}</p>
           <div class="flex flex-wrap gap-2 mb-5">
             {headCoach.credentials.map(c => (
-              <span class="font-inter text-xs text-[var(--text-muted)] bg-white/[0.06] px-3 py-1 rounded-full border border-white/[0.06]">{c}</span>
+              <span class="font-inter text-xs text-white/85 bg-white/[0.06] px-3 py-1 rounded-full border border-white/[0.06]">{c}</span>
             ))}
           </div>
           <p class="font-inter text-[var(--text-muted)] text-base leading-relaxed">{headCoach.bio}</p>
@@ -103,7 +103,7 @@ const coaches = [
               <p class="font-inter text-xs text-[var(--accent-primary)] font-medium uppercase tracking-widest mb-3">{coach.title}</p>
               <div class="flex flex-wrap gap-1.5 mb-3">
                 {coach.credentials.map(c => (
-                  <span class="font-inter text-xs text-[var(--text-muted)] bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{c}</span>
+                  <span class="font-inter text-xs text-white/85 bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{c}</span>
                 ))}
               </div>
               <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed">{coach.bio}</p>
@@ -120,7 +120,7 @@ const coaches = [
       <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Ready to Train?</p>
       <h2 class="font-bebas text-white text-3xl md:text-4xl uppercase tracking-wide mb-4">Train With Our Team</h2>
       <p class="font-inter text-[var(--text-muted)] mb-8">Experience first-hand what our coaches can do for you. Start your $39 two-week trial today.</p>
-      <a href="/join" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+      <a href="/join/" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
     </div>
   </section>
 

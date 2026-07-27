@@ -46,7 +46,8 @@ npx wrangler pages dev dist --d1 DB=xfc-db
 
 ```
 functions/api/        Cloudflare Pages Functions (booking intake, timetable read)
-public/               Static assets served as-is; also _headers, robots.txt, sitemap.xml
+public/               Static assets served as-is; also _headers and robots.txt
+src/data/gym.ts       Business name, address, phone, hours — single source of truth
 src/components/       Nav, Footer, Icon
 src/layouts/          Layout.astro — <head>, global CSS, structured data
 src/pages/            One file per route
@@ -86,8 +87,17 @@ the form.
 | `BOOKING_NOTIFY_TO` | no | Inbox that receives new leads. Defaults to `cd@xfcgym.com.au`. |
 | `ALLOWED_ORIGIN` | no | Exact origin permitted to POST the form, e.g. `https://xfcgym.com.au`. Defaults to the request's own origin. Set it explicitly in production. |
 | `TURNSTILE_SECRET_KEY` | no | When set, the booking endpoint requires a valid Cloudflare Turnstile token. Leave unset until the widget is added to the form. |
+| `PUBLIC_GA_ID` | no | GA4 measurement ID (e.g. `G-XXXXXXXXXX`). **Build-time**, so a redeploy is needed after changing it. Without it no analytics tag is emitted at all, which is why the site currently reports nothing. The form fires a `generate_lead` event on success. |
 
-Mark `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` as **encrypted**.
+Mark `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` as **encrypted**. `PUBLIC_GA_ID` is
+inlined into the built HTML, so it must not hold anything secret.
+
+### Business details live in one place
+
+Name, address, phone, email, social links and opening hours are defined in
+`src/data/gym.ts`. The footer, the JSON-LD structured data, the 404 page and the privacy
+policy all read from it. Editing them anywhere else will reintroduce the drift that put two
+different phone numbers on the site.
 
 ### Verifying the booking pipeline after deploy
 
@@ -104,4 +114,9 @@ is already committed to D1, so nothing is lost.
 
 Outstanding work is tracked in [`PRE-GO-LIVE-QA.md`](./PRE-GO-LIVE-QA.md), which records
 the full QA pass, every finding with a file reference, and a phased remediation plan.
-Phase 1 (blockers) is complete; Phases 2–5 are not.
+Phases 1–3 are complete. Phase 4 is blocked on client-supplied assets (a >=1920px hero,
+unwatermarked coach portraits) and Phase 5 is backlog.
+
+Before launch the business still needs to: confirm the phone number, set `RESEND_API_KEY`
+and `BOOKING_FROM` (bookings notify nobody without them), have `/privacy/` reviewed, and
+decide whether to reinstate rating markup.

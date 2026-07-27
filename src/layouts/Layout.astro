@@ -1,6 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { businessSchema, SITE_URL } from '../data/gym';
 
 export interface Props {
   title: string;
@@ -13,13 +14,23 @@ export interface Props {
   navOverlay?: boolean;
 }
 
-const { title, description = 'XFC Carrum Downs — Premier MMA & Martial Arts Gym', ogImage = 'https://xfcgym.com.au/images/instagram/fighter-stance-cage.jpg', navOverlay = false } = Astro.props;
-const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
+const {
+  title,
+  description = 'XFC Carrum Downs — Premier MMA & Martial Arts Gym',
+  // 1200x630 as required for summary_large_image; the old default was a 640x800
+  // portrait, which every platform cropped badly.
+  ogImage = `${SITE_URL}/images/og-default.jpg`,
+  navOverlay = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href;
 const isHome = Astro.url.pathname === '/';
+const schema = businessSchema(SITE_URL);
+const gaId = import.meta.env.PUBLIC_GA_ID;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en-AU" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,6 +65,9 @@ const isHome = Astro.url.pathname === '/';
 
     <title>{title} | XFC Carrum Downs</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="theme-color" content="#0D0D0D" />
 
     <!-- Self-Hosted Fonts -->
     <style>
@@ -64,13 +78,25 @@ const isHome = Astro.url.pathname === '/';
       @media(max-width:768px){[style*="grid-template-columns"]{grid-template-columns:1fr!important}.no-wrap-mobile{flex-wrap:nowrap!important}}
     </style>
 
-    <!-- Schema.org: LocalBusiness + AggregateRating -->
-    <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"SportsActivityLocation","name":"XFC Carrum Downs","description":"Premier MMA and martial arts gym in Carrum Downs. Classes in MMA, kickboxing, BJJ, boxing, and kids programs for all levels.","url":"https://xfcgym.com.au","telephone":"+61397708401","address":{"@type":"PostalAddress","streetAddress":"31 Lathams Road","addressLocality":"Carrum Downs","addressRegion":"VIC","postalCode":"3201","addressCountry":"AU"},"geo":{"@type":"GeoCoordinates","latitude":-38.0885,"longitude":145.1748},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"16:30","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday"],"opens":"15:45","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday"],"opens":"16:30","closes":"20:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Thursday"],"opens":"15:45","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"15:45","closes":"19:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"11:00"}],"image":"/images/instagram/fighter-stance-cage.jpg","priceRange":"$$","sameAs":["https://www.instagram.com/xfc3201/","https://www.facebook.com/XFCCarrumDowns"]}
-    </script>
-    <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"AggregateRating","ratingValue":"5.0","reviewCount":"47","bestRating":"5","itemReviewed":{"@type":"SportsActivityLocation","name":"XFC Carrum Downs"}}
-    </script>
+    <!-- Schema.org: LocalBusiness. Generated from src/data/gym.ts so the hours and
+         phone here cannot drift from what the footer displays. -->
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+
+    {/* Analytics. Emitted only when PUBLIC_GA_ID is set at build time, so the site
+        never ships a tag pointing at a property that does not exist. Set it in the
+        Cloudflare Pages environment variables — see the README. */}
+    {gaId && (
+      <Fragment>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', gaId, { anonymize_ip: true });
+        </script>
+      </Fragment>
+    )}
 
     <style is:global>
       :root {

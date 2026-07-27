@@ -1,0 +1,154 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { gym, telHref } from '../data/gym';
+
+// NOTE FOR THE BUSINESS: this is a working draft written to match what the site
+// actually does (see functions/api/booking.ts). It has not been reviewed by a lawyer.
+// Before launch, confirm the items marked "TO CONFIRM" and have it checked by someone
+// qualified. The Australian Privacy Principles (APP 5) require notifying people what
+// you collect and why at the point of collection.
+const lastUpdated = 'July 2026';
+---
+
+<Layout
+  title="Privacy Policy"
+  description="How XFC Carrum Downs collects, uses and protects your personal information."
+>
+  <section class="bg-[var(--bg-secondary)] py-20 md:py-24 px-4 text-center">
+    <div class="max-w-3xl mx-auto">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Legal</p>
+      <h1 class="font-bebas text-white text-4xl md:text-6xl uppercase tracking-wide mb-4">Privacy Policy</h1>
+      <p class="font-inter text-[var(--text-muted)] text-sm">Last updated {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="bg-[var(--bg-primary)] py-16 px-4">
+    <div class="max-w-3xl mx-auto policy">
+      <p>
+        {gym.name} ("we", "us") respects your privacy. This policy explains what personal
+        information we collect through this website, why we collect it, how we store it and
+        who we share it with. It is written to align with the Australian Privacy Principles
+        under the <em>Privacy Act 1988</em> (Cth).
+      </p>
+
+      <h2>What we collect</h2>
+      <p>When you submit the trial booking form on this website, we collect:</p>
+      <ul>
+        <li><strong>Your name</strong> and <strong>email address</strong> — required, so we can identify and contact you.</li>
+        <li><strong>Your phone number</strong> — optional.</li>
+        <li><strong>Your class interest and preferred day</strong> — optional, so we can place you in a suitable class.</li>
+        <li><strong>Anything you write in the message field</strong> — optional. This field invites you to tell us about previous experience, injuries or the age of a child. Please only include what you are comfortable sharing; you are not required to disclose health information to book a trial.</li>
+      </ul>
+      <p>
+        We do not collect payment details through this website, and we do not ask for
+        government identifiers.
+      </p>
+
+      <h2>Children's information</h2>
+      <p>
+        Our junior programs are for children. If you are enquiring on behalf of a child, we
+        ask that a parent or guardian submits the form and provides only the details needed
+        to place the child in the right class. We rely on the parent or guardian's consent
+        for that information. If you would like a child's details removed, contact us and we
+        will delete them.
+      </p>
+
+      <h2>Why we use it</h2>
+      <ul>
+        <li>To respond to your enquiry and organise your trial session.</li>
+        <li>To answer questions you have asked us.</li>
+        <li>To keep a record of enquiries so we can follow up appropriately.</li>
+      </ul>
+      <p>
+        We will not use your details for marketing unless you have separately agreed to
+        that. You can ask us to stop contacting you at any time.
+      </p>
+
+      <h2>How it is stored and who can see it</h2>
+      <p>
+        Form submissions are stored in a Cloudflare D1 database and are also emailed to our
+        team so we can act on them. Access is limited to staff who need it to respond to
+        enquiries. This website is hosted on Cloudflare Pages, and our transactional email
+        is sent through a third-party email provider. These providers process your
+        information on our behalf and may store it outside Australia.
+      </p>
+      <p class="policy-note">
+        TO CONFIRM before launch: name the email provider in use, state how long enquiry
+        records are kept, and confirm whether any gym-management or CRM system also
+        receives this data.
+      </p>
+
+      <h2>Analytics and cookies</h2>
+      <p>
+        This site does not use cookies for advertising. If website analytics are enabled, we
+        use them only to understand aggregate traffic patterns — such as which pages are
+        visited — with IP addresses anonymised. Analytics do not identify you personally and
+        are not linked to your booking enquiry.
+      </p>
+
+      <h2>Embedded content</h2>
+      <p>
+        The Facilities page embeds a Google Map so you can find us. Loading that map means
+        Google may receive your IP address and set its own cookies, governed by Google's
+        privacy policy rather than this one. Links to our Instagram, Facebook and YouTube
+        pages take you to those platforms, which have their own policies.
+      </p>
+
+      <h2>Accessing or correcting your information</h2>
+      <p>
+        You can ask us what personal information we hold about you, ask us to correct it, or
+        ask us to delete it. Email <a href={`mailto:${gym.email}`}>{gym.email}</a> or call
+        <a href={telHref}>{gym.phone}</a> and we will respond within a reasonable time. There
+        is no charge for making a request.
+      </p>
+
+      <h2>Complaints</h2>
+      <p>
+        If you think we have mishandled your personal information, contact us first and we
+        will investigate. If you are not satisfied with our response, you can complain to
+        the Office of the Australian Information Commissioner at
+        <a href="https://www.oaic.gov.au" target="_blank" rel="noopener">oaic.gov.au</a>.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        We may update this policy from time to time. The date at the top shows when it was
+        last changed.
+      </p>
+
+      <h2>Contact us</h2>
+      <p>
+        {gym.name}<br />
+        {gym.street}, {gym.suburb} {gym.state} {gym.postcode}<br />
+        <a href={`mailto:${gym.email}`}>{gym.email}</a><br />
+        <a href={telHref}>{gym.phone}</a>
+      </p>
+    </div>
+  </section>
+
+  <style>
+    .policy { font-family: 'Inter', sans-serif; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.75; }
+    .policy h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+      margin: 2.5rem 0 0.75rem;
+    }
+    .policy p { margin-bottom: 1rem; }
+    .policy ul { margin: 0 0 1rem 1.25rem; list-style: disc; }
+    .policy li { margin-bottom: 0.5rem; }
+    .policy strong { color: var(--text-primary); font-weight: 500; }
+    .policy a { color: var(--accent-primary); text-decoration: underline; text-underline-offset: 2px; }
+    .policy a:hover { color: #c9a538; }
+    .policy-note {
+      border-left: 3px solid var(--accent-primary);
+      background: rgb(var(--accent-primary-rgb) / 0.06);
+      padding: 0.875rem 1rem;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+    }
+  </style>
+</Layout>

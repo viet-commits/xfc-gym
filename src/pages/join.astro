@@ -51,6 +51,7 @@ import Icon from '../components/Icon.astro';
               id="name"
               name="name"
               required
+              autocomplete="name"
               placeholder="Your full name"
               class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
             />
@@ -66,6 +67,8 @@ import Icon from '../components/Icon.astro';
               id="email"
               name="email"
               required
+              autocomplete="email"
+              inputmode="email"
               placeholder="your@email.com"
               class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
             />
@@ -80,6 +83,8 @@ import Icon from '../components/Icon.astro';
               type="tel"
               id="phone"
               name="phone"
+              autocomplete="tel"
+              inputmode="tel"
               placeholder="0400 000 000"
               class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
             />
@@ -160,8 +165,11 @@ import Icon from '../components/Icon.astro';
             <Icon name="loader" class="submit-spinner hidden animate-spin" />
           </button>
 
-          <p class="font-inter text-white/20 text-xs text-center pt-2">
+          <p class="font-inter text-white/60 text-xs text-center pt-2 leading-relaxed">
             By submitting this form you agree to be contacted by XFC Carrum Downs about your enquiry.
+            We handle your details as described in our
+            <a href="/privacy/" class="text-[var(--accent-primary)] underline underline-offset-2 hover:no-underline">Privacy Policy</a>.
+            Enquiring for a child? Please have a parent or guardian complete this form.
           </p>
         </form>
       </div>
@@ -262,6 +270,11 @@ import Icon from '../components/Icon.astro';
 
           if (res.ok && payload.success) {
             if (successEl) { successEl.classList.remove('hidden'); reveal(successEl); }
+            // Conversion event. No-ops when analytics is not configured.
+            (window as any).gtag?.('event', 'generate_lead', {
+              event_category: 'booking',
+              event_label: 'trial_form',
+            });
             form.reset();
           } else {
             // Surface the server's message (e.g. an invalid email) instead of a
