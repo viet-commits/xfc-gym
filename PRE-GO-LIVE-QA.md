@@ -1,12 +1,33 @@
 # XFC Carrum Downs — Pre-Production Go-Live QA & Remediation Plan
 
 **Date:** 27 July 2026
-**Build under test:** `claude/pre-prod-go-live-qa-7op9v6` @ `737a165`
-**Stack:** Astro 6 (static) + Tailwind 3 + Cloudflare Pages Functions + D1
+**Audited build:** `claude/pre-prod-go-live-qa-7op9v6` @ `737a165` (Astro 6 as committed)
+**Stack:** Astro (static) + Tailwind 3 + Cloudflare Pages Functions + D1
+**Note:** Phase 1 pinned Astro to 5.x — see P0-2 and the changelog.
 
 ---
 
-## Verdict
+## Status
+
+**Phase 1 (all nine P0 blockers) is complete** — see the changelog at the end of this
+document. Verified by a 23-check browser suite, a clean `pnpm build`, and `tsc --noEmit`
+at zero errors.
+
+Two P0 items still need **client confirmation**, not code:
+
+- **P0-9 (phone):** unified to `(03) 9770 8401`, the number that already appeared twice in
+  the UI. The conflicting `+61 3 9775 0046` in the structured data was changed to match.
+  **Confirm which number is correct** before launch — if it is the other one, one line in
+  `Layout.astro` and two in the UI need updating.
+- **P0-6 (notifications):** the code path is built and fails safe, but it does nothing
+  until `RESEND_API_KEY` and `BOOKING_FROM` are set in Cloudflare Pages, and a real
+  submission has been confirmed to land in the gym inbox. See the README.
+
+Phases 2–5 are **not** started. The original verdict below stands for those.
+
+---
+
+## Verdict (at time of audit)
 
 **Do not ship yet.** The site looks close, but there are nine blocking defects, two of
 which are severe enough to lose customers on contact:
@@ -512,3 +533,31 @@ Blocked on the gym supplying material, so start the request now.
 5. Phone number, address, and opening hours confirmed by the client and consistent across
    the footer, structured data, and Google Business Profile.
 6. Privacy policy live and linked before any advertising traffic is sent.
+
+---
+
+## Changelog — Phase 1 (blockers)
+
+All nine P0 items addressed. Verified with a 23-assertion browser suite (desktop 1440×900
+and mobile 390×844 @2× touch), `pnpm build`, and `npx tsc --noEmit`.
+
+| Item | What changed | Files |
+| --- | --- | --- |
+| P0-1 | Header raised to `z-index: 60` so it sits above the overlay and the close button stays tappable. Added Escape-to-close, a Tab focus trap that keeps the hamburger reachable, focus restore, `aria-expanded` / `aria-controls`, `visibility: hidden` when closed (so the links leave the tab order and a11y tree), a Home link, and a resize guard that prevents a scroll-locked body behind a hidden overlay. | `Nav.astro` |
+| P0-2 | Pinned `astro@^5.18.2` (a combination `@astrojs/tailwind@6` actually supports), deleted `package-lock.json`, pinned `packageManager: pnpm@11.17.0`. `npm install` now resolves cleanly; `pnpm peers check` reports no issues. | `package.json`, `package-lock.json` (removed) |
+| P0-3 | `.reveal-stagger.visible > *` now restores opacity for **every** child, with the per-child rules only setting the delay. Previously children beyond the eighth stayed transparent forever. | `Layout.astro` |
+| P0-4 | Replaced the HTML entity `&amp;` with a literal `&` in the coach and program data, which Astro was double-escaping into a visible `&AMP;`. | `coaches.astro`, `index.astro` |
+| P0-5 | Removed the 88px spacer `<div>` (and the JS that resized it, which also caused a 24px content jump on scroll). Replaced with a `navOverlay` prop: full-bleed hero pages let the hero run under the transparent nav; interior pages offset `<main>` by 88px instead. | `Nav.astro`, `Layout.astro`, `index.astro`, `coaches.astro` |
+| P0-6 | Booking notification email to the gym plus an autoresponder to the enquirer, via Resend. Runs in `waitUntil` so it never delays the response, and never fails the request — the D1 write stays the source of truth and unconfigured/failed sends are logged loudly. Class slugs are mapped to readable labels and the timestamp is rendered in Melbourne time. | `booking.ts`, `README.md` |
+| P0-7 | Cross-origin POSTs rejected with 403 (CORS alone does not stop the write). Added an off-screen honeypot, optional Turnstile verification, email-shape validation, per-field length caps, and generic client-facing errors with detail logged server-side. | `booking.ts`, `join.astro` |
+| P0-8 | Replaced the hand-built `pb=` embed and its invalid place ID with a keyless address-query embed, and added an `iframe` title. | `facilities.astro` |
+| P0-9 | Unified on `(03) 9770 8401`; structured data updated to `+61397708401`. **Needs client confirmation** (see Status). | `Layout.astro` |
+| P2-19 | Added `@cloudflare/workers-types` and wired it into `tsconfig.json`. The 9 pre-existing type errors in `functions/` are resolved; `tsc --noEmit` is clean. | `package.json`, `tsconfig.json` |
+
+Also folded in while touching the same files: the form now surfaces the server's validation
+message (e.g. an invalid email) instead of a generic failure, and the stock Astro
+`README.md` was replaced with real setup, D1, and environment-variable documentation.
+
+**Deliberately left for Phase 2** — the hollow rating stars, the empty carousel arrow, and
+the icon sizing/colour problems all stem from the single `Icon.astro` prop bug (P1-1) and
+are fixed together there.

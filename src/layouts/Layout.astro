@@ -6,9 +6,14 @@ export interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /**
+   * Set on pages with a full-bleed hero that should sit *under* the transparent
+   * fixed nav. Leaving it false offsets <main> so content clears the nav instead.
+   */
+  navOverlay?: boolean;
 }
 
-const { title, description = 'XFC Carrum Downs — Premier MMA & Martial Arts Gym', ogImage = 'https://xfcgym.com.au/images/instagram/fighter-stance-cage.jpg' } = Astro.props;
+const { title, description = 'XFC Carrum Downs — Premier MMA & Martial Arts Gym', ogImage = 'https://xfcgym.com.au/images/instagram/fighter-stance-cage.jpg', navOverlay = false } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
 ---
 
@@ -48,7 +53,7 @@ const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
 
     <!-- Schema.org: LocalBusiness + AggregateRating -->
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"SportsActivityLocation","name":"XFC Carrum Downs","description":"Premier MMA and martial arts gym in Carrum Downs. Classes in MMA, kickboxing, BJJ, boxing, and kids programs for all levels.","url":"https://xfcgym.com.au","telephone":"+61397750046","address":{"@type":"PostalAddress","streetAddress":"31 Lathams Road","addressLocality":"Carrum Downs","addressRegion":"VIC","postalCode":"3201","addressCountry":"AU"},"geo":{"@type":"GeoCoordinates","latitude":-38.0885,"longitude":145.1748},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"16:30","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday"],"opens":"15:45","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday"],"opens":"16:30","closes":"20:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Thursday"],"opens":"15:45","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"15:45","closes":"19:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"11:00"}],"image":"/images/instagram/fighter-stance-cage.jpg","priceRange":"$$","sameAs":["https://www.instagram.com/xfc3201/","https://www.facebook.com/XFCCarrumDowns"]}
+    {"@context":"https://schema.org","@type":"SportsActivityLocation","name":"XFC Carrum Downs","description":"Premier MMA and martial arts gym in Carrum Downs. Classes in MMA, kickboxing, BJJ, boxing, and kids programs for all levels.","url":"https://xfcgym.com.au","telephone":"+61397708401","address":{"@type":"PostalAddress","streetAddress":"31 Lathams Road","addressLocality":"Carrum Downs","addressRegion":"VIC","postalCode":"3201","addressCountry":"AU"},"geo":{"@type":"GeoCoordinates","latitude":-38.0885,"longitude":145.1748},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"16:30","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday"],"opens":"15:45","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday"],"opens":"16:30","closes":"20:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Thursday"],"opens":"15:45","closes":"20:45"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"15:45","closes":"19:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"09:00","closes":"11:00"}],"image":"/images/instagram/fighter-stance-cage.jpg","priceRange":"$$","sameAs":["https://www.instagram.com/xfc3201/","https://www.facebook.com/XFCCarrumDowns"]}
     </script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"AggregateRating","ratingValue":"5.0","reviewCount":"47","bestRating":"5","itemReviewed":{"@type":"SportsActivityLocation","name":"XFC Carrum Downs"}}
@@ -84,6 +89,11 @@ const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
       }
 
       main { flex: 1; }
+
+      /* The nav is position:fixed, so it takes no layout space. Pages without a
+         full-bleed hero offset <main> to clear it; pages with one let the hero
+         run underneath the transparent nav (which is the whole point of it). */
+      main.nav-offset { padding-top: 88px; }
 
       /* === BUTTONS === */
       .btn-primary {
@@ -147,20 +157,27 @@ const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
         transform: translateY(0);
       }
 
-      /* Stagger children */
+      /* Stagger children.
+         Every child must be restored to opacity 1 — the per-child rules below only add
+         the staggered delay. Restoring opacity per nth-child silently hides any child
+         beyond the last rule, so the blanket rule comes first and is never omitted. */
       .reveal-stagger > * {
         opacity: 0;
         transform: translateY(24px);
         transition: opacity 0.5s ease-out, transform 0.5s ease-out;
       }
-      .reveal-stagger.visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
-      .reveal-stagger.visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 100ms; }
-      .reveal-stagger.visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 200ms; }
-      .reveal-stagger.visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 300ms; }
-      .reveal-stagger.visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
-      .reveal-stagger.visible > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
-      .reveal-stagger.visible > *:nth-child(7) { opacity: 1; transform: translateY(0); transition-delay: 600ms; }
-      .reveal-stagger.visible > *:nth-child(8) { opacity: 1; transform: translateY(0); transition-delay: 700ms; }
+      .reveal-stagger.visible > * {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 700ms;
+      }
+      .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
+      .reveal-stagger.visible > *:nth-child(2) { transition-delay: 100ms; }
+      .reveal-stagger.visible > *:nth-child(3) { transition-delay: 200ms; }
+      .reveal-stagger.visible > *:nth-child(4) { transition-delay: 300ms; }
+      .reveal-stagger.visible > *:nth-child(5) { transition-delay: 400ms; }
+      .reveal-stagger.visible > *:nth-child(6) { transition-delay: 500ms; }
+      .reveal-stagger.visible > *:nth-child(7) { transition-delay: 600ms; }
 
       /* === GOLD SEPARATOR === */
       .gold-sep {
@@ -215,8 +232,8 @@ const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
     </style>
   </head>
   <body>
-    <Nav />
-    <main>
+    <Nav overlay={navOverlay} />
+    <main class={navOverlay ? undefined : 'nav-offset'}>
       <slot />
     </main>
     <Footer />

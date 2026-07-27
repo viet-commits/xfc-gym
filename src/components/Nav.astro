@@ -1,4 +1,10 @@
 ---
+export interface Props {
+  /** True on pages whose hero should sit *under* the transparent nav. */
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
@@ -8,15 +14,20 @@ const navLinks = [
   { href: '/facilities/', label: 'Facilities' },
   { href: '/videos/', label: 'Videos' },
 ];
+
+const isActive = (href: string) => currentPath === href || currentPath.startsWith(href);
 ---
 
 <style>
+  /* The header must sit ABOVE .mobile-overlay, otherwise the overlay covers the
+     hamburger and the open menu cannot be closed. The hamburger's own z-index is
+     scoped to this stacking context and cannot escape it. */
   .nav-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 50;
+    z-index: 60;
     height: 88px;
     display: flex;
     align-items: center;
@@ -124,7 +135,7 @@ const navLinks = [
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   @media (min-width: 769px) { .hamburger { display: none; } }
 
-  /* Mobile overlay */
+  /* Mobile overlay — sits below .nav-header so the close button stays reachable. */
   .mobile-overlay {
     position: fixed;
     inset: 0;
@@ -135,13 +146,18 @@ const navLinks = [
     align-items: center;
     justify-content: center;
     gap: 2rem;
+    padding-top: 88px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 400ms ease;
+    /* visibility:hidden takes the links out of the tab order and the a11y tree.
+       Opacity alone leaves invisible links focusable. */
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 400ms ease;
   }
   .mobile-overlay.open {
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
   }
   .mobile-overlay a {
     font-family: 'Bebas Neue', sans-serif;
@@ -174,12 +190,9 @@ const navLinks = [
     </a>
 
     <!-- Desktop nav -->
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main">
       {navLinks.map(link => (
-        <a
-          href={link.href}
-          class={`nav-link ${currentPath === link.href || currentPath.startsWith(link.href + '/') ? 'active' : ''}`}
-        >
+        <a href={link.href} class={`nav-link ${isActive(link.href) ? 'active' : ''}`} aria-current={isActive(link.href) ? 'page' : undefined}>
           {link.label}
         </a>
       ))}
@@ -189,64 +202,89 @@ const navLinks = [
     <a href="/join/" class="nav-cta">$39 Trial</a>
 
     <!-- Hamburger -->
-    <button class="hamburger" id="hamburger" aria-label="Menu">
+    <button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-overlay">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
 <!-- Mobile overlay -->
-<div class="mobile-overlay" id="mobile-overlay">
+<div class="mobile-overlay" id="mobile-overlay" aria-label="Mobile menu">
+  <a href="/" class={currentPath === '/' ? 'active' : ''} aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
   {navLinks.map(link => (
-    <a
-      href={link.href}
-      class={currentPath === link.href || currentPath.startsWith(link.href + '/') ? 'active' : ''}
-    >
+    <a href={link.href} class={isActive(link.href) ? 'active' : ''} aria-current={isActive(link.href) ? 'page' : undefined}>
       {link.label}
     </a>
   ))}
   <a href="/join/" class="mobile-cta">$39 Trial</a>
 </div>
 
-<!-- Spacer for fixed nav -->
-<div style="height:88px; transition: height 350ms ease;" class="nav-spacer"></div>
-
 <script>
   const header = document.getElementById('nav-header');
   const hamburger = document.getElementById('hamburger');
   const overlay = document.getElementById('mobile-overlay');
-  const spacer = document.querySelector('.nav-spacer');
 
   // Scroll behavior
-  let lastScroll = 0;
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y > 80) {
-      header.classList.add('scrolled');
-      if (spacer) spacer.style.height = '64px';
-    } else {
-      header.classList.remove('scrolled');
-      if (spacer) spacer.style.height = '88px';
-    }
-    lastScroll = y;
-  }, { passive: true });
+  if (header) {
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 80);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
 
   // Mobile menu
-  let menuOpen = false;
-  hamburger.addEventListener('click', () => {
-    menuOpen = !menuOpen;
-    hamburger.classList.toggle('open', menuOpen);
-    overlay.classList.toggle('open', menuOpen);
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-  });
+  if (hamburger && overlay) {
+    let menuOpen = false;
 
-  // Close mobile menu on link click
-  overlay.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      menuOpen = false;
-      hamburger.classList.remove('open');
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
+    const setMenu = (open: boolean) => {
+      menuOpen = open;
+      hamburger.classList.toggle('open', open);
+      overlay.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open) {
+        overlay.querySelector<HTMLAnchorElement>('a')?.focus();
+      } else {
+        hamburger.focus();
+      }
+    };
+
+    hamburger.addEventListener('click', () => setMenu(!menuOpen));
+
+    // Close on link click (the click still navigates)
+    overlay.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMenu(false));
     });
-  });
+
+    document.addEventListener('keydown', (e) => {
+      if (!menuOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setMenu(false);
+        return;
+      }
+
+      // Keep focus inside the open menu (the hamburger is the last stop, so it
+      // stays reachable as the close button).
+      if (e.key === 'Tab') {
+        const stops = [...overlay.querySelectorAll<HTMLAnchorElement>('a'), hamburger];
+        const first = stops[0];
+        const last = stops[stops.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    // A resize into the desktop breakpoint hides the hamburger; make sure we
+    // don't leave the body scroll-locked behind an invisible overlay.
+    window.addEventListener('resize', () => {
+      if (menuOpen && window.innerWidth >= 769) setMenu(false);
+    });
+  }
 </script>

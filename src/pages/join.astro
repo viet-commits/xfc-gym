@@ -29,10 +29,18 @@ import Icon from '../components/Icon.astro';
           You're booked in. Our team will contact you shortly to confirm your trial and help organise your first session.
         </div>
         <div id="form-error" class="hidden bg-red-900/30 border border-red-700/50 text-red-300 p-4 mb-6 font-inter text-sm">
-          Something went wrong. Please try again or call us on <strong>(03) 9770 8401</strong>.
+          <span id="form-error-text">Something went wrong.</span>
+          Please try again or call us on <strong>(03) 9770 8401</strong>.
         </div>
 
         <form id="booking-form" class="space-y-5">
+          <!-- Honeypot: hidden from people, filled in by bots. Positioned off-screen
+               rather than display:none, which some bots skip. -->
+          <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
           <!-- Name -->
           <div>
             <label for="name" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
@@ -231,13 +239,22 @@ import Icon from '../components/Icon.astro';
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
           });
-          if (res.ok) {
+          let payload: { success?: boolean; error?: string } = {};
+          try { payload = await res.json(); } catch { /* non-JSON response */ }
+
+          if (res.ok && payload.success) {
             if (successEl) successEl.classList.remove('hidden');
             form.reset();
           } else {
+            // Surface the server's message (e.g. an invalid email) instead of a
+            // generic failure the user cannot act on.
+            const detail = document.getElementById('form-error-text');
+            if (detail) detail.textContent = payload.error || 'Something went wrong.';
             if (errorEl) errorEl.classList.remove('hidden');
           }
         } catch {
+          const detail = document.getElementById('form-error-text');
+          if (detail) detail.textContent = 'We could not reach the server.';
           if (errorEl) errorEl.classList.remove('hidden');
         } finally {
           if (submitBtn) {

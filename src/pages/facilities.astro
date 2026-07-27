@@ -111,8 +111,12 @@ const features = [
         </a>
 
         <div style="overflow:hidden;margin-top:1.5rem;aspect-ratio:16/9;">
+          {/* Address-query embed: resolves by address, needs no API key and no place ID.
+              The previous URL used a hand-built `pb=` payload with an invalid place ID
+              and rendered as a blank grey box. */}
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3139.0954553406457!2d145.17476057601!3d-38.088493471877!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613a4a3a8f3e5%3A0x6f3c3c3c3c3c3c3c!2s31%20Lathams%20Rd%2C%20Carrum%20Downs%20VIC%203201!5e0!3m2!1sen!2sau!4v1"
+            title="Map of XFC Carrum Downs, 31 Lathams Road, Carrum Downs VIC 3201"
+            src="https://maps.google.com/maps?q=31%20Lathams%20Road%2C%20Carrum%20Downs%20VIC%203201&z=15&output=embed"
             width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>
