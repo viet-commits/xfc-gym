@@ -1,0 +1,175 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+
+const classes = [
+  {
+    name: 'Junior MMA — Little Warriors',
+    badge: 'Ages 2-4',
+    categories: ['junior'],
+    desc: 'Our youngest members discover movement, coordination, and the joy of martial arts in a fun, safe environment. Classes focus on basic motor skills, listening, and respect. Parents join on the mat.',
+    image: '/images/instagram/coach-joey-intro.jpg',
+  },
+  {
+    name: 'Junior MMA — Junior Warriors',
+    badge: 'Ages 5-6',
+    categories: ['junior'],
+    desc: 'Building on foundations with introductory striking and basic grappling concepts. Kids learn discipline, confidence, and how to work as part of a team.',
+    image: '/images/instagram/two-on-mats.jpg',
+  },
+  {
+    name: 'Junior MMA — Rising Warriors',
+    badge: 'Ages 7-9',
+    categories: ['junior'],
+    desc: 'A step up in technique and conditioning. Rising Warriors develop real martial arts skills across MMA, striking, and ground work with structured grading.',
+    image: '/images/instagram/team-floor-training.jpg',
+  },
+  {
+    name: 'Junior MMA — Elite Warriors',
+    badge: 'Ages 10-13',
+    categories: ['junior'],
+    desc: 'High-intensity technical training for our most advanced juniors. Elite Warriors prepare for competition with full MMA, sparring, and tactical coaching.',
+    image: '/images/instagram/fighter-stance-cage.jpg',
+  },
+  {
+    name: 'Kickboxing / Muay Thai Beginner',
+    badge: 'All Levels',
+    categories: ['striking', 'fitness'],
+    desc: 'Learn the fundamentals of stand-up striking — jabs, crosses, kicks, and combos. Perfect for anyone starting their striking journey or looking to build fitness.',
+    image: '/images/instagram/kick-technique.jpg',
+  },
+  {
+    name: 'Kickboxing / Muay Thai Advanced',
+    badge: 'Intermediate-Advanced',
+    categories: ['striking'],
+    desc: 'Fast-paced technical drilling, pad work, and sparring for experienced strikers. Sharpen your Muay Thai game with advanced combinations and ring craft.',
+    image: '/images/instagram/bw-training.jpg',
+  },
+  {
+    name: 'Mixed Martial Arts',
+    badge: 'All Levels',
+    categories: ['grappling', 'striking'],
+    desc: 'The complete combat sport — integrating striking, wrestling, and grappling. Learn to transition fluidly between stand-up and ground in a dynamic class environment.',
+    image: '/images/instagram/sparring-cage.jpg',
+  },
+  {
+    name: 'Brazilian Jiu Jitsu',
+    badge: 'All Levels',
+    categories: ['grappling'],
+    desc: 'Ground-based grappling art focused on leverage, control, and submission. Train no-gi or with a gi — both beginners and experienced grapplers are welcome.',
+    image: '/images/instagram/two-on-mats.jpg',
+  },
+  {
+    name: 'Boxing',
+    badge: 'All Levels',
+    categories: ['striking', 'fitness'],
+    desc: 'The sweet science. Technical boxing training covering footwork, head movement, combinations, and pad/bag work. Great for fitness and competition prep.',
+    image: '/images/instagram/bw-training.jpg',
+  },
+  {
+    name: 'Adults Sparring',
+    badge: 'Intermediate+ Required',
+    categories: ['striking', 'grappling'],
+    desc: 'Open sparring session for intermediate and advanced adult members. Apply your techniques in a controlled, supervised environment with structured rounds.',
+    image: '/images/instagram/sparring-cage.jpg',
+  },
+];
+---
+
+<Layout title="Classes" description="Explore XFC Carrum Downs class programs — Junior MMA, Kickboxing, Muay Thai, MMA, BJJ, Boxing and more.">
+
+  <!-- PAGE HERO -->
+  <section class="py-24 md:py-32 px-4 text-center bg-[var(--bg-secondary)]">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Every Level. Every Age.</p>
+      <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">
+        Our <span style="color:var(--accent-primary)">Classes</span>
+      </h1>
+      <p class="font-inter text-[var(--text-muted)] text-lg">From our youngest warriors to elite adult competitors — XFC has the right program for every age and level.</p>
+    </div>
+  </section>
+
+  <!-- FILTER TABS + CARDS -->
+  <section class="bg-[var(--bg-primary)] py-16 md:py-24 px-4">
+    <div class="max-w-7xl mx-auto">
+      <!-- CSS-only filter -->
+      <style>
+        .class-filter input[type="radio"] { display: none; }
+        .filter-tab {
+          display: inline-flex;
+          align-items: center;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 700;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--text-muted);
+          padding: 0.5rem 1.25rem;
+          border: 1.5px solid rgba(255,255,255,0.08);
+          cursor: pointer;
+          transition: all 250ms ease;
+          background: transparent;
+        }
+        .filter-tab:hover { border-color: rgba(255,255,255,0.2); color: var(--text-primary); }
+        #filter-all:checked ~ .filter-row label[for="filter-all"],
+        #filter-junior:checked ~ .filter-row label[for="filter-junior"],
+        #filter-striking:checked ~ .filter-row label[for="filter-striking"],
+        #filter-grappling:checked ~ .filter-row label[for="filter-grappling"],
+        #filter-fitness:checked ~ .filter-row label[for="filter-fitness"] {
+          background: rgba(184, 150, 46, 0.1);
+          border-color: var(--accent-primary);
+          color: var(--accent-primary);
+        }
+        .class-card { display: block; }
+        #filter-junior:checked ~ .class-grid .class-card:not(.cat-junior) { display: none; }
+        #filter-striking:checked ~ .class-grid .class-card:not(.cat-striking) { display: none; }
+        #filter-grappling:checked ~ .class-grid .class-card:not(.cat-grappling) { display: none; }
+        #filter-fitness:checked ~ .class-grid .class-card:not(.cat-fitness) { display: none; }
+      </style>
+
+      <div class="class-filter reveal">
+        <input type="radio" name="class-filter" id="filter-all" checked />
+        <input type="radio" name="class-filter" id="filter-junior" />
+        <input type="radio" name="class-filter" id="filter-striking" />
+        <input type="radio" name="class-filter" id="filter-grappling" />
+        <input type="radio" name="class-filter" id="filter-fitness" />
+
+        <div class="filter-row flex flex-wrap justify-center gap-2 mb-12">
+          <label for="filter-all" class="filter-tab">All</label>
+          <label for="filter-junior" class="filter-tab">Junior</label>
+          <label for="filter-striking" class="filter-tab">Striking</label>
+          <label for="filter-grappling" class="filter-tab">Grappling</label>
+          <label for="filter-fitness" class="filter-tab">Fitness</label>
+        </div>
+
+        <div class="class-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
+          {classes.map((cls) => (
+            <div class={`class-card cat-${cls.categories.join(' cat-')} group bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden hover:border-[var(--accent-primary)]/30 transition-all duration-300`}>
+              <div class="aspect-[16/10] overflow-hidden">
+                <img src={cls.image} alt={cls.name} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" width="600" height="375" loading="lazy" />
+              </div>
+              <div class="p-6">
+                <h3 class="font-montserrat font-bold text-base text-white uppercase tracking-wide leading-tight mb-1">{cls.name}</h3>
+                <p class="font-inter text-xs text-[var(--accent-primary)] font-medium mb-3">{cls.badge}</p>
+                <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed mb-4">{cls.desc}</p>
+                <a href="/timetable" class="inline-flex items-center gap-1 font-inter text-xs font-medium text-[var(--accent-primary)] hover:gap-2 transition-all">
+                  View Timetable <Icon name="arrow-right" />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[var(--bg-secondary)] py-20 px-4 text-center border-t border-white/[0.04]">
+    <div class="max-w-2xl mx-auto reveal">
+      <h2 class="font-bebas text-white text-3xl md:text-4xl uppercase tracking-wide mb-4">Not Sure Where to Start?</h2>
+      <p class="font-inter text-[var(--text-muted)] mb-8">Come in for a $39 two-week trial — no commitment, no gear needed. We'll find the perfect program for you.</p>
+      <a href="/join" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+</Layout>

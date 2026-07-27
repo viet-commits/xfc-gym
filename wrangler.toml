@@ -1,0 +1,7 @@
+name = "xfc-gym"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "xfc-db"
+database_id = "34362803-9e4c-4637-b8e3-004f193b7d90"

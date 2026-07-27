@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+
+const days = [
+  {
+    day: "Monday",
+    dayIndex: 1,
+    hours: "4:30 PM - 8:45 PM",
+    classes: [
+      { time: "4:45 - 5:15 PM", name: "Junior MMA", detail: "Rising Warriors · Ages 7-9", cats: "junior" },
+      { time: "5:15 - 6:00 PM", name: "Junior MMA", detail: "Elite Warriors · Ages 10-13", cats: "junior" },
+      { time: "6:00 - 7:00 PM", name: "Kickboxing / Muay Thai", detail: "Advanced", cats: "kickboxing" },
+      { time: "6:45 - 7:45 PM", name: "Mixed Martial Arts", detail: "All Levels", cats: "mma" },
+      { time: "7:00 - 8:00 PM", name: "Kickboxing / Muay Thai", detail: "Beginner", cats: "kickboxing" },
+      { time: "7:45 - 8:45 PM", name: "Brazilian Jiu Jitsu", detail: "All Levels", cats: "bjj" },
+    ]
+  },
+  {
+    day: "Tuesday",
+    dayIndex: 2,
+    hours: "3:45 PM - 8:45 PM",
+    classes: [
+      { time: "4:00 - 4:30 PM", name: "Junior MMA", detail: "Little Warriors · Ages 2-4", cats: "junior" },
+      { time: "4:40 - 5:10 PM", name: "Junior MMA", detail: "Junior Warriors · Ages 5-6", cats: "junior" },
+      { time: "5:20 - 5:50 PM", name: "Junior MMA", detail: "Rising Warriors · Ages 7-9", cats: "junior" },
+      { time: "6:00 - 6:40 PM", name: "Junior MMA", detail: "Elite Warriors · Ages 10-13", cats: "junior" },
+      { time: "6:45 - 7:45 PM", name: "Mixed Martial Arts", detail: "All Levels", cats: "mma" },
+      { time: "6:45 - 7:45 PM", name: "Boxing", detail: "All Levels", cats: "boxing" },
+      { time: "7:45 - 8:45 PM", name: "Brazilian Jiu Jitsu", detail: "All Levels", cats: "bjj" },
+    ]
+  },
+  {
+    day: "Wednesday",
+    dayIndex: 3,
+    hours: "4:30 PM - 8:30 PM",
+    classes: [
+      { time: "4:45 - 5:15 PM", name: "Junior MMA", detail: "Rising Warriors · Ages 7-9", cats: "junior" },
+      { time: "5:15 - 6:00 PM", name: "Junior MMA", detail: "Elite Warriors · Ages 10-13", cats: "junior" },
+      { time: "6:00 - 7:00 PM", name: "Kickboxing / Muay Thai", detail: "Advanced", cats: "kickboxing" },
+      { time: "6:00 - 7:00 PM", name: "Adults Intake", detail: "Entry Class · New Members", cats: "mma kickboxing" },
+      { time: "7:00 - 8:00 PM", name: "Kickboxing / Muay Thai", detail: "Beginner", cats: "kickboxing" },
+    ]
+  },
+  {
+    day: "Thursday",
+    dayIndex: 4,
+    hours: "3:45 PM - 8:45 PM",
+    classes: [
+      { time: "4:00 - 4:30 PM", name: "Junior MMA", detail: "Little Warriors · Ages 2-4", cats: "junior" },
+      { time: "4:40 - 5:10 PM", name: "Junior MMA", detail: "Junior Warriors · Ages 5-6", cats: "junior" },
+      { time: "5:20 - 5:50 PM", name: "Junior MMA", detail: "Rising Warriors · Ages 7-9", cats: "junior" },
+      { time: "6:00 - 6:40 PM", name: "Junior MMA", detail: "Elite Warriors · Ages 10-13", cats: "junior" },
+      { time: "6:45 - 7:45 PM", name: "Mixed Martial Arts", detail: "All Levels", cats: "mma" },
+      { time: "6:45 - 7:45 PM", name: "Boxing", detail: "All Levels", cats: "boxing" },
+      { time: "7:45 - 8:45 PM", name: "Brazilian Jiu Jitsu", detail: "All Levels", cats: "bjj" },
+    ]
+  },
+  {
+    day: "Friday",
+    dayIndex: 5,
+    hours: "3:45 PM - 7:30 PM",
+    classes: [
+      { time: "4:00 - 4:30 PM", name: "Assessment", detail: "Junior Warriors · Ages 5-6", cats: "junior" },
+      { time: "4:45 - 5:15 PM", name: "Assessment", detail: "Rising Warriors · Ages 7-9", cats: "junior" },
+      { time: "5:15 - 5:45 PM", name: "Assessment", detail: "Elite Warriors · Ages 10-13", cats: "junior" },
+      { time: "5:45 - 6:30 PM", name: "Adults Sparring", detail: "All Levels", cats: "mma kickboxing boxing bjj" },
+      { time: "6:30 - 7:30 PM", name: "Kickboxing / Boxing", detail: "All Levels", cats: "kickboxing boxing" },
+    ]
+  },
+  {
+    day: "Saturday",
+    dayIndex: 6,
+    hours: "9:00 AM - 11:00 AM",
+    classes: [
+      { time: "9:30 - 10:00 AM", name: "Junior MMA", detail: "Junior Warriors · Ages 5-6", cats: "junior" },
+      { time: "10:00 - 10:30 AM", name: "Junior MMA", detail: "Rising Warriors · Ages 7-9", cats: "junior" },
+      { time: "10:30 - 11:00 AM", name: "Junior MMA", detail: "Elite Warriors · Ages 10-13", cats: "junior" },
+    ]
+  },
+];
+
+---
+
+<Layout title="Timetable" description="XFC Carrum Downs class timetable — MMA, Kickboxing, BJJ, Boxing for all ages and levels.">
+
+  <!-- HERO -->
+  <section class="py-24 md:py-32 px-4 text-center bg-[var(--bg-secondary)]">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Weekly Schedule</p>
+      <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">Class Timetable</h1>
+      <p class="font-inter text-[var(--text-muted)] text-lg">XFC Carrum Downs · 31 Lathams Rd</p>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <section class="bg-[var(--bg-primary)] pt-12 pb-0 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-wrap justify-center gap-2 mb-10 reveal">
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-[var(--accent-primary)] text-[var(--accent-primary)] bg-[var(--accent-primary)]/10" data-filter="all">All Classes</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="junior">Junior MMA</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="kickboxing">Kickboxing</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="mma">MMA</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="bjj">BJJ</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="boxing">Boxing</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMETABLE -->
+  <section class="bg-[var(--bg-primary)] py-8 px-4 pb-20">
+    <div class="max-w-7xl mx-auto space-y-4">
+
+      {days.map((d) => (
+          <div
+            class="tt-day border overflow-hidden transition-all duration-300 border-white/[0.06] bg-[var(--bg-secondary)]"
+            data-day-index={String(d.dayIndex)}
+          >
+            {/* Day header */}
+            <div class="tt-day-header flex items-center justify-between px-6 py-5 cursor-pointer md:cursor-default select-none bg-[var(--bg-primary)]/30 border-b border-white/[0.04]">
+              <div class="flex items-center gap-3">
+                <h2 class="font-bebas text-2xl md:text-3xl text-white uppercase tracking-wide">{d.day}</h2>
+                <span class="tt-today-badge font-montserrat font-bold text-xs uppercase tracking-widest text-[var(--accent-primary)] bg-[var(--accent-primary)]/10 px-2.5 py-0.5 border border-[var(--accent-primary)]/20" style="display:none">Today</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-inter text-sm text-[var(--text-muted)] hidden md:inline">{d.hours}</span>
+                <Icon name="chevron-down" class="text-[var(--text-muted)] md:hidden tt-chevron transition-transform duration-200" />
+              </div>
+            </div>
+
+            {/* Class rows */}
+            <div class="tt-day-body divide-y divide-white/[0.03]">
+              {d.classes.map((c) => (
+                <div
+                  class="tt-class-row flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 px-6 py-4 border-l-white/[0.06]"
+                  data-cats={c.cats}
+                  style="border-left-width: 3px;"
+                >
+                  <div class="font-montserrat font-bold text-sm text-white w-44 shrink-0">{c.time}</div>
+                  <div class="flex-1">
+                    <span class="font-montserrat font-bold text-sm text-[var(--text-primary)] uppercase tracking-wide">{c.name}</span>
+                    <span class="font-inter text-sm text-[var(--text-muted)] ml-2">{c.detail}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+      ))}
+
+    </div>
+  </section>
+
+  <!-- TODAY BADGE + FILTER + ACCORDION JS -->
+  <script>
+    // ── Today badge (client-side so it updates daily) ──
+    (function() {
+      var today = new Date().getDay(); // 0=Sun 1=Mon … 6=Sat
+      var todayIndex = today === 0 ? 0 : today; // Sunday → 0 (no badge, gym closed)
+      if (todayIndex === 0) return;
+
+      var todayDay = document.querySelector('.tt-day[data-day-index="' + todayIndex + '"]');
+      if (!todayDay) return;
+
+      // Activate border + bg
+      todayDay.classList.remove('border-white/[0.06]', 'bg-[var(--bg-secondary)]');
+      todayDay.classList.add('border-[var(--accent-primary)]', 'bg-[var(--accent-primary)]/[0.03]');
+
+      // Show badge
+      var badge = todayDay.querySelector('.tt-today-badge');
+      if (badge) (badge as HTMLElement).style.display = '';
+
+      // Highlight class row borders
+      todayDay.querySelectorAll('.tt-class-row').forEach(function(row) {
+        row.classList.remove('border-l-white/[0.06]');
+        row.classList.add('!border-l-[var(--accent-primary)]');
+      });
+    })();
+
+    // ── Filter + Accordion ──
+    // Filter buttons
+    document.querySelectorAll('.tt-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter') || 'all';
+        document.querySelectorAll('.tt-filter-btn').forEach(b => {
+          b.classList.remove('border-[var(--accent-primary)]', 'text-[var(--accent-primary)]', 'bg-[var(--accent-primary)]/10');
+          b.classList.add('border-white/10', 'text-[var(--text-muted)]');
+        });
+        btn.classList.remove('border-white/10', 'text-[var(--text-muted)]');
+        btn.classList.add('border-[var(--accent-primary)]', 'text-[var(--accent-primary)]', 'bg-[var(--accent-primary)]/10');
+
+        document.querySelectorAll('.tt-class-row').forEach(row => {
+          if (filter === 'all') {
+            (row as HTMLElement).style.display = '';
+          } else {
+            const cats = row.getAttribute('data-cats') || '';
+            (row as HTMLElement).style.display = cats.includes(filter) ? '' : 'none';
+          }
+        });
+      });
+    });
+
+    // Mobile accordion
+    if (window.innerWidth < 768) {
+      document.querySelectorAll('.tt-day').forEach(day => {
+        const header = day.querySelector('.tt-day-header');
+        const body = day.querySelector('.tt-day-body');
+        const chevron = day.querySelector('.tt-chevron');
+        if (header && body) {
+          (body as HTMLElement).style.display = 'none';
+          header.addEventListener('click', () => {
+            const isOpen = (body as HTMLElement).style.display !== 'none';
+            (body as HTMLElement).style.display = isOpen ? 'none' : 'block';
+            if (chevron) {
+              (chevron as HTMLElement).style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+          });
+        }
+      });
+    }
+  </script>
+
+</Layout>

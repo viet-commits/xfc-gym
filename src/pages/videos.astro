@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+
+const videos = [
+  { src: '/videos/13.mp4', title: 'XFC Training Highlights', poster: '/images/instagram/sparring-cage.jpg' },
+  { src: '/videos/15.mp4', title: 'Coach Sessions', poster: '/images/instagram/kick-technique.jpg' },
+  { src: '/videos/21.mp4', title: 'Fight Night Recap', poster: '/images/instagram/champion-belts.jpg' },
+];
+---
+
+<Layout title="Videos" description="Watch XFC Carrum Downs in action — training highlights, coach sessions, and fight night recaps.">
+
+  <section class="py-24 md:py-32 px-4 text-center bg-[var(--bg-secondary)]">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Watch Us in Action</p>
+      <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">Our Videos</h1>
+      <p class="font-inter text-[var(--text-muted)] text-lg">Watch our fighters, classes, and community in action.</p>
+    </div>
+  </section>
+
+  <section class="bg-[var(--bg-primary)] py-16 md:py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+        {videos.map(v => (
+          <div class="bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group">
+            <video controls preload="none" poster={v.poster} class="w-full aspect-video object-cover bg-black">
+              <source src={v.src} type="video/mp4" />
+            </video>
+            <div class="p-4">
+              <h3 class="font-montserrat font-bold text-sm text-white uppercase tracking-wide">{v.title}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-12 reveal">
+        <p class="font-inter text-[var(--text-muted)] mb-4">More videos on our Instagram</p>
+        <a href="https://www.instagram.com/xfc3201/" target="_blank" rel="noopener" class="btn-outline">
+          <Icon name="brand-instagram" /> Follow @xfc3201
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

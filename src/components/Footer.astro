@@ -1,0 +1,76 @@
+---
+const hours = [
+  { day: 'Mon', time: '4:30pm – 8:45pm' },
+  { day: 'Tue', time: '3:45pm – 8:45pm' },
+  { day: 'Wed', time: '4:30pm – 8:30pm' },
+  { day: 'Thu', time: '3:45pm – 8:45pm' },
+  { day: 'Fri', time: '3:45pm – 7:30pm' },
+  { day: 'Sat', time: '9:00am – 11:00am' },
+  { day: 'Sun', time: 'Closed' },
+];
+import Icon from '../components/Icon.astro';
+---
+
+<footer class="bg-[var(--bg-primary)] border-t border-white/[0.06] py-16 px-4">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+    <!-- Brand -->
+    <div>
+      <img src="/images/xfc-logo.png" alt="XFC Carrum Downs" class="h-10 w-auto mb-4" width="96" height="96" />
+      <p class="font-inter text-[var(--text-muted)] text-sm leading-relaxed max-w-xs">
+        Carrum Downs' premier MMA &amp; martial arts gym. Train harder. Fight smarter.
+      </p>
+      <!-- Social -->
+      <div class="flex gap-3 mt-5">
+        <a href="https://www.facebook.com/XFCCarrumDowns" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:text-[var(--accent-primary)] hover:bg-[#2a2a2a] transition-colors" aria-label="Facebook">
+          <Icon name="brand-facebook" class="text-lg" />
+        </a>
+        <a href="https://www.instagram.com/xfc3201/" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:text-[var(--accent-primary)] hover:bg-[#2a2a2a] transition-colors" aria-label="Instagram">
+          <Icon name="brand-instagram" class="text-lg" />
+        </a>
+        <a href="https://www.youtube.com/channel/UCuy6OV8ht31klMjQCq1uMuw" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:text-[var(--accent-primary)] hover:bg-[#2a2a2a] transition-colors" aria-label="YouTube">
+          <Icon name="brand-youtube" class="text-lg" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <h4 class="font-montserrat font-bold text-xs uppercase tracking-[0.12em] text-[var(--text-primary)] mb-5">Contact</h4>
+      <ul class="space-y-3 font-inter text-sm text-[var(--text-muted)]">
+        <li class="flex items-start gap-2">
+          <Icon name="map-pin" class="text-[var(--accent-primary)] mt-0.5 flex-shrink-0" />
+          <span>31 Lathams Road<br />Carrum Downs VIC 3201</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <Icon name="mail" class="text-[var(--accent-primary)] flex-shrink-0" />
+          <a href="mailto:cd@xfcgym.com.au" class="hover:text-[var(--accent-primary)] transition-colors">cd@xfcgym.com.au</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <Icon name="phone" class="text-[var(--accent-primary)] flex-shrink-0" />
+          <a href="tel:0397708401" class="hover:text-[var(--accent-primary)] transition-colors">(03) 9770 8401</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <Icon name="brand-instagram" class="text-[var(--accent-primary)] flex-shrink-0" />
+          <span>@xfc3201</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Hours -->
+    <div>
+      <h4 class="font-montserrat font-bold text-xs uppercase tracking-[0.12em] text-[var(--text-primary)] mb-5">Gym Hours</h4>
+      <ul class="space-y-2 font-inter text-sm text-[var(--text-muted)]">
+        {hours.map(h => (
+          <li class="flex justify-between gap-4">
+            <span class="font-medium text-[var(--text-primary)]">{h.day}</span>
+            <span>{h.time}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto border-t border-white/[0.06] pt-8 text-center">
+    <p class="font-inter text-xs text-white/20">Copyright {new Date().getFullYear()} XFC Carrum Downs. All rights reserved.</p>
+  </div>
+</footer>

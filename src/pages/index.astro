@@ -1,0 +1,591 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+
+const programs = [
+  {
+    id: 'mma',
+    label: 'MMA',
+    title: 'Mixed Martial Arts',
+    desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.',
+    image: '/images/instagram/sparring-cage.jpg',
+    link: '/classes',
+  },
+  {
+    id: 'kickboxing',
+    label: 'Kickboxing',
+    title: 'Kickboxing / Muay Thai',
+    desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.',
+    image: '/images/instagram/kick-technique.jpg',
+    link: '/classes',
+  },
+  {
+    id: 'bjj',
+    label: 'BJJ',
+    title: 'Brazilian Jiu Jitsu',
+    desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.',
+    image: '/images/instagram/two-on-mats.jpg',
+    link: '/classes',
+  },
+  {
+    id: 'boxing',
+    label: 'Boxing',
+    title: 'Boxing',
+    desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.',
+    image: '/images/instagram/bw-training.jpg',
+    link: '/classes',
+  },
+  {
+    id: 'kids',
+    label: 'Kids',
+    title: 'Kids &amp; Junior MMA',
+    desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.',
+    image: '/images/instagram/coach-joey-intro.jpg',
+    link: '/classes',
+  },
+];
+
+const featuredCoaches = [
+  {
+    name: 'Haysem Abdallah',
+    title: 'Head Coach &amp; Co-Founder',
+    image: '/images/haysem-abdallah-c.jpg',
+    bio: 'Elite-level MMA and Boxing coach with competition experience. Co-founder of XFC Carrum Downs. His philosophy: technique over talent, discipline over motivation.',
+    achievements: ['MMA & Boxing Coach', 'Co-Founder XFC', 'Competition Experience'],
+  },
+  {
+    name: 'Jamie Abdallah',
+    title: 'Muay Thai &amp; Kickboxing Coach',
+    image: '/images/jamie-abdallah-c.jpg',
+    bio: 'Highly experienced Muay Thai fighter and instructor with numerous titles across Australia. Technical precision and competitive fire define his coaching.',
+    achievements: ['15+ Years Experience', 'Competition Background', 'Striking Specialist'],
+  },
+];
+
+const reviews = [
+  { quote: 'I found this facility to have competent, knowledgeable and attentive trainers. The Ringfit classes I currently attend have certainly provided me with an added level of confidence as well as the challenge I was seeking in terms of fitness level increment.', name: 'Nathalie D.', tag: 'Member' },
+  { quote: 'This is one of the many XFC facilities that I go to, I have trained here since I was young, and 100% definitely do not regret a day going there. I have grown so much just from this place, they helped me turn into a man!', name: 'Harley R.', tag: 'Long-Time Member' },
+  { quote: 'Would definitely recommend this place to those who are looking to elevate their mental state and physical abilities to a whole new level. Taught by great coaches with limitless knowledge and surrounded by hardworking, like-minded students.', name: 'Walter L.', tag: 'Member' },
+  { quote: '8-9 years I have been a member of this gym, my first ever martial arts gym and I\'m definitely not going anywhere else anytime soon! Amazing facility, incredible and experienced coaches and a unique atmosphere that is just second to none.', name: 'Sammy D.', tag: '8+ Year Member' },
+  { quote: 'Love this gym. It\'s a great environment for any age and level of fitness. The coaches down here are professional and very friendly. I\'m so glad we are a part of this gym my son has gained so much confidence.', name: 'Tracy M.', tag: 'Parent' },
+  { quote: 'The Coaches are very passionate and patient. We are privileged to have current Australian Champions and certainly a few future champions as our coaches. It is a place where you can enjoy training to keep fit or pursue your dreams.', name: 'Rick N.', tag: 'Member' },
+];
+
+const starRatings = [1,2,3,4,5];
+---
+
+<Layout title="Home" description="XFC Carrum Downs — Carrum Downs' premier MMA &amp; martial arts gym. Train harder. Fight smarter.">
+
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="relative h-screen flex items-center overflow-hidden" style="min-height: 100svh;">
+    <!-- Background images (CSS crossfade) - WebP with responsive srcset fallback -->
+    <picture style="position:absolute;inset:0;z-index:0;">
+      <source srcset="/images/instagram/fighter-stance-cage-400w.webp 400w, /images/instagram/fighter-stance-cage-800w.webp 800w, /images/instagram/fighter-stance-cage-1200w.webp 1200w" sizes="100vw" type="image/webp">
+      <img src="/images/instagram/fighter-stance-cage.webp" alt="" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;">
+    </picture>
+    <div class="hero-bg absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
+         style="background-image: url('/images/instagram/fighter-stance-cage.webp');"></div>
+    <div class="hero-bg-next absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0"
+         style="background-image: url('/images/instagram/coach-belts-hero.webp');"></div>
+
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 z-[2]" style="background: linear-gradient(to right, rgba(0,0,0,0.78) 45%, rgba(0,0,0,0.20) 100%);"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-6 max-w-5xl mx-auto w-full">
+      <div class="max-w-3xl">
+        <h1 class="font-bebas text-white uppercase leading-[0.88] mb-3"
+            style="font-size: clamp(4rem, 10vw, 6rem);">
+          TRAIN HARDER.<br />
+          <span style="color: var(--accent-primary);">FIGHT SMARTER.</span>
+        </h1>
+        <div class="gold-sep mb-6"></div>
+        <p class="font-inter text-[var(--text-muted)] text-lg md:text-xl max-w-lg mb-10 leading-relaxed">
+          Structured martial arts training for kids and adults. Build confidence, discipline, and real combat skills in a supportive team environment.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/join" class="btn-primary text-base px-8">$39 Trial <Icon name="arrow-right" /></a>
+          <a href="/timetable" class="btn-outline text-base px-8">View Timetable</a>
+        </div>
+
+        <!-- Google badge -->
+        <div class="mt-8 inline-flex items-center gap-2 bg-white/[0.05] backdrop-blur-sm border border-[var(--accent-primary)]/20 rounded-full px-5 py-2.5">
+          <div class="flex gap-0.5">
+            {starRatings.map(() => <Icon name="star-filled" class="text-sm text-[var(--accent-primary)]" />)}
+          </div>
+          <span class="font-inter text-white text-xs font-medium">5-Star Google Rating</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white/30 z-10">
+      <Icon name="chevron-down" class="text-2xl" />
+    </div>
+  </section>
+
+  <!-- Hero image rotation script -->
+  <script>
+    const heroImages = [
+      '/images/instagram/fighter-stance-cage.webp',
+      '/images/instagram/coach-belts-hero.webp',
+      '/images/instagram/kick-technique.webp',
+    ];
+    let heroIdx = 0;
+    const bgEl = document.querySelector('.hero-bg');
+    const bgNextEl = document.querySelector('.hero-bg-next');
+    if (bgEl && bgNextEl) {
+      heroImages.forEach(src => { new Image().src = src; });
+      setInterval(() => {
+        heroIdx = (heroIdx + 1) % heroImages.length;
+        bgNextEl.style.backgroundImage = `url('${heroImages[heroIdx]}')`;
+        bgNextEl.style.opacity = '1';
+        setTimeout(() => {
+          bgEl.style.backgroundImage = `url('${heroImages[heroIdx]}')`;
+          bgNextEl.style.opacity = '0';
+        }, 1000);
+      }, 5000);
+    }
+  </script>
+
+  <!-- ═══════════════════════ PROGRAMS ═══════════════════════ -->
+  <section id="programs" class="bg-[var(--bg-primary)] py-24 md:py-32">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="reveal text-center mb-16">
+        <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Find Your Program</p>
+        <h2 class="font-bebas text-white text-4xl md:text-6xl uppercase tracking-wide">Choose Your Path</h2>
+        <div class="gold-sep mx-auto mt-4"></div>
+      </div>
+
+      <!-- Program split-screen slider -->
+      <div class="program-slider reveal relative" id="program-slider">
+        <style>
+          .program-slider { position: relative; overflow: hidden; }
+          .program-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+          .program-tab {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            padding: 0.5rem 1.25rem;
+            border: 1.5px solid rgba(255,255,255,0.1);
+            background: transparent;
+            cursor: pointer;
+            transition: all 250ms ease;
+          }
+          .program-tab:hover { border-color: rgba(255,255,255,0.25); color: var(--text-primary); }
+          .program-tab.active {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            background: rgba(184, 150, 46, 0.08);
+          }
+          .program-split {
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+            border: 1px solid rgba(255,255,255,0.06);
+          }
+          @media (min-width: 768px) {
+            .program-split { flex-direction: row; min-height: 460px; }
+          }
+          .program-image {
+            flex: 1;
+            min-height: 280px;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 500ms ease;
+          }
+          @media (min-width: 768px) { .program-image { min-height: auto; } }
+          .program-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2.5rem;
+            background: var(--bg-secondary);
+          }
+          .program-info h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+          }
+          .program-info .program-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-primary);
+            margin-bottom: 1.25rem;
+          }
+          .program-info p {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+          }
+        </style>
+
+        <div class="program-tabs" id="program-tabs">
+          {programs.map((p, i) => (
+            <button class={`program-tab ${i === 0 ? 'active' : ''}`} data-idx={String(i)}>{p.label}</button>
+          ))}
+        </div>
+
+        <div class="program-split">
+          <div class="program-image" id="program-image" style={`background-image: url('${programs[0].image}');`}></div>
+          <div class="program-info" id="program-info">
+            <span class="program-label">{programs[0].label}</span>
+            <h3>{programs[0].title}</h3>
+            <p>{programs[0].desc}</p>
+            <a href={programs[0].link} class="btn-primary self-start text-sm px-6">View {programs[0].label} Classes <Icon name="arrow-right" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const programData = [
+      { label: 'MMA', title: 'Mixed Martial Arts', desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.', image: '/images/instagram/sparring-cage.jpg', link: '/classes' },
+      { label: 'Kickboxing', title: 'Kickboxing / Muay Thai', desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.', image: '/images/instagram/kick-technique.jpg', link: '/classes' },
+      { label: 'BJJ', title: 'Brazilian Jiu Jitsu', desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.', image: '/images/instagram/two-on-mats.jpg', link: '/classes' },
+      { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/instagram/bw-training.jpg', link: '/classes' },
+      { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/coach-joey-intro.jpg', link: '/classes' },
+    ];
+    const progImage = document.getElementById('program-image');
+    const progInfo = document.getElementById('program-info');
+    document.querySelectorAll('.program-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const idx = parseInt(tab.getAttribute('data-idx') || '0');
+        const p = programData[idx];
+        document.querySelectorAll('.program-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        if (progImage) progImage.style.backgroundImage = `url('${p.image}')`;
+        if (progInfo) progInfo.innerHTML = `<span class="program-label">${p.label}</span><h3>${p.title}</h3><p>${p.desc}</p><a href="${p.link}" class="btn-primary self-start text-sm px-6">View ${p.label} Classes <Icon name="arrow-right" /></a>`;
+      });
+    });
+  </script>
+
+  <!-- ═══════════════════════ COACHES ═══════════════════════ -->
+  <section class="bg-[var(--bg-secondary)] py-24 md:py-32 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Meet Your Team</p>
+        <h2 class="font-bebas text-white text-4xl md:text-6xl uppercase tracking-wide">Coaching Excellence</h2>
+        <div class="gold-sep mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal-stagger">
+        {featuredCoaches.map(coach => (
+          <a href="/coaches" class="group block relative overflow-hidden">
+            <div class="aspect-[3/4] overflow-hidden relative">
+              <img src={coach.image} alt={coach.name} class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]" width="400" height="533" loading="lazy" />
+              <!-- Hover overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 ease-out flex flex-col justify-end p-6">
+                <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed mb-3">{coach.bio}</p>
+                <div class="flex flex-wrap gap-1.5">
+                  {coach.achievements.map(a => (
+                    <span class="text-xs font-inter text-[var(--accent-light)]/80 bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{a}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div class="pt-4">
+              <h3 class="font-montserrat font-bold text-lg text-white uppercase tracking-wide">{coach.name}</h3>
+              <p class="font-inter text-sm text-[var(--accent-primary)] font-medium mt-1">{coach.title}</p>
+              <span class="inline-flex items-center gap-1 font-inter text-xs text-[var(--text-muted)] mt-3 group-hover:text-[var(--accent-primary)] transition-colors">
+                View Profile <Icon name="arrow-right" />
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="text-center mt-12 reveal">
+        <a href="/coaches" class="btn-outline text-sm">Meet the Full Team <Icon name="arrow-right" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ INSTAGRAM FEED ═══════════════════════ -->
+  <section class="bg-[var(--bg-primary)] py-20 md:py-28 overflow-hidden border-t border-white/[0.03]">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="reveal text-center mb-10">
+        <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Follow the Fight</p>
+        <h2 class="font-bebas text-white text-4xl md:text-6xl uppercase tracking-wide mb-2">@xfc3201</h2>
+        <div class="gold-sep mx-auto mt-3"></div>
+        <p class="font-inter text-[var(--text-muted)] text-sm mt-4">Inside XFC Carrum Downs</p>
+      </div>
+    </div>
+
+    <!-- Carousel -->
+    <div class="ig-gym-gallery" id="ig-gym-gallery">
+      <div class="ig-gym-track" id="ig-gym-track">
+        {[
+          '01.jpg','02.jpg','03.jpg','04.jpg','05.jpg',
+          '06.jpg','07.jpg','08.jpg','09.jpg','10.jpg',
+          '11.jpg','12.jpg','13.jpg','14.jpg','15.jpg',
+          '16.jpg','17.jpg','18.jpg','19.jpg','20.jpg',
+          '21.jpg','22.jpg','23.jpg',
+        ].map((img, i) => (
+          <div class="ig-gym-slide">
+            <img
+              src={`/images/instagram/${img}`}
+              alt={`XFC Carrum Downs Instagram post ${i + 1}`}
+              loading={i < 6 ? 'eager' : 'lazy'}
+              width="480"
+              height="480"
+            />
+            <a
+              href="https://www.instagram.com/xfc3201/"
+              target="_blank"
+              rel="noopener"
+              class="ig-gym-overlay"
+              aria-label="View on Instagram"
+            >
+              <Icon name="brand-instagram" size={20} />
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="flex justify-center gap-3 mt-6">
+      <button class="ig-gym-arrow" id="ig-gym-prev" aria-label="Previous slide">
+        <Icon name="chevron-left" />
+      </button>
+      <button class="ig-gym-arrow" id="ig-gym-next" aria-label="Next slide">
+        <Icon name="chevron-right" />
+      </button>
+    </div>
+
+    <div class="text-center mt-8 reveal">
+      <a href="https://www.instagram.com/xfc3201/" target="_blank" rel="noopener" class="btn-outline text-sm">
+        <Icon name="brand-instagram" /> Follow on Instagram
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .ig-gym-gallery {
+      position: relative;
+      overflow: hidden;
+      padding: 0 1.5rem;
+    }
+    .ig-gym-track {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 0 1rem;
+      scrollbar-width: none;
+    }
+    .ig-gym-track::-webkit-scrollbar { display: none; }
+
+    .ig-gym-slide {
+      flex: 0 0 calc(25% - 0.56rem);
+      min-width: 220px;
+      scroll-snap-align: start;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 1 / 1;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .ig-gym-slide:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 12px 32px rgba(184,150,46,0.12);
+    }
+    .ig-gym-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .ig-gym-slide:hover img {
+      transform: scale(1.08);
+    }
+
+    .ig-gym-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 0.75rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .ig-gym-slide:hover .ig-gym-overlay {
+      opacity: 1;
+    }
+
+    .ig-gym-arrow {
+      width: 40px;
+      height: 40px;
+      border-radius: 3px;
+      border: 1.5px solid var(--accent-primary);
+      background: transparent;
+      color: var(--accent-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-size: 1rem;
+    }
+    .ig-gym-arrow:hover {
+      background: var(--accent-primary);
+      color: #000;
+    }
+
+    @media (max-width: 1024px) {
+      .ig-gym-slide { flex: 0 0 calc(33.333% - 0.5rem); min-width: 190px; }
+    }
+    @media (max-width: 768px) {
+      .ig-gym-slide { flex: 0 0 calc(50% - 0.38rem); min-width: 150px; }
+    }
+    @media (max-width: 480px) {
+      .ig-gym-slide { flex: 0 0 80%; min-width: 0; }
+      .ig-gym-gallery { padding: 0 0.75rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ig-gym-slide img { transition: none; }
+      .ig-gym-slide:hover img { transform: none; }
+      .ig-gym-track { scroll-behavior: auto; }
+    }
+  </style>
+
+  <script>
+    (function() {
+      var track = document.getElementById('ig-gym-track');
+      var prev = document.getElementById('ig-gym-prev');
+      var next = document.getElementById('ig-gym-next');
+      if (!track || !prev || !next) return;
+
+      function slideWidth() {
+        var slide = track.querySelector('.ig-gym-slide');
+        if (!slide) return 300;
+        var style = getComputedStyle(track);
+        var gap = parseInt(style.gap) || 12;
+        return slide.offsetWidth + gap;
+      }
+
+      prev.addEventListener('click', function() {
+        track.scrollBy({ left: -slideWidth() * 3, behavior: 'smooth' });
+      });
+      next.addEventListener('click', function() {
+        track.scrollBy({ left: slideWidth() * 3, behavior: 'smooth' });
+      });
+
+      var autoInterval;
+      function startAuto() {
+        clearInterval(autoInterval);
+        autoInterval = setInterval(function() {
+          var sw = slideWidth();
+          if (track.scrollLeft + track.offsetWidth >= track.scrollWidth - 10) {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            track.scrollBy({ left: sw, behavior: 'smooth' });
+          }
+        }, 3500);
+      }
+      startAuto();
+
+      track.addEventListener('mouseenter', function() { clearInterval(autoInterval); });
+      track.addEventListener('mouseleave', startAuto);
+
+      var scrollTimeout;
+      track.addEventListener('scroll', function() {
+        clearInterval(autoInterval);
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(startAuto, 5000);
+      }, { passive: true });
+    })();
+  </script>
+
+  <!-- ═══════════════════════ SOCIAL PROOF MARQUEE ═══════════════════════ -->
+  <section class="bg-[var(--bg-primary)] py-20 md:py-28 overflow-hidden">
+    <div class="reveal text-center mb-14 px-4">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">What Our Members Say</p>
+      <h2 class="font-bebas text-white text-4xl md:text-6xl uppercase tracking-wide">Real Reviews</h2>
+      <div class="gold-sep mx-auto mt-4 mb-4"></div>
+      <p class="font-inter text-[var(--text-muted)] text-sm">5-Star Google Reviews</p>
+    </div>
+
+    <div class="marquee-track py-4" id="marquee-track">
+      {reviews.map((r, i) => (
+        <div class="flex-shrink-0 w-[340px] md:w-[420px] p-8 border border-white/[0.06] bg-[var(--bg-secondary)]">
+          <div class="flex gap-0.5 mb-4 text-[var(--accent-primary)]">
+            {starRatings.map(() => <Icon name="star-filled" class="text-sm" />)}
+          </div>
+          <p class="font-inter text-[var(--text-muted)] text-base leading-relaxed mb-6 line-clamp-4">
+            &ldquo;{r.quote}&rdquo;
+          </p>
+          <div class="border-t border-white/[0.06] pt-4">
+            <p class="font-montserrat font-bold text-sm text-white uppercase tracking-wide">{r.name}</p>
+            <p class="font-inter text-xs text-[var(--text-muted)] mt-0.5">{r.tag}</p>
+          </div>
+        </div>
+      ))}
+      <!-- Duplicate for seamless loop -->
+      {reviews.map((r, i) => (
+        <div class="flex-shrink-0 w-[340px] md:w-[420px] p-8 border border-white/[0.06] bg-[var(--bg-secondary)]">
+          <div class="flex gap-0.5 mb-4 text-[var(--accent-primary)]">
+            {starRatings.map(() => <Icon name="star-filled" class="text-sm" />)}
+          </div>
+          <p class="font-inter text-[var(--text-muted)] text-base leading-relaxed mb-6 line-clamp-4">
+            &ldquo;{r.quote}&rdquo;
+          </p>
+          <div class="border-t border-white/[0.06] pt-4">
+            <p class="font-montserrat font-bold text-sm text-white uppercase tracking-wide">{r.name}</p>
+            <p class="font-inter text-xs text-[var(--text-muted)] mt-0.5">{r.tag}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Duplicate marquee for seamless CSS loop -->
+  <script>
+    // No JS needed — pure CSS animation with duplicated content
+  </script>
+
+  <!-- ═══════════════════════ CTA STRIP ═══════════════════════ -->
+  <section class="bg-[var(--bg-secondary)] py-24 md:py-32 px-4 text-center border-t border-white/[0.04]">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">No Obligation. No Commitment.</p>
+      <h2 class="font-bebas text-white text-4xl md:text-6xl uppercase tracking-wide mb-4">Ready to Start Your Journey?</h2>
+      <p class="font-inter text-[var(--text-muted)] text-lg mb-8 max-w-xl mx-auto">
+        Train unlimited for two weeks for only <strong class="text-white">$39</strong>. No obligation after the trial.
+      </p>
+      <a href="/join" class="btn-primary text-lg px-10 py-4">$39 Trial <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+</Layout>

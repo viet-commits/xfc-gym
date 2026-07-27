@@ -1,0 +1,251 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/classes', label: 'Classes' },
+  { href: '/timetable', label: 'Timetable' },
+  { href: '/coaches', label: 'Coaches' },
+  { href: '/facilities', label: 'Facilities' },
+];
+---
+
+<style>
+  .nav-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    transition: all 350ms ease;
+    background: transparent;
+  }
+  .nav-header.scrolled {
+    height: 64px;
+    background: rgba(13, 13, 13, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo { height: 80px; width: auto; transition: height 350ms ease; }
+  .scrolled .nav-logo { height: 60px; }
+
+  /* Desktop links */
+  .nav-links { display: none; }
+  @media (min-width: 769px) {
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      transition: color 250ms ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--accent-primary);
+      transition: width 300ms ease;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  }
+
+  /* CTA button */
+  .nav-cta {
+    display: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    padding: 0.625rem 1.5rem;
+    border-radius: 2px;
+    transition: all 300ms ease;
+    min-height: 44px;
+    display: none;
+    align-items: center;
+  }
+  .nav-cta:hover { background: #c9a538; transform: translateY(-1px); }
+  @media (min-width: 769px) {
+    .nav-cta { display: inline-flex; }
+  }
+
+  /* Mobile hamburger */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    z-index: 60;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all 300ms ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  @media (min-width: 769px) { .hamburger { display: none; } }
+
+  /* Mobile overlay */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-primary);
+    z-index: 55;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms ease;
+  }
+  .mobile-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .mobile-overlay a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: color 250ms ease;
+  }
+  .mobile-overlay a:hover, .mobile-overlay a.active { color: var(--text-primary); }
+  .mobile-overlay .mobile-cta {
+    margin-top: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    padding: 0.875rem 2.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+</style>
+
+<header class="nav-header" id="nav-header">
+  <div class="nav-inner">
+    <!-- Logo -->
+    <a href="/" class="flex-shrink-0">
+      <img src="/images/xfc-logo.png" alt="XFC Carrum Downs" class="nav-logo" width="96" height="96" />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="nav-links">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={`nav-link ${currentPath === link.href || currentPath.startsWith(link.href + '/') ? 'active' : ''}`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- CTA -->
+    <a href="/join" class="nav-cta">$39 Trial</a>
+
+    <!-- Hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobile-overlay">
+  {navLinks.map(link => (
+    <a
+      href={link.href}
+      class={currentPath === link.href || currentPath.startsWith(link.href + '/') ? 'active' : ''}
+    >
+      {link.label}
+    </a>
+  ))}
+  <a href="/join" class="mobile-cta">$39 Trial</a>
+</div>
+
+<!-- Spacer for fixed nav -->
+<div style="height:88px;" class="nav-spacer"></div>
+
+<script>
+  const header = document.getElementById('nav-header');
+  const hamburger = document.getElementById('hamburger');
+  const overlay = document.getElementById('mobile-overlay');
+  const spacer = document.querySelector('.nav-spacer');
+
+  // Scroll behavior
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 80) {
+      header.classList.add('scrolled');
+      if (spacer) spacer.style.height = '64px';
+    } else {
+      header.classList.remove('scrolled');
+      if (spacer) spacer.style.height = '88px';
+    }
+    lastScroll = y;
+  }, { passive: true });
+
+  // Mobile menu
+  let menuOpen = false;
+  hamburger.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    hamburger.classList.toggle('open', menuOpen);
+    overlay.classList.toggle('open', menuOpen);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+  });
+
+  // Close mobile menu on link click
+  overlay.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menuOpen = false;
+      hamburger.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+</script>

@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+
+const facilityImages = [
+  { src: '/images/wp-our-facility.png', alt: 'XFC Facility Overview' },
+  { src: '/images/xfc-ring.jpg', alt: 'XFC Competition Cage' },
+  { src: '/images/instagram/sparring-cage.jpg', alt: 'Sparring in the Cage' },
+  { src: '/images/wp-603801_447461808669495_1308210013_n.jpg', alt: 'Heavy Bag Training' },
+  { src: '/images/wp-551367_447461602002849_484418085_n-1.jpg', alt: 'Gym Floor Training' },
+  { src: '/images/wp-376012_447461662002843_402127662_n.jpg', alt: 'Group Training Session' },
+  { src: '/images/wp-305853_447461738669502_1720181610_n-1.jpg', alt: 'Strength & Conditioning' },
+  { src: '/images/wp-74261_447461868669489_497821233_n.jpg', alt: 'Coaching in Action' },
+  { src: '/images/wp-923170_447461595336183_457523543_n.jpg', alt: 'Kids Program Training' },
+  { src: '/images/wp-936535_447461578669518_1329619288_n.jpg', alt: 'XFC Team Training' },
+  { src: '/images/wp-21279_447461692002840_1790360625_n-768x512-1.jpg', alt: 'Mat Work Session' },
+  { src: '/images/wp-Become-champion.jpg', alt: 'Become a Champion' },
+  { src: '/images/instagram/team-floor-training.jpg', alt: 'Team Training' },
+  { src: '/images/instagram/two-on-mats.jpg', alt: 'Mat Training' },
+  { src: '/images/instagram/bw-training.jpg', alt: 'XFC Training' },
+  { src: '/images/facility-4.jpg', alt: 'XFC Gym Equipment' },
+  { src: '/images/facility-5.jpg', alt: 'XFC Training Area' },
+];
+
+const features = [
+  { icon: 'shield', title: 'MMA Cage & Training Area', desc: 'Train and spar in our full-size MMA cage. We also have a boxing area, heavy bags, matted grappling space and strength/conditioning equipment.' },
+  { icon: 'bolt', title: 'Strength & Conditioning', desc: 'Dedicated S&C area with free weights, kettlebells, resistance bands, and conditioning equipment.' },
+  { icon: 'layout-grid', title: 'Dedicated Mat Space', desc: 'Extensive matted floor area for BJJ, wrestling, and grappling training — clean, maintained, and safe.' },
+  { icon: 'circle-dot', title: 'Heavy Bag Station', desc: 'A full row of heavy bags, Thai pads, and speed bags for solo and partner striking work.' },
+  { icon: 'home', title: 'Modern Changerooms', desc: 'Clean, well-maintained changerooms with showers — so you can come straight from work and train.' },
+  { icon: 'car', title: 'Free Parking', desc: 'Easy access from Lathams Road with free on-site parking for all members and guests.' },
+];
+---
+
+<Layout title="Facilities" description="Tour XFC Carrum Downs — our state-of-the-art MMA gym with MMA cage, mat space, and full S&C area.">
+
+  <!-- HERO -->
+  <section class="py-24 md:py-32 px-4 text-center bg-[var(--bg-secondary)]">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Purpose-Built for Champions</p>
+      <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">
+        Our <span style="color:var(--accent-primary)">Facilities</span>
+      </h1>
+      <p class="font-inter text-[var(--text-muted)] text-lg max-w-xl mx-auto">
+        State-of-the-art equipment and a purpose-built training environment — everything you need to train at your best.
+      </p>
+    </div>
+  </section>
+
+  <!-- HORIZONTAL SCROLL PHOTO STRIP -->
+  <section class="bg-[var(--bg-primary)] py-16 px-4">
+    <div class="reveal">
+      <div class="scroll-strip">
+        {facilityImages.map((img) => (
+          <div class="w-[85vw] md:w-[500px] overflow-hidden bg-[var(--bg-secondary)] flex-shrink-0 group">
+            <img
+              src={img.src}
+              alt={img.alt}
+              class="w-full h-72 md:h-96 object-cover group-hover:scale-[1.03] transition-transform duration-500"
+              width="500" height="400" loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+      <p class="text-center font-inter text-[var(--text-muted)] text-xs mt-4">Scroll to tour our facilities</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="bg-[var(--bg-secondary)] py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-14">
+        <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Everything Under One Roof</p>
+        <h2 class="font-bebas text-white text-4xl md:text-5xl uppercase tracking-wide mb-4">World-Class Training Environment</h2>
+        <p class="font-inter text-[var(--text-muted)] max-w-xl mx-auto">Designed for serious athletes and passionate beginners alike.</p>
+        <div class="gold-sep mx-auto mt-4"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-stagger">
+        {features.map(feature => (
+          <div class="flex gap-5 items-start p-8 bg-[var(--bg-primary)] border border-white/[0.06] hover:border-[var(--accent-primary)]/20 transition-colors duration-300">
+            <div class="w-14 h-14 flex items-center justify-center flex-shrink-0 bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] rounded-sm">
+              <Icon name={feature.icon} size={24} />
+            </div>
+            <div>
+              <h3 class="font-montserrat font-bold text-base text-white uppercase tracking-wide mb-2">{feature.title}</h3>
+              <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed">{feature.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION + MAP -->
+  <section class="bg-[var(--bg-primary)] py-20 px-4 text-center">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Come Visit Us</p>
+      <h2 class="font-bebas text-white text-4xl uppercase tracking-wide mb-8">Find Us</h2>
+
+      <div class="bg-[var(--bg-secondary)] border border-white/[0.06] p-8 mb-8 text-center">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <Icon name="map-pin" class="text-2xl text-[var(--accent-primary)]" />
+          <div>
+            <p class="font-montserrat font-bold text-lg text-white uppercase tracking-wide">31 Lathams Road</p>
+            <p class="font-montserrat font-bold text-lg text-white uppercase tracking-wide">Carrum Downs VIC 3201</p>
+          </div>
+        </div>
+        <p class="font-inter text-sm text-[var(--text-muted)] mb-4">Easy access from Lathams Road · Free on-site parking</p>
+        <a href="https://maps.google.com/?q=31+Lathams+Rd+Carrum+Downs+VIC+3201" target="_blank" rel="noopener" class="inline-flex items-center gap-1 font-inter text-sm text-[var(--accent-primary)] hover:underline">
+          Get Directions <Icon name="arrow-right" />
+        </a>
+
+        <div style="overflow:hidden;margin-top:1.5rem;aspect-ratio:16/9;">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3139.0954553406457!2d145.17476057601!3d-38.088493471877!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613a4a3a8f3e5%3A0x6f3c3c3c3c3c3c3c!2s31%20Lathams%20Rd%2C%20Carrum%20Downs%20VIC%203201!5e0!3m2!1sen!2sau!4v1"
+            width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+      <a href="/join" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+</Layout>
