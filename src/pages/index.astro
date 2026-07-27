@@ -78,15 +78,42 @@ const starRatings = [1,2,3,4,5];
 
   <!-- ═══════════════════════ HERO ═══════════════════════ -->
   <section class="relative h-screen flex items-center overflow-hidden" style="min-height: 100svh;">
-    <!-- Background images (CSS crossfade) - WebP with responsive srcset fallback -->
-    <picture style="position:absolute;inset:0;z-index:0;">
-      <source srcset="/images/instagram/fighter-stance-cage-400w.webp 400w, /images/instagram/fighter-stance-cage-800w.webp 800w, /images/instagram/fighter-stance-cage-1200w.webp 1200w" sizes="100vw" type="image/webp">
-      <img src="/images/instagram/fighter-stance-cage.webp" alt="" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;">
-    </picture>
-    <div class="hero-bg absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-         style="background-image: url('/images/instagram/fighter-stance-cage.webp');"></div>
-    <div class="hero-bg-next absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0"
-         style="background-image: url('/images/instagram/coach-belts-hero.webp');"></div>
+    <!-- Two stacked <img> layers crossfade in place.
+         Previously a <picture> with a correct srcset was covered by two divs whose
+         background-image hardcoded the 640px file, so the browser downloaded the
+         1200w asset and then painted the small one across the whole viewport. -->
+    <img
+      class="hero-layer"
+      id="hero-layer-a"
+      src="/images/instagram/fighter-stance-cage-1200w.webp"
+      srcset="/images/instagram/fighter-stance-cage-400w.webp 400w, /images/instagram/fighter-stance-cage-800w.webp 800w, /images/instagram/fighter-stance-cage-1200w.webp 1200w"
+      sizes="100vw"
+      alt=""
+      aria-hidden="true"
+      fetchpriority="high"
+      decoding="async"
+      width="1200" height="1500"
+    />
+    <img class="hero-layer hero-layer-next" id="hero-layer-b" alt="" aria-hidden="true" decoding="async" />
+
+    <style>
+      .hero-layer {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+      }
+      .hero-layer-next {
+        opacity: 0;
+        transition: opacity 1000ms ease-in-out;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .hero-layer-next { transition: none; }
+      }
+    </style>
 
     <!-- Gradient overlay -->
     <div class="absolute inset-0 z-[2]" style="background: linear-gradient(to right, rgba(0,0,0,0.78) 45%, rgba(0,0,0,0.20) 100%);"></div>
@@ -109,9 +136,9 @@ const starRatings = [1,2,3,4,5];
         </div>
 
         <!-- Google badge -->
-        <div class="mt-8 inline-flex items-center gap-2 bg-white/[0.05] backdrop-blur-sm border border-[var(--accent-primary)]/20 rounded-full px-5 py-2.5">
+        <div class="mt-8 inline-flex items-center gap-2 bg-white/[0.05] backdrop-blur-sm border border-xfc-gold/20 rounded-full px-5 py-2.5">
           <div class="flex gap-0.5">
-            {starRatings.map(() => <Icon name="star-filled" class="text-sm text-[var(--accent-primary)]" />)}
+            {starRatings.map(() => <Icon size={16} name="star-filled" class="text-[var(--accent-primary)]" />)}
           </div>
           <span class="font-inter text-white text-xs font-medium">5-Star Google Rating</span>
         </div>
@@ -120,31 +147,53 @@ const starRatings = [1,2,3,4,5];
 
     <!-- Scroll indicator -->
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white/30 z-10">
-      <Icon name="chevron-down" class="text-2xl" />
+      <Icon size={24} name="chevron-down" />
     </div>
   </section>
 
   <!-- Hero image rotation script -->
   <script>
-    const heroImages = [
-      '/images/instagram/fighter-stance-cage.webp',
-      '/images/instagram/coach-belts-hero.webp',
-      '/images/instagram/kick-technique.webp',
+    // The first frame carries a responsive srcset; the others only exist at 640px
+    // until higher-resolution art is supplied, so they are listed at their real size.
+    const heroFrames = [
+      { src: '/images/instagram/fighter-stance-cage-1200w.webp', srcset: '/images/instagram/fighter-stance-cage-400w.webp 400w, /images/instagram/fighter-stance-cage-800w.webp 800w, /images/instagram/fighter-stance-cage-1200w.webp 1200w' },
+      { src: '/images/instagram/coach-belts-hero.webp', srcset: '' },
+      { src: '/images/instagram/kick-technique.webp', srcset: '' },
     ];
-    let heroIdx = 0;
-    const bgEl = document.querySelector('.hero-bg');
-    const bgNextEl = document.querySelector('.hero-bg-next');
-    if (bgEl && bgNextEl) {
-      heroImages.forEach(src => { new Image().src = src; });
-      setInterval(() => {
-        heroIdx = (heroIdx + 1) % heroImages.length;
-        bgNextEl.style.backgroundImage = `url('${heroImages[heroIdx]}')`;
-        bgNextEl.style.opacity = '1';
-        setTimeout(() => {
-          bgEl.style.backgroundImage = `url('${heroImages[heroIdx]}')`;
-          bgNextEl.style.opacity = '0';
-        }, 1000);
-      }, 5000);
+
+    const layerA = document.getElementById('hero-layer-a') as HTMLImageElement | null;
+    const layerB = document.getElementById('hero-layer-b') as HTMLImageElement | null;
+
+    if (layerA && layerB && heroFrames.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let idx = 0;
+      let timer: number | undefined;
+
+      const apply = (img: HTMLImageElement, frame: typeof heroFrames[number]) => {
+        img.srcset = frame.srcset;
+        img.src = frame.src;
+      };
+
+      const advance = () => {
+        idx = (idx + 1) % heroFrames.length;
+        const frame = heroFrames[idx];
+        apply(layerB, frame);
+        const show = () => {
+          layerB.style.opacity = '1';
+          window.setTimeout(() => {
+            apply(layerA, frame);
+            layerB.style.opacity = '0';
+          }, 1000);
+        };
+        if (layerB.complete) show();
+        else layerB.addEventListener('load', show, { once: true });
+      };
+
+      const start = () => { stop(); timer = window.setInterval(advance, 5000); };
+      const stop = () => { if (timer) window.clearInterval(timer); timer = undefined; };
+
+      // Don't burn cycles rotating a hero nobody is looking at.
+      document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+      start();
     }
   </script>
 
@@ -248,10 +297,10 @@ const starRatings = [1,2,3,4,5];
         <div class="program-split">
           <div class="program-image" id="program-image" style={`background-image: url('${programs[0].image}');`}></div>
           <div class="program-info" id="program-info">
-            <span class="program-label">{programs[0].label}</span>
-            <h3>{programs[0].title}</h3>
-            <p>{programs[0].desc}</p>
-            <a href={programs[0].link} class="btn-primary self-start text-sm px-6">View {programs[0].label} Classes <Icon name="arrow-right" /></a>
+            <span class="program-label" id="program-label">{programs[0].label}</span>
+            <h3 id="program-title">{programs[0].title}</h3>
+            <p id="program-desc">{programs[0].desc}</p>
+            <a href={programs[0].link} id="program-cta" class="btn-primary self-start text-sm px-6"><span id="program-cta-text">View {programs[0].label} Classes</span> <Icon name="arrow-right" /></a>
           </div>
         </div>
       </div>
@@ -266,16 +315,37 @@ const starRatings = [1,2,3,4,5];
       { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/instagram/bw-training.jpg', link: '/classes' },
       { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/coach-joey-intro.jpg', link: '/classes' },
     ];
+    // Update the individual text nodes rather than rewriting innerHTML. The old
+    // version injected a literal `<Icon …>` string — Astro components do not exist
+    // at runtime — which destroyed the button's arrow SVG on the first tab click.
     const progImage = document.getElementById('program-image');
-    const progInfo = document.getElementById('program-info');
+    const els = {
+      label: document.getElementById('program-label'),
+      title: document.getElementById('program-title'),
+      desc: document.getElementById('program-desc'),
+      cta: document.getElementById('program-cta') as HTMLAnchorElement | null,
+      ctaText: document.getElementById('program-cta-text'),
+    };
+
     document.querySelectorAll('.program-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const idx = parseInt(tab.getAttribute('data-idx') || '0');
         const p = programData[idx];
-        document.querySelectorAll('.program-tab').forEach(t => t.classList.remove('active'));
+        if (!p) return;
+
+        document.querySelectorAll('.program-tab').forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
         tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
         if (progImage) progImage.style.backgroundImage = `url('${p.image}')`;
-        if (progInfo) progInfo.innerHTML = `<span class="program-label">${p.label}</span><h3>${p.title}</h3><p>${p.desc}</p><a href="${p.link}" class="btn-primary self-start text-sm px-6">View ${p.label} Classes <Icon name="arrow-right" /></a>`;
+        if (els.label) els.label.textContent = p.label;
+        if (els.title) els.title.textContent = p.title;
+        if (els.desc) els.desc.textContent = p.desc;
+        if (els.ctaText) els.ctaText.textContent = `View ${p.label} Classes`;
+        if (els.cta) els.cta.href = p.link;
       });
     });
   </script>
@@ -299,7 +369,7 @@ const starRatings = [1,2,3,4,5];
                 <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed mb-3">{coach.bio}</p>
                 <div class="flex flex-wrap gap-1.5">
                   {coach.achievements.map(a => (
-                    <span class="text-xs font-inter text-[var(--accent-light)]/80 bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{a}</span>
+                    <span class="text-xs font-inter text-xfc-gold-light/80 bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/[0.06]">{a}</span>
                   ))}
                 </div>
               </div>
@@ -542,7 +612,7 @@ const starRatings = [1,2,3,4,5];
       {reviews.map((r, i) => (
         <div class="flex-shrink-0 w-[340px] md:w-[420px] p-8 border border-white/[0.06] bg-[var(--bg-secondary)]">
           <div class="flex gap-0.5 mb-4 text-[var(--accent-primary)]">
-            {starRatings.map(() => <Icon name="star-filled" class="text-sm" />)}
+            {starRatings.map(() => <Icon size={16} name="star-filled" />)}
           </div>
           <p class="font-inter text-[var(--text-muted)] text-base leading-relaxed mb-6 line-clamp-4">
             &ldquo;{r.quote}&rdquo;
@@ -557,7 +627,7 @@ const starRatings = [1,2,3,4,5];
       {reviews.map((r, i) => (
         <div class="flex-shrink-0 w-[340px] md:w-[420px] p-8 border border-white/[0.06] bg-[var(--bg-secondary)]">
           <div class="flex gap-0.5 mb-4 text-[var(--accent-primary)]">
-            {starRatings.map(() => <Icon name="star-filled" class="text-sm" />)}
+            {starRatings.map(() => <Icon size={16} name="star-filled" />)}
           </div>
           <p class="font-inter text-[var(--text-muted)] text-base leading-relaxed mb-6 line-clamp-4">
             &ldquo;{r.quote}&rdquo;

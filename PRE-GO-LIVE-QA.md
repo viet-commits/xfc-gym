@@ -9,9 +9,10 @@
 
 ## Status
 
-**Phase 1 (all nine P0 blockers) is complete** — see the changelog at the end of this
-document. Verified by a 23-check browser suite, a clean `pnpm build`, and `tsc --noEmit`
-at zero errors.
+**Phases 1 and 2 are complete** — all nine P0 blockers and all thirteen P1 items except
+the four launch-readiness ones held for Phase 3 (analytics, privacy policy, security
+headers, caching). See the changelogs at the end of this document. Verified by a
+48-assertion browser suite, a clean `pnpm build`, and `tsc --noEmit` at zero errors.
 
 Two P0 items still need **client confirmation**, not code:
 
@@ -23,7 +24,7 @@ Two P0 items still need **client confirmation**, not code:
   until `RESEND_API_KEY` and `BOOKING_FROM` are set in Cloudflare Pages, and a real
   submission has been confirmed to land in the gym inbox. See the README.
 
-Phases 2–5 are **not** started. The original verdict below stands for those.
+Phases 3–5 are **not** started. The original verdict below stands for those.
 
 ---
 
@@ -561,3 +562,49 @@ message (e.g. an invalid email) instead of a generic failure, and the stock Astr
 **Deliberately left for Phase 2** — the hollow rating stars, the empty carousel arrow, and
 the icon sizing/colour problems all stem from the single `Icon.astro` prop bug (P1-1) and
 are fixed together there.
+
+
+---
+
+## Changelog — Phase 2 (visible quality)
+
+Verified with a 48-assertion browser suite covering both viewports, plus `pnpm build` and
+`npx tsc --noEmit`.
+
+### Regression caught and fixed
+
+**The Phase 1 dependency fix (P0-2) had been silently reverted.** A `git checkout --
+package.json` in the Phase 1 cleanup step — intended only to drop a temporary test
+dependency — also reverted the Astro pin and the `@cloudflare/workers-types` entry before
+they were committed. `package-lock.json` was correctly deleted, but the committed
+`package.json` still requested `astro@^6.1.9`, so `npm install` still failed and
+`tsconfig.json` referenced a package that was no longer declared.
+
+This is now re-applied and, more importantly, **guarded**: the QA suite asserts the
+manifest state directly (`astro` pinned to 5.x, workers-types declared, `packageManager`
+pinned, no `package-lock.json`, `npm install --dry-run` resolves, `tsc --noEmit` clean)
+rather than trusting that a browser pass implies a correct build. A `pnpm check` script
+(`tsc --noEmit && astro build`) was added as the single command to run before committing.
+
+### Fixes
+
+| Item | What changed | Files |
+| --- | --- | --- |
+| P1-1 | `Icon.astro` rewritten. Icons are stored as inner path markup and rendered into a real `<svg>`, so `class`, `style`, and `size` arrive as genuine attributes. The old code string-replaced `class="` inside markup that had no `class` attribute, so **every** class passed to the component was dropped. `star-filled` now renders `fill="currentColor"` — the hero's "5-Star Google Rating" badge showed five hollow outlines, reading as zero stars. Icons are `aria-hidden` by default with an optional `label`. | `Icon.astro` |
+| P1-1 | `text-*` classes never sized an SVG (font-size does not drive width/height attributes). All 17 such usages converted to real `size` props. | `Footer.astro`, `index`, `join`, `coaches`, `facilities` |
+| P1-2 | Added the missing `chevron-left` glyph. The Instagram carousel's "Previous slide" button rendered as an empty gold square. Unknown icon names now warn in dev instead of failing silently. | `Icon.astro`, `index.astro` |
+| P1-3 | Removed all `<Icon>` usage from client-side `innerHTML`. Astro components do not exist at runtime, so those strings injected unrendered `<icon>` elements. The program slider now updates individual text nodes (leaving the arrow SVG intact) and the submit button toggles a pre-rendered spinner and arrow. | `index.astro`, `join.astro` |
+| P1-4 | Palette moved to channel triplets (`--accent-primary-rgb: 184 150 46`) that both the global CSS and `tailwind.config.mjs` read, so alpha modifiers compile. All six previously-dead utilities now generate CSS: the facilities icon tiles, timetable filter tint, Today badge, day-header background, and the class/coach card hover borders all render as designed. | `tailwind.config.mjs`, `Layout.astro`, 5 pages |
+| P1-5 | Timetable filtering now matches category tokens exactly. `cats.includes('boxing')` also matched `"kickboxing"`, so the Boxing filter returned Muay Thai classes. Verified: Boxing now returns 4 rows with no Kickboxing/Muay Thai. | `timetable.astro` |
+| P1-6 | Deleted the two `.hero-bg` divs that hardcoded the 640px image on top of a correct `<picture>`/srcset — the browser downloaded the 1200w asset and then painted the small one. Replaced with two crossfading `<img>` layers driven by the srcset. Rotation now pauses on `visibilitychange`. **Delivered hero resolution goes from 640px to 1200px**; the residual upscale on large/2× screens needs a ≥1920px source (Phase 4, client). | `index.astro` |
+| P1-7 | Class filter radios changed from `display:none` to clip-based hiding, restoring keyboard and screen-reader operation, with a forwarded `:focus-visible` ring on the labels. Verified operable via focus + activate. | `classes.astro` |
+| P1-8 | Mobile timetable no longer loads as six bare day names: today expands by default (falling back to the first day), day hours show at every breakpoint, days with matches auto-expand when a filter is applied, and days with none show an explanation instead of an empty container. Headers are keyboard-operable with `aria-expanded`; filter buttons carry `aria-pressed`. | `timetable.astro` |
+| P1-11 | Added a branded 404 page with the nav, four signposted routes, a trial CTA, and phone/email fallbacks. | `404.astro` |
+| P2-7 | The hero preload was firing on every page against a file the new markup no longer uses. It is now homepage-only and carries `imagesrcset`/`imagesizes` matching the `<img>`, so preload and render resolve to the same asset. | `Layout.astro` |
+| P2-11 | The success/error banner now scrolls into view and takes focus, with `role="status"` / `role="alert"`. Submitting from the bottom of a long form previously gave no visible confirmation. | `join.astro` |
+
+### Known limitation
+
+`P1-6` is fixed as far as the available artwork allows. The largest hero asset in the repo
+is 1200×1500, so on a 1440px viewport at 2× device-pixel-ratio the image is still scaled
+~2.4× (previously ~4.5×). Closing the gap requires the ≥1920px hero listed in Phase 4.

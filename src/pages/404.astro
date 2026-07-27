@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+
+const links = [
+  { href: '/classes/', label: 'Classes', desc: 'Every program, every age group' },
+  { href: '/timetable/', label: 'Timetable', desc: 'This week\'s class times' },
+  { href: '/coaches/', label: 'Coaches', desc: 'Meet the team' },
+  { href: '/facilities/', label: 'Facilities', desc: 'Take a look inside' },
+];
+---
+
+<Layout title="Page Not Found" description="That page doesn't exist. Find XFC Carrum Downs classes, timetable, coaches and facilities.">
+  <section class="bg-[var(--bg-primary)] py-20 md:py-28 px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Error 404</p>
+      <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">Page Not Found</h1>
+      <div class="gold-sep mx-auto mb-6"></div>
+      <p class="font-inter text-[var(--text-muted)] text-lg max-w-xl mx-auto mb-10">
+        The page you were after doesn't exist or has moved. Here's where you might be headed.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-14">
+        <a href="/join/" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+        <a href="/" class="btn-outline">Back to Home</a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+        {links.map(l => (
+          <a
+            href={l.href}
+            class="group flex items-center justify-between gap-4 p-5 bg-[var(--bg-secondary)] border border-white/[0.06] hover:border-xfc-gold/30 transition-colors duration-300"
+          >
+            <span>
+              <span class="block font-montserrat font-bold text-sm text-white uppercase tracking-wide">{l.label}</span>
+              <span class="block font-inter text-xs text-[var(--text-muted)] mt-1">{l.desc}</span>
+            </span>
+            <span class="text-[var(--accent-primary)] flex-shrink-0">
+              <Icon name="chevron-right" />
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <p class="font-inter text-sm text-[var(--text-muted)] mt-12">
+        Still stuck? Call us on
+        <a href="tel:0397708401" class="text-[var(--accent-primary)] hover:underline">(03) 9770 8401</a>
+        or email
+        <a href="mailto:cd@xfcgym.com.au" class="text-[var(--accent-primary)] hover:underline">cd@xfcgym.com.au</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

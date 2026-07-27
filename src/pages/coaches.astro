@@ -88,14 +88,14 @@ const coaches = [
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
         {coaches.map(coach => (
-          <div class="bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group hover:border-[var(--accent-primary)]/20 transition-colors duration-300">
+          <div class="bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group hover:border-xfc-gold/20 transition-colors duration-300">
             {coach.image ? (
               <div class="aspect-[4/5] overflow-hidden">
                 <img src={coach.image} alt={coach.name} class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500" width="400" height="500" loading="lazy" />
               </div>
             ) : (
               <div class="aspect-[4/5] bg-[var(--bg-primary)] flex items-center justify-center">
-                <Icon name="user" class="text-5xl text-white/10" />
+                <Icon size={48} name="user" class="text-white/10" />
               </div>
             )}
             <div class="p-6">

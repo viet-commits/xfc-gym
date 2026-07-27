@@ -97,12 +97,12 @@ const days = [
   <section class="bg-[var(--bg-primary)] pt-12 pb-0 px-4">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-wrap justify-center gap-2 mb-10 reveal">
-        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-[var(--accent-primary)] text-[var(--accent-primary)] bg-[var(--accent-primary)]/10" data-filter="all">All Classes</button>
-        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="junior">Junior MMA</button>
-        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="kickboxing">Kickboxing</button>
-        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="mma">MMA</button>
-        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="bjj">BJJ</button>
-        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="boxing">Boxing</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-[var(--accent-primary)] text-[var(--accent-primary)] bg-xfc-gold/10" data-filter="all" aria-pressed="true">All Classes</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="junior" aria-pressed="false">Junior MMA</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="kickboxing" aria-pressed="false">Kickboxing</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="mma" aria-pressed="false">MMA</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="bjj" aria-pressed="false">BJJ</button>
+        <button class="tt-filter-btn font-montserrat font-bold text-xs uppercase tracking-widest px-4 py-2 border border-white/10 text-[var(--text-muted)] hover:border-white/20 hover:text-white transition-all" data-filter="boxing" aria-pressed="false">Boxing</button>
       </div>
     </div>
   </section>
@@ -117,19 +117,20 @@ const days = [
             data-day-index={String(d.dayIndex)}
           >
             {/* Day header */}
-            <div class="tt-day-header flex items-center justify-between px-6 py-5 cursor-pointer md:cursor-default select-none bg-[var(--bg-primary)]/30 border-b border-white/[0.04]">
-              <div class="flex items-center gap-3">
+            <div class="tt-day-header flex items-center justify-between gap-2 px-4 sm:px-6 py-5 cursor-pointer md:cursor-default select-none bg-xfc-black/30 border-b border-white/[0.04]">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                 <h2 class="font-bebas text-2xl md:text-3xl text-white uppercase tracking-wide">{d.day}</h2>
-                <span class="tt-today-badge font-montserrat font-bold text-xs uppercase tracking-widest text-[var(--accent-primary)] bg-[var(--accent-primary)]/10 px-2.5 py-0.5 border border-[var(--accent-primary)]/20" style="display:none">Today</span>
+                <span class="tt-today-badge font-montserrat font-bold text-[0.625rem] sm:text-xs uppercase tracking-widest text-[var(--accent-primary)] bg-xfc-gold/10 px-2 sm:px-2.5 py-0.5 border border-xfc-gold/20 whitespace-nowrap" style="display:none">Today</span>
               </div>
-              <div class="flex items-center gap-3">
-                <span class="font-inter text-sm text-[var(--text-muted)] hidden md:inline">{d.hours}</span>
-                <Icon name="chevron-down" class="text-[var(--text-muted)] md:hidden tt-chevron transition-transform duration-200" />
+              <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <span class="font-inter text-xs sm:text-sm text-[var(--text-muted)] whitespace-nowrap">{d.hours}</span>
+                <Icon name="chevron-down" class="text-[var(--text-muted)] md:hidden tt-chevron transition-transform duration-200 shrink-0" />
               </div>
             </div>
 
             {/* Class rows */}
             <div class="tt-day-body divide-y divide-white/[0.03]">
+              <p class="tt-empty hidden px-6 py-4 font-inter text-sm text-[var(--text-muted)]">No classes in this category on {d.day}.</p>
               {d.classes.map((c) => (
                 <div
                   class="tt-class-row flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 px-6 py-4 border-l-white/[0.06]"
@@ -163,7 +164,7 @@ const days = [
 
       // Activate border + bg
       todayDay.classList.remove('border-white/[0.06]', 'bg-[var(--bg-secondary)]');
-      todayDay.classList.add('border-[var(--accent-primary)]', 'bg-[var(--accent-primary)]/[0.03]');
+      todayDay.classList.add('border-[var(--accent-primary)]', 'bg-xfc-gold/[0.03]');
 
       // Show badge
       var badge = todayDay.querySelector('.tt-today-badge');
@@ -177,44 +178,77 @@ const days = [
     })();
 
     // ── Filter + Accordion ──
-    // Filter buttons
+    const isMobile = () => window.innerWidth < 768;
+
+    const setDayOpen = (day: Element, open: boolean) => {
+      const body = day.querySelector<HTMLElement>('.tt-day-body');
+      const chevron = day.querySelector<HTMLElement>('.tt-chevron');
+      const header = day.querySelector<HTMLElement>('.tt-day-header');
+      if (!body) return;
+      body.style.display = open ? 'block' : 'none';
+      if (chevron) chevron.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+      header?.setAttribute('aria-expanded', String(open));
+    };
+
+    const applyFilter = (filter: string) => {
+      document.querySelectorAll('.tt-day').forEach(day => {
+        let visible = 0;
+        day.querySelectorAll<HTMLElement>('.tt-class-row').forEach(row => {
+          // Exact token match. `cats.includes('boxing')` also matched
+          // "kickboxing", so the Boxing filter used to show Muay Thai classes.
+          const cats = (row.getAttribute('data-cats') || '').split(/\s+/);
+          const show = filter === 'all' || cats.includes(filter);
+          row.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+
+        // Empty-state instead of a bare day header with nothing under it
+        const empty = day.querySelector<HTMLElement>('.tt-empty');
+        if (empty) empty.classList.toggle('hidden', visible > 0);
+
+        // On mobile, open any day that has matches so a filter never yields a
+        // screen with nothing on it.
+        if (isMobile() && filter !== 'all') setDayOpen(day, visible > 0);
+      });
+    };
+
     document.querySelectorAll('.tt-filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const filter = btn.getAttribute('data-filter') || 'all';
         document.querySelectorAll('.tt-filter-btn').forEach(b => {
-          b.classList.remove('border-[var(--accent-primary)]', 'text-[var(--accent-primary)]', 'bg-[var(--accent-primary)]/10');
+          b.classList.remove('border-[var(--accent-primary)]', 'text-[var(--accent-primary)]', 'bg-xfc-gold/10');
           b.classList.add('border-white/10', 'text-[var(--text-muted)]');
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.remove('border-white/10', 'text-[var(--text-muted)]');
-        btn.classList.add('border-[var(--accent-primary)]', 'text-[var(--accent-primary)]', 'bg-[var(--accent-primary)]/10');
-
-        document.querySelectorAll('.tt-class-row').forEach(row => {
-          if (filter === 'all') {
-            (row as HTMLElement).style.display = '';
-          } else {
-            const cats = row.getAttribute('data-cats') || '';
-            (row as HTMLElement).style.display = cats.includes(filter) ? '' : 'none';
-          }
-        });
+        btn.classList.add('border-[var(--accent-primary)]', 'text-[var(--accent-primary)]', 'bg-xfc-gold/10');
+        btn.setAttribute('aria-pressed', 'true');
+        applyFilter(filter);
       });
     });
 
-    // Mobile accordion
-    if (window.innerWidth < 768) {
-      document.querySelectorAll('.tt-day').forEach(day => {
+    // Mobile accordion. Today starts open (falling back to the first day) so the
+    // page never loads as six empty day names.
+    if (isMobile()) {
+      const days = [...document.querySelectorAll('.tt-day')];
+      const todayIdx = new Date().getDay();
+      const openByDefault = days.find(d => d.getAttribute('data-day-index') === String(todayIdx)) || days[0];
+
+      days.forEach(day => {
+        setDayOpen(day, day === openByDefault);
         const header = day.querySelector('.tt-day-header');
-        const body = day.querySelector('.tt-day-body');
-        const chevron = day.querySelector('.tt-chevron');
-        if (header && body) {
-          (body as HTMLElement).style.display = 'none';
-          header.addEventListener('click', () => {
-            const isOpen = (body as HTMLElement).style.display !== 'none';
-            (body as HTMLElement).style.display = isOpen ? 'none' : 'block';
-            if (chevron) {
-              (chevron as HTMLElement).style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-            }
-          });
-        }
+        if (!header) return;
+        header.setAttribute('role', 'button');
+        header.setAttribute('tabindex', '0');
+        const toggle = () => {
+          const body = day.querySelector<HTMLElement>('.tt-day-body');
+          setDayOpen(day, !!body && body.style.display === 'none');
+        };
+        header.addEventListener('click', toggle);
+        header.addEventListener('keydown', (e) => {
+          const key = (e as KeyboardEvent).key;
+          if (key === 'Enter' || key === ' ') { e.preventDefault(); toggle(); }
+        });
       });
     }
   </script>

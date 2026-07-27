@@ -15,6 +15,7 @@ export interface Props {
 
 const { title, description = 'XFC Carrum Downs — Premier MMA & Martial Arts Gym', ogImage = 'https://xfcgym.com.au/images/instagram/fighter-stance-cage.jpg', navOverlay = false } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
+const isHome = Astro.url.pathname === '/';
 ---
 
 <!DOCTYPE html>
@@ -23,7 +24,19 @@ const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="preload" as="image" href="/images/instagram/fighter-stance-cage.webp" fetchpriority="high">
+    {/* Preload the hero only on the page that actually has one, and match the <img>'s
+        srcset so the preload and the render resolve to the same file. Preloading this
+        on every page competed with each page's own hero image. */}
+    {isHome && (
+      <link
+        rel="preload"
+        as="image"
+        href="/images/instagram/fighter-stance-cage-1200w.webp"
+        imagesrcset="/images/instagram/fighter-stance-cage-400w.webp 400w, /images/instagram/fighter-stance-cage-800w.webp 800w, /images/instagram/fighter-stance-cage-1200w.webp 1200w"
+        imagesizes="100vw"
+        fetchpriority="high"
+      />
+    )}
     <link rel="canonical" href={canonicalUrl}>
 
     <!-- Open Graph -->
@@ -61,12 +74,22 @@ const canonicalUrl = new URL(Astro.url.pathname, 'https://xfcgym.com.au').href;
 
     <style is:global>
       :root {
-        --bg-primary: #0D0D0D;
-        --bg-secondary: #1C1C1C;
-        --accent-primary: #B8962E;
-        --accent-light: #FDF6E3;
-        --text-primary: #FFFFFF;
-        --text-muted: #AAAAAA;
+        /* Channel triplets are the source of truth: Tailwind reads these to build
+           alpha variants (bg-xfc-gold/10), and the composed vars below are for
+           hand-written CSS. */
+        --bg-primary-rgb: 13 13 13;
+        --bg-secondary-rgb: 28 28 28;
+        --accent-primary-rgb: 184 150 46;
+        --accent-light-rgb: 253 246 227;
+        --text-primary-rgb: 255 255 255;
+        --text-muted-rgb: 170 170 170;
+
+        --bg-primary: rgb(var(--bg-primary-rgb));
+        --bg-secondary: rgb(var(--bg-secondary-rgb));
+        --accent-primary: rgb(var(--accent-primary-rgb));
+        --accent-light: rgb(var(--accent-light-rgb));
+        --text-primary: rgb(var(--text-primary-rgb));
+        --text-muted: rgb(var(--text-muted-rgb));
         --scroll: 0;
       }
 

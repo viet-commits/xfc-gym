@@ -94,7 +94,20 @@ const classes = [
     <div class="max-w-7xl mx-auto">
       <!-- CSS-only filter -->
       <style>
-        .class-filter input[type="radio"] { display: none; }
+        /* Clipped rather than display:none. display:none removes the radios from the
+           tab order and the accessibility tree, which made this filter operable by
+           mouse only. */
+        .class-filter input[type="radio"] {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
         .filter-tab {
           display: inline-flex;
           align-items: center;
@@ -120,6 +133,18 @@ const classes = [
           border-color: var(--accent-primary);
           color: var(--accent-primary);
         }
+
+        /* The real radio is visually hidden, so its focus ring has to be forwarded
+           to the label a keyboard user can actually see. */
+        #filter-all:focus-visible ~ .filter-row label[for="filter-all"],
+        #filter-junior:focus-visible ~ .filter-row label[for="filter-junior"],
+        #filter-striking:focus-visible ~ .filter-row label[for="filter-striking"],
+        #filter-grappling:focus-visible ~ .filter-row label[for="filter-grappling"],
+        #filter-fitness:focus-visible ~ .filter-row label[for="filter-fitness"] {
+          outline: 2px solid var(--accent-primary);
+          outline-offset: 2px;
+          color: var(--text-primary);
+        }
         .class-card { display: block; }
         #filter-junior:checked ~ .class-grid .class-card:not(.cat-junior) { display: none; }
         #filter-striking:checked ~ .class-grid .class-card:not(.cat-striking) { display: none; }
@@ -144,7 +169,7 @@ const classes = [
 
         <div class="class-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
           {classes.map((cls) => (
-            <div class={`class-card cat-${cls.categories.join(' cat-')} group bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden hover:border-[var(--accent-primary)]/30 transition-all duration-300`}>
+            <div class={`class-card cat-${cls.categories.join(' cat-')} group bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden hover:border-xfc-gold/30 transition-all duration-300`}>
               <div class="aspect-[16/10] overflow-hidden">
                 <img src={cls.image} alt={cls.name} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" width="600" height="375" loading="lazy" />
               </div>

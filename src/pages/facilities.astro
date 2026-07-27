@@ -77,8 +77,8 @@ const features = [
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 reveal-stagger">
         {features.map(feature => (
-          <div class="flex gap-5 items-start p-8 bg-[var(--bg-primary)] border border-white/[0.06] hover:border-[var(--accent-primary)]/20 transition-colors duration-300">
-            <div class="w-14 h-14 flex items-center justify-center flex-shrink-0 bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] rounded-sm">
+          <div class="flex gap-5 items-start p-8 bg-[var(--bg-primary)] border border-white/[0.06] hover:border-xfc-gold/20 transition-colors duration-300">
+            <div class="w-14 h-14 flex items-center justify-center flex-shrink-0 bg-xfc-gold/10 text-[var(--accent-primary)] rounded-sm">
               <Icon name={feature.icon} size={24} />
             </div>
             <div>
@@ -99,7 +99,7 @@ const features = [
 
       <div class="bg-[var(--bg-secondary)] border border-white/[0.06] p-8 mb-8 text-center">
         <div class="flex items-center justify-center gap-3 mb-4">
-          <Icon name="map-pin" class="text-2xl text-[var(--accent-primary)]" />
+          <Icon size={24} name="map-pin" class="text-[var(--accent-primary)]" />
           <div>
             <p class="font-montserrat font-bold text-lg text-white uppercase tracking-wide">31 Lathams Road</p>
             <p class="font-montserrat font-bold text-lg text-white uppercase tracking-wide">Carrum Downs VIC 3201</p>
