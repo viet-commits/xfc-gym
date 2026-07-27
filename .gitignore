@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # wrangler local secrets (never commit)
 .dev.vars
+
+# wrangler local dev state (miniflare D1/cache)
+.wrangler/
