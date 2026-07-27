@@ -21,9 +21,11 @@ Two P0 items still need **client confirmation**, not code:
   the UI. The conflicting `+61 3 9775 0046` in the structured data was changed to match.
   **Confirm which number is correct** before launch — if it is the other one, one line in
   `Layout.astro` and two in the UI need updating.
-- **P0-6 (notifications):** the code path is built and fails safe, but it does nothing
-  until `RESEND_API_KEY` and `BOOKING_FROM` are set in Cloudflare Pages, and a real
-  submission has been confirmed to land in the gym inbox. See the README.
+- **P0-6 (notifications):** the pipeline is now **verified end-to-end with the production
+  Resend key** — a test booking saved to D1 and a test email was delivered to the Resend
+  account owner (jamie@xfcgym.com.au). One step remains, and it is not code: **verify the
+  `xfcgym.com.au` domain in Resend** (DNS records), then set `RESEND_API_KEY` and
+  `BOOKING_FROM` in Cloudflare Pages. Exact steps are in the README.
 
 Three further items now need a **decision or sign-off from the business**, not code:
 

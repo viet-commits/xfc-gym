@@ -99,6 +99,33 @@ Name, address, phone, email, social links and opening hours are defined in
 policy all read from it. Editing them anywhere else will reintroduce the drift that put two
 different phone numbers on the site.
 
+### Booking email status (verified 27 Jul 2026)
+
+The pipeline was tested end-to-end locally with the production Resend key:
+
+- The key is valid and correctly scoped (**send-only** — it cannot read account data).
+- A test booking returned 200, landed in D1, and the fail-safe held when the send failed.
+- The Resend account owner is **jamie@xfcgym.com.au**; a test email was delivered there.
+- **One step blocks production email: the domain `xfcgym.com.au` is not verified in
+  Resend.** Until it is, Resend refuses to send from `@xfcgym.com.au` addresses and only
+  delivers test mail to the account owner.
+
+**To finish (10 minutes, needs DNS access):**
+
+1. Log in to Resend (Jamie's account) → https://resend.com/domains → Add Domain →
+   `xfcgym.com.au`.
+2. Add the DKIM/SPF DNS records Resend displays to the `xfcgym.com.au` DNS zone
+   (in Cloudflare DNS if the domain is on Cloudflare). Wait for "Verified".
+3. In Cloudflare Pages → Settings → Environment variables, set:
+   - `RESEND_API_KEY` = the key (encrypted)
+   - `BOOKING_FROM` = `XFC Carrum Downs <noreply@xfcgym.com.au>`
+   - `BOOKING_NOTIFY_TO` = the inbox that should receive leads (defaults to cd@xfcgym.com.au)
+4. Redeploy, then run the verification below on the live domain.
+
+> The key was shared in a chat conversation during setup. After the environment variable
+> is saved in Cloudflare, it is good hygiene to rotate the key in Resend and update the
+> variable — send-only scope limits the damage either way.
+
 ### Verifying the booking pipeline after deploy
 
 1. Submit the form on the live domain.
