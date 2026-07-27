@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import { gym } from '../data/gym';
 
 const videos = [
   { src: '/videos/13.mp4', title: 'XFC Training Highlights', poster: '/images/instagram/sparring-cage.jpg' },
@@ -24,7 +25,7 @@ const videos = [
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
         {videos.map(v => (
           <div class="bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group">
-            <video controls preload="none" poster={v.poster} class="w-full aspect-video object-cover bg-black" loading="lazy">
+            <video controls poster={v.poster} class="w-full aspect-video object-cover bg-black" preload="none">
               <source src={v.src} type="video/mp4" />
             </video>
             <div class="p-4">
@@ -36,9 +37,12 @@ const videos = [
 
       <div class="text-center mt-12 reveal">
         <p class="font-inter text-[var(--text-muted)] mb-4">More videos on our Instagram</p>
-        <a href="https://www.instagram.com/xfc3201/" target="_blank" rel="noopener" class="btn-outline">
-          <Icon name="brand-instagram" /> Follow @xfc3201
-        </a>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/join/" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+          <a href={gym.instagram} target="_blank" rel="noopener" class="btn-outline">
+            <Icon name="brand-instagram" /> Follow {gym.instagramHandle}
+          </a>
+        </div>
       </div>
     </div>
   </section>

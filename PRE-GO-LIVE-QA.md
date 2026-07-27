@@ -9,10 +9,11 @@
 
 ## Status
 
-**Phases 1, 2 and 3 are complete** — all nine P0 blockers, all thirteen P1 items, and the
-P2 items covering SEO correctness and accessibility. See the changelogs at the end of this
-document. Verified by browser suites totalling 110 assertions across desktop and mobile,
-a clean `pnpm build`, and `tsc --noEmit` at zero errors.
+**Phases 1–5 are complete**, within the constraint that no new photography is available.
+All nine P0 blockers, all thirteen P1 items, and every P2 item that does not require new
+source images. See the changelogs at the end of this document. Verified by browser suites
+totalling 140 assertions across desktop and mobile, a clean `pnpm build`, and
+`tsc --noEmit` at zero errors.
 
 Two P0 items still need **client confirmation**, not code:
 
@@ -33,8 +34,18 @@ Three further items now need a **decision or sign-off from the business**, not c
   markup was invalid. Re-add it only once the numbers reflect reviews shown on this site.
 - **Analytics is inert until `PUBLIC_GA_ID` is set** in Cloudflare Pages.
 
-Phases 4 and 5 are **not** started — Phase 4 is blocked on client-supplied assets. The
-original verdict below stands for those.
+**Two quality ceilings remain and cannot be closed with the current asset library**
+(confirmed with the business — the site runs on existing images):
+
+- The hero is served at 1200px. On a 1440px viewport at 2x device-pixel-ratio it is scaled
+  about 2.4x (down from 4.5x). The largest source in the repo is 1200x1500.
+- The four coach portraits are 257x325, painted at up to 736 device px. These are the only
+  copies that exist.
+- The head-coach and Jamie portraits still carry a third-party watermark
+  ("KICKBOXING.COM.AU / Photo By: Terry Vong / Copyright © 2014"). This is a **licensing
+  question, not a technical one**, and it is unresolved.
+
+The original verdict below is retained as the record of what was found at audit time.
 
 ---
 
@@ -663,3 +674,67 @@ confidence in the opposite direction if left unexamined:
    sentences. WCAG 2.5.8 exempts inline targets in a block of text; the honeypot is hidden
    by design. Both are now excluded, and the one genuine finding it was masking
    ("Get Directions") is fixed.
+
+
+---
+
+## Changelog — Phases 4 and 5 (existing assets only)
+
+The business confirmed no new photography is available, so this pass extracted everything
+achievable from the existing library. Verified with a 30-assertion suite plus a full
+regression over all previous phases.
+
+### The image library turned out to be heavily aliased
+
+Hashing every file showed that most photos ship under two or three names. Consequences
+found and fixed:
+
+- **The facilities strip displayed the same photograph twice** —
+  `wp-603801….jpg` and `facility-4.jpg` are byte-identical. Seven other alias groups exist.
+- **Five purpose-built class photos were never wired up.** `class-boxing`, `class-thai`,
+  `class-jitsu`, `class-strength` and `class-mma` are 700x500 landscape images named after
+  the disciplines, sitting unused while the class cards repeated three photos between them.
+- **`facility-1.jpg` is the boxing ring** — exactly what the Boxing card needed.
+
+| Item | What changed | Files |
+| --- | --- | --- |
+| P2-24 | All ten class cards now use a distinct photo, drawn from the unused purpose-built set. Three images were previously each used twice. The homepage program tabs were aligned to the same per-discipline image, so a discipline looks consistent across pages. | `classes.astro`, `index.astro` |
+| P2-23 | `bw-training.jpg` (257x325 **portrait**) no longer fills two 16:10 landscape cards, and no longer fills the ~519px-wide homepage program panel. Every card image is landscape. | `classes.astro`, `index.astro` |
+| P2-25 | `wp-our-facility.png` — a 1.5 MB PNG panorama cropped into a 500x384 window — removed. The five class PNGs (323–499 KB each) converted to WebP at 11–26 KB. **`public/` went from 16 MB to 9.2 MB**, `public/images` to 3.8 MB. | `public/images` |
+| — | **Facilities alt text rewritten.** Most of it described the wrong image: "Strength & Conditioning" was the boxing ring, and three "training session" labels were photographs of empty rooms. Every entry now describes what it actually shows. This was not in the original audit; it surfaced only once the photos were viewed. | `facilities.astro` |
+| P2-13 | The timetable — the highest-intent page — ended at the footer. It now closes with a trial CTA and a click-to-call alternative. | `timetable.astro` |
+| P2-14 | Videos page gained a trial CTA alongside the Instagram link. | `videos.astro` |
+| P2-15 | Class cards deep-link into a pre-filtered timetable (`/timetable/?filter=bjj`), carrying intent through instead of dropping the visitor at the top of an unfiltered page. | `classes.astro`, `timetable.astro` |
+| P2-27 | The facilities strip had 12 photos, no arrows and no keyboard access — a desktop mouse user could not scroll it at all. Added arrow controls that disable at each end, plus arrow-key support and a focus ring. | `facilities.astro` |
+| P2-28 | The Instagram carousel auto-advanced every 3.5s with no way to stop it (WCAG 2.2.2). Added a pause/play toggle with correct `aria-pressed`, and it now starts paused under `prefers-reduced-motion`. | `index.astro`, `Icon.astro` |
+| P2-17 | `ORDER BY day` on a TEXT column returned fri, mon, sat, thu, tue, wed. Replaced with explicit week ordering. Also dropped the wildcard CORS header from the read endpoint and added a short cache. | `functions/api/timetable.ts` |
+| P2-18 | Deleted `src/worker/` — a duplicate of both Pages Functions plus a second copy of the schema, which never deployed under `pages_build_output_dir`. | `src/worker/` |
+| P2-30 | Removed `loading="lazy"` from `<video>`, which is not a valid attribute there. | `videos.astro` |
+| P3 | Added `FAQPage` structured data generated from the same list that renders the questions, so the two cannot drift. | `join.astro` |
+
+### Assets preserved rather than deleted
+
+Unique-but-unused files were moved to `docs/unused-assets/` instead of being destroyed:
+`dion-douglas-c.jpg` (a coach headshot for someone who appears nowhere on the site — worth
+checking whether a profile is missing), `gym-action.jpg/.webp`, `xfc-banner-logo.png/.webp`
+(700x700, larger than the 96x96 logo the nav uses, which is why the nav logo is soft on
+high-density screens), and `footer-bg.jpg`. Only byte-identical duplicates and
+WebP-superseded PNGs were hard-deleted.
+
+`docs/source-timetables/` holds the two timetable **screenshots** that were shipping as web
+assets in `public/images/`. They are the business's source of truth for class times and are
+worth checking the hardcoded timetable against — that has never been done.
+
+### A near-miss worth recording
+
+The first pruning pass deleted `instagram/01.jpg`–`23.jpg`, which the homepage carousel
+does need: it builds paths from a template literal (`` `/images/instagram/${img}` ``), so a
+plain search for literal `/images/...` strings found no reference to them. The files were
+restored from git and the scan was rewritten to resolve template-literal prefixes against
+nearby filename arrays. A "no broken images" assertion across all nine pages now guards it.
+
+Three assertions in this suite also had to be corrected before they could be trusted:
+lazy-loaded images report an empty `currentSrc` (read as duplicates), Adults Sparring
+legitimately carries the `bjj` category so it *should* appear under that filter, and an
+upscale is only actionable when a larger copy actually exists in the repo — otherwise it is
+an asset ceiling, which is now reported separately as information rather than failure.

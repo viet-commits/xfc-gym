@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import { gym, telHref } from '../data/gym';
 
 const days = [
   {
@@ -151,6 +152,20 @@ const days = [
     </div>
   </section>
 
+  <!-- CTA — the timetable is the highest-intent page on the site; it previously
+       ended at the footer with no way to act on what the visitor had just read. -->
+  <section class="bg-[var(--bg-secondary)] py-20 px-4 text-center border-t border-white/[0.04]">
+    <div class="max-w-2xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-3">Found a class that fits?</p>
+      <h2 class="font-bebas text-white text-3xl md:text-4xl uppercase tracking-wide mb-4">Start With a $39 Trial</h2>
+      <p class="font-inter text-[var(--text-muted)] mb-8">Two weeks of unlimited training for $39. No experience needed, no gear required, no obligation after the trial.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/join/" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+        <a href={telHref} class="btn-outline"><Icon name="phone" /> Call {gym.phone}</a>
+      </div>
+    </div>
+  </section>
+
   <!-- TODAY BADGE + FILTER + ACCORDION JS -->
   <script>
     // ── Today badge (client-side so it updates daily) ──
@@ -212,6 +227,11 @@ const days = [
       });
     };
 
+    const selectFilter = (filter: string) => {
+      const btn = document.querySelector<HTMLElement>(`.tt-filter-btn[data-filter="${filter}"]`);
+      if (btn) btn.click();
+    };
+
     document.querySelectorAll('.tt-filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const filter = btn.getAttribute('data-filter') || 'all';
@@ -226,6 +246,13 @@ const days = [
         applyFilter(filter);
       });
     });
+
+    // Deep link: /timetable/?filter=bjj arrives pre-filtered from a class card.
+    {
+      const wanted = new URLSearchParams(location.search).get('filter');
+      const valid = [...document.querySelectorAll('.tt-filter-btn')].map(b => b.getAttribute('data-filter'));
+      if (wanted && wanted !== 'all' && valid.includes(wanted)) selectFilter(wanted);
+    }
 
     // Mobile accordion. Today starts open (falling back to the first day) so the
     // page never loads as six empty day names.

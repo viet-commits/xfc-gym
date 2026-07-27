@@ -2,24 +2,32 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 
+/**
+ * Facility tour.
+ *
+ * Rebuilt for three reasons:
+ *  1. The old list showed the same photo twice — `wp-603801…jpg` and `facility-4.jpg`
+ *     are byte-identical, as are several other `wp-*` / `gym-*` / `facility-*` aliases.
+ *  2. Most alt text described the wrong thing: "Strength & Conditioning" was the boxing
+ *     ring, and three "training session" labels were photographs of empty rooms.
+ *  3. Four entries were portrait or tiny (one was 257x325) inside a 500x384 landscape
+ *     window, so they were cropped to nothing.
+ *
+ * Every entry below is a distinct file, landscape, and described as what it shows.
+ */
 const facilityImages = [
-  { src: '/images/wp-our-facility.png', alt: 'XFC Facility Overview' },
-  { src: '/images/xfc-ring.jpg', alt: 'XFC Competition Cage' },
-  { src: '/images/instagram/sparring-cage.jpg', alt: 'Sparring in the Cage' },
-  { src: '/images/wp-603801_447461808669495_1308210013_n.jpg', alt: 'Heavy Bag Training' },
-  { src: '/images/wp-551367_447461602002849_484418085_n-1.jpg', alt: 'Gym Floor Training' },
-  { src: '/images/wp-376012_447461662002843_402127662_n.jpg', alt: 'Group Training Session' },
-  { src: '/images/wp-305853_447461738669502_1720181610_n-1.jpg', alt: 'Strength & Conditioning' },
-  { src: '/images/wp-74261_447461868669489_497821233_n.jpg', alt: 'Coaching in Action' },
-  { src: '/images/wp-923170_447461595336183_457523543_n.jpg', alt: 'Kids Program Training' },
-  { src: '/images/wp-936535_447461578669518_1329619288_n.jpg', alt: 'XFC Team Training' },
-  { src: '/images/wp-21279_447461692002840_1790360625_n-768x512-1.jpg', alt: 'Mat Work Session' },
-  { src: '/images/wp-Become-champion.jpg', alt: 'Become a Champion' },
-  { src: '/images/instagram/team-floor-training.jpg', alt: 'Team Training' },
-  { src: '/images/instagram/two-on-mats.jpg', alt: 'Mat Training' },
-  { src: '/images/instagram/bw-training.jpg', alt: 'XFC Training' },
-  { src: '/images/facility-4.jpg', alt: 'XFC Gym Equipment' },
-  { src: '/images/facility-5.jpg', alt: 'XFC Training Area' },
+  { src: '/images/facility-4.jpg', alt: 'Strength and conditioning area with squat racks and free weights' },
+  { src: '/images/xfc-ring.jpg', alt: 'Full-size MMA cage with matted floor' },
+  { src: '/images/facility-1.jpg', alt: 'The XFC boxing ring' },
+  { src: '/images/facility-3.jpg', alt: 'Medicine balls, pads and striking equipment on storage racks' },
+  { src: '/images/facility-2.jpg', alt: 'MMA cage beside the main matted training floor' },
+  { src: '/images/gym-4.jpg', alt: 'Conditioning equipment including bikes, kettlebells and weights' },
+  { src: '/images/facility-6.jpg', alt: 'Matted floor with heavy bags and wall-mounted equipment' },
+  { src: '/images/wp-936535_447461578669518_1329619288_n.jpg', alt: 'Matted grappling area with wall padding' },
+  { src: '/images/wp-21279_447461692002840_1790360625_n-768x512-1.jpg', alt: 'Row of heavy bags beside the cage' },
+  { src: '/images/facility-5.jpg', alt: 'XFC members and coaches together on the mats' },
+  { src: '/images/become-champion.jpg', alt: 'XFC fighters holding championship belts' },
+  { src: '/images/instagram/team-floor-training.jpg', alt: 'Team training session on the matted floor' },
 ];
 
 const features = [
@@ -50,7 +58,7 @@ const features = [
   <!-- HORIZONTAL SCROLL PHOTO STRIP -->
   <section class="bg-[var(--bg-primary)] py-16 px-4">
     <div class="reveal">
-      <div class="scroll-strip">
+      <div class="scroll-strip" id="facility-strip" tabindex="0" role="region" aria-label="Facility photos — scroll horizontally">
         {facilityImages.map((img) => (
           <div class="w-[85vw] md:w-[500px] overflow-hidden bg-[var(--bg-secondary)] flex-shrink-0 group">
             <img
@@ -62,7 +70,58 @@ const features = [
           </div>
         ))}
       </div>
-      <p class="text-center font-inter text-white/70 text-xs mt-4">Scroll to tour our facilities</p>
+      <div class="flex justify-center items-center gap-3 mt-5">
+        <button class="strip-arrow" id="strip-prev" type="button" aria-label="Previous facility photos">
+          <Icon name="chevron-left" />
+        </button>
+        <p class="font-inter text-white/70 text-xs">Scroll to tour our facilities</p>
+        <button class="strip-arrow" id="strip-next" type="button" aria-label="More facility photos">
+          <Icon name="chevron-right" />
+        </button>
+      </div>
+
+      <style>
+        .strip-arrow {
+          width: 44px; height: 44px;
+          display: flex; align-items: center; justify-content: center;
+          border: 1.5px solid var(--accent-primary);
+          background: transparent; color: var(--accent-primary);
+          border-radius: 3px; cursor: pointer;
+          transition: background 0.2s ease, color 0.2s ease;
+        }
+        .strip-arrow:hover { background: var(--accent-primary); color: #000; }
+        .strip-arrow[disabled] { opacity: 0.35; cursor: default; }
+        .strip-arrow[disabled]:hover { background: transparent; color: var(--accent-primary); }
+        #facility-strip:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 4px; }
+      </style>
+
+      <script>
+        (function () {
+          const strip = document.getElementById('facility-strip');
+          const prev = document.getElementById('strip-prev');
+          const next = document.getElementById('strip-next');
+          if (!strip || !prev || !next) return;
+
+          const step = () => {
+            const first = strip.querySelector('div');
+            return first ? first.getBoundingClientRect().width + 16 : 400;
+          };
+          const sync = () => {
+            prev.toggleAttribute('disabled', strip.scrollLeft <= 4);
+            next.toggleAttribute('disabled', strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4);
+          };
+          prev.addEventListener('click', () => strip.scrollBy({ left: -step(), behavior: 'smooth' }));
+          next.addEventListener('click', () => strip.scrollBy({ left: step(), behavior: 'smooth' }));
+          strip.addEventListener('scroll', sync, { passive: true });
+          strip.addEventListener('keydown', (e) => {
+            const k = e.key;
+            if (k === 'ArrowRight') { e.preventDefault(); strip.scrollBy({ left: step(), behavior: 'smooth' }); }
+            if (k === 'ArrowLeft')  { e.preventDefault(); strip.scrollBy({ left: -step(), behavior: 'smooth' }); }
+          });
+          sync();
+          window.addEventListener('resize', sync);
+        })();
+      </script>
     </div>
   </section>
 

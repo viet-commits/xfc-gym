@@ -8,7 +8,7 @@ const programs = [
     label: 'MMA',
     title: 'Mixed Martial Arts',
     desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.',
-    image: '/images/instagram/sparring-cage.jpg',
+    image: '/images/class-strength.webp',
     link: '/classes/',
   },
   {
@@ -16,7 +16,7 @@ const programs = [
     label: 'Kickboxing',
     title: 'Kickboxing / Muay Thai',
     desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.',
-    image: '/images/instagram/kick-technique.jpg',
+    image: '/images/class-thai.webp',
     link: '/classes/',
   },
   {
@@ -24,7 +24,7 @@ const programs = [
     label: 'BJJ',
     title: 'Brazilian Jiu Jitsu',
     desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.',
-    image: '/images/instagram/two-on-mats.jpg',
+    image: '/images/class-jitsu.webp',
     link: '/classes/',
   },
   {
@@ -32,7 +32,7 @@ const programs = [
     label: 'Boxing',
     title: 'Boxing',
     desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.',
-    image: '/images/instagram/bw-training.jpg',
+    image: '/images/facility-1.jpg',
     link: '/classes/',
   },
   {
@@ -310,10 +310,10 @@ const starRatings = [1,2,3,4,5];
 
   <script>
     const programData = [
-      { label: 'MMA', title: 'Mixed Martial Arts', desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.', image: '/images/instagram/sparring-cage.jpg', link: '/classes/' },
-      { label: 'Kickboxing', title: 'Kickboxing / Muay Thai', desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.', image: '/images/instagram/kick-technique.jpg', link: '/classes/' },
-      { label: 'BJJ', title: 'Brazilian Jiu Jitsu', desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.', image: '/images/instagram/two-on-mats.jpg', link: '/classes/' },
-      { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/instagram/bw-training.jpg', link: '/classes/' },
+      { label: 'MMA', title: 'Mixed Martial Arts', desc: 'The complete combat sport. Our MMA program integrates striking, wrestling, and grappling into one fluid discipline. Classes run at all levels from beginner to advanced — perfect for those who want the full experience.', image: '/images/class-strength.webp', link: '/classes/' },
+      { label: 'Kickboxing', title: 'Kickboxing / Muay Thai', desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.', image: '/images/class-thai.webp', link: '/classes/' },
+      { label: 'BJJ', title: 'Brazilian Jiu Jitsu', desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.', image: '/images/class-jitsu.webp', link: '/classes/' },
+      { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/facility-1.jpg', link: '/classes/' },
       { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/coach-joey-intro.jpg', link: '/classes/' },
     ];
     // Update the individual text nodes rather than rewriting innerHTML. The old
@@ -437,10 +437,14 @@ const starRatings = [1,2,3,4,5];
 
     <!-- Nav -->
     <div class="flex justify-center gap-3 mt-6">
-      <button class="ig-gym-arrow" id="ig-gym-prev" aria-label="Previous slide">
+      <button class="ig-gym-arrow" id="ig-gym-prev" type="button" aria-label="Previous slide">
         <Icon name="chevron-left" />
       </button>
-      <button class="ig-gym-arrow" id="ig-gym-next" aria-label="Next slide">
+      <button class="ig-gym-arrow" id="ig-gym-pause" type="button" aria-label="Pause the slideshow" aria-pressed="false">
+        <span id="ig-pause-icon"><Icon name="player-pause" /></span>
+        <span id="ig-play-icon" class="hidden"><Icon name="player-play" /></span>
+      </button>
+      <button class="ig-gym-arrow" id="ig-gym-next" type="button" aria-label="Next slide">
         <Icon name="chevron-right" />
       </button>
     </div>
@@ -575,8 +579,10 @@ const starRatings = [1,2,3,4,5];
       });
 
       var autoInterval;
+      var paused = false;
       function startAuto() {
         clearInterval(autoInterval);
+        if (paused) return;
         autoInterval = setInterval(function() {
           var sw = slideWidth();
           if (track.scrollLeft + track.offsetWidth >= track.scrollWidth - 10) {
@@ -587,6 +593,29 @@ const starRatings = [1,2,3,4,5];
         }, 3500);
       }
       startAuto();
+
+      // Explicit pause control: an auto-advancing carousel must be stoppable.
+      var pauseBtn = document.getElementById('ig-gym-pause');
+      var pauseIcon = document.getElementById('ig-pause-icon');
+      var playIcon = document.getElementById('ig-play-icon');
+      if (pauseBtn) {
+        pauseBtn.addEventListener('click', function() {
+          paused = !paused;
+          pauseBtn.setAttribute('aria-pressed', String(paused));
+          pauseBtn.setAttribute('aria-label', paused ? 'Play the slideshow' : 'Pause the slideshow');
+          if (pauseIcon) pauseIcon.classList.toggle('hidden', paused);
+          if (playIcon) playIcon.classList.toggle('hidden', !paused);
+          if (paused) clearInterval(autoInterval); else startAuto();
+        });
+      }
+
+      // Respect a reduced-motion preference: don't auto-advance at all.
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        paused = true; clearInterval(autoInterval);
+        if (pauseBtn) { pauseBtn.setAttribute('aria-pressed','true'); pauseBtn.setAttribute('aria-label','Play the slideshow'); }
+        if (pauseIcon) pauseIcon.classList.add('hidden');
+        if (playIcon) playIcon.classList.remove('hidden');
+      }
 
       track.addEventListener('mouseenter', function() { clearInterval(autoInterval); });
       track.addEventListener('mouseleave', startAuto);

@@ -5,6 +5,7 @@ import Icon from '../components/Icon.astro';
 const classes = [
   {
     name: 'Junior MMA — Little Warriors',
+    ttFilter: 'junior',
     badge: 'Ages 2-4',
     categories: ['junior'],
     desc: 'Our youngest members discover movement, coordination, and the joy of martial arts in a fun, safe environment. Classes focus on basic motor skills, listening, and respect. Parents join on the mat.',
@@ -12,13 +13,15 @@ const classes = [
   },
   {
     name: 'Junior MMA — Junior Warriors',
+    ttFilter: 'junior',
     badge: 'Ages 5-6',
     categories: ['junior'],
     desc: 'Building on foundations with introductory striking and basic grappling concepts. Kids learn discipline, confidence, and how to work as part of a team.',
-    image: '/images/instagram/two-on-mats.jpg',
+    image: '/images/class-boxing.webp',
   },
   {
     name: 'Junior MMA — Rising Warriors',
+    ttFilter: 'junior',
     badge: 'Ages 7-9',
     categories: ['junior'],
     desc: 'A step up in technique and conditioning. Rising Warriors develop real martial arts skills across MMA, striking, and ground work with structured grading.',
@@ -26,6 +29,7 @@ const classes = [
   },
   {
     name: 'Junior MMA — Elite Warriors',
+    ttFilter: 'junior',
     badge: 'Ages 10-13',
     categories: ['junior'],
     desc: 'High-intensity technical training for our most advanced juniors. Elite Warriors prepare for competition with full MMA, sparring, and tactical coaching.',
@@ -33,6 +37,7 @@ const classes = [
   },
   {
     name: 'Kickboxing / Muay Thai Beginner',
+    ttFilter: 'kickboxing',
     badge: 'All Levels',
     categories: ['striking', 'fitness'],
     desc: 'Learn the fundamentals of stand-up striking — jabs, crosses, kicks, and combos. Perfect for anyone starting their striking journey or looking to build fitness.',
@@ -40,38 +45,42 @@ const classes = [
   },
   {
     name: 'Kickboxing / Muay Thai Advanced',
+    ttFilter: 'kickboxing',
     badge: 'Intermediate-Advanced',
     categories: ['striking'],
     desc: 'Fast-paced technical drilling, pad work, and sparring for experienced strikers. Sharpen your Muay Thai game with advanced combinations and ring craft.',
-    image: '/images/instagram/bw-training.jpg',
+    image: '/images/class-thai.webp',
   },
   {
     name: 'Mixed Martial Arts',
+    ttFilter: 'mma',
     badge: 'All Levels',
     categories: ['grappling', 'striking'],
     desc: 'The complete combat sport — integrating striking, wrestling, and grappling. Learn to transition fluidly between stand-up and ground in a dynamic class environment.',
-    image: '/images/instagram/sparring-cage.jpg',
+    image: '/images/class-strength.webp',
   },
   {
     name: 'Brazilian Jiu Jitsu',
+    ttFilter: 'bjj',
     badge: 'All Levels',
     categories: ['grappling'],
     desc: 'Ground-based grappling art focused on leverage, control, and submission. Train no-gi or with a gi — both beginners and experienced grapplers are welcome.',
-    image: '/images/instagram/two-on-mats.jpg',
+    image: '/images/class-jitsu.webp',
   },
   {
     name: 'Boxing',
+    ttFilter: 'boxing',
     badge: 'All Levels',
     categories: ['striking', 'fitness'],
     desc: 'The sweet science. Technical boxing training covering footwork, head movement, combinations, and pad/bag work. Great for fitness and competition prep.',
-    image: '/images/instagram/bw-training.jpg',
+    image: '/images/facility-1.jpg',
   },
   {
     name: 'Adults Sparring',
     badge: 'Intermediate+ Required',
     categories: ['striking', 'grappling'],
     desc: 'Open sparring session for intermediate and advanced adult members. Apply your techniques in a controlled, supervised environment with structured rounds.',
-    image: '/images/instagram/sparring-cage.jpg',
+    image: '/images/class-mma.webp',
   },
 ];
 ---
@@ -177,7 +186,7 @@ const classes = [
                 <h3 class="font-montserrat font-bold text-base text-white uppercase tracking-wide leading-tight mb-1">{cls.name}</h3>
                 <p class="font-inter text-xs text-[var(--accent-primary)] font-medium mb-3">{cls.badge}</p>
                 <p class="font-inter text-sm text-[var(--text-muted)] leading-relaxed mb-4">{cls.desc}</p>
-                <a href="/timetable/" class="inline-flex items-center gap-1 min-h-[44px] font-inter text-xs font-medium text-[var(--accent-primary)] hover:gap-2 transition-all">
+                <a href={`/timetable/${cls.ttFilter ? `?filter=${cls.ttFilter}` : ''}`} class="inline-flex items-center gap-1 min-h-[44px] font-inter text-xs font-medium text-[var(--accent-primary)] hover:gap-2 transition-all">
                   View Timetable <Icon name="arrow-right" />
                 </a>
               </div>

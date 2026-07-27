@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+
+// FAQPage markup for the questions rendered below. Kept adjacent to the source data
+// so the two cannot drift.
+const faqSchema = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What should I wear?", "acceptedAnswer": {"@type": "Answer", "text": "Comfortable training clothes. No uniform or gear is needed for your first sessions."}}, {"@type": "Question", "name": "Do I need experience?", "acceptedAnswer": {"@type": "Answer", "text": "No. Beginners are welcome. Our coaches will work with you at your level from day one."}}, {"@type": "Question", "name": "Is the trial for kids and adults?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Kids and adults can both start with the $39 two-week trial."}}, {"@type": "Question", "name": "What happens after the trial?", "acceptedAnswer": {"@type": "Answer", "text": "Our team will explain the membership options and help you choose the best fit for your goals and schedule."}}, {"@type": "Question", "name": "Do I need to book?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Booking helps us place you in the right class and make sure there is space for you."}}]};
 ---
 
 <Layout title="Join Now" description="Start your $39 Two-Week Trial at XFC Carrum Downs — no experience needed, no obligation after the trial.">
@@ -226,6 +230,8 @@ import Icon from '../components/Icon.astro';
       </div>
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline></script>
 
   <!-- Booking form handler -->
   <script>

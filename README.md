@@ -114,8 +114,14 @@ is already committed to D1, so nothing is lost.
 
 Outstanding work is tracked in [`PRE-GO-LIVE-QA.md`](./PRE-GO-LIVE-QA.md), which records
 the full QA pass, every finding with a file reference, and a phased remediation plan.
-Phases 1–3 are complete. Phase 4 is blocked on client-supplied assets (a >=1920px hero,
-unwatermarked coach portraits) and Phase 5 is backlog.
+Phases 1–5 are complete, within the constraint that no new photography is available. Two
+quality ceilings remain that only new source images can close: the hero is served at 1200px
+(scaled ~2.4x on a large 2x display) and the coach portraits are 257x325. The head-coach and
+Jamie portraits also still carry a third-party photographer's watermark, which is a
+licensing question for the business to resolve.
+
+`docs/unused-assets/` and `docs/source-timetables/` hold files moved out of `public/` so
+they are no longer deployed but not lost.
 
 Before launch the business still needs to: confirm the phone number, set `RESEND_API_KEY`
 and `BOOKING_FROM` (bookings notify nobody without them), have `/privacy/` reviewed, and
