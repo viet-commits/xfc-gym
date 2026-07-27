@@ -10,7 +10,7 @@
  *   ALLOWED_ORIGIN         Exact origin allowed to POST. Defaults to this request's own
  *                          origin, which is what a same-origin form submit sends.
  *   RESEND_API_KEY         Enables notification + autoresponder email.
- *   BOOKING_NOTIFY_TO      Gym inbox for new leads. Defaults to cd@xfcgym.com.au.
+ *   BOOKING_NOTIFY_TO      Gym inbox for new leads. Defaults to jamie@xfcgym.com.au.
  *   BOOKING_FROM           Verified sender, e.g. "XFC Carrum Downs <noreply@xfcgym.com.au>".
  *   TURNSTILE_SECRET_KEY   Enables Cloudflare Turnstile verification when set.
  */
@@ -116,7 +116,10 @@ async function notify(env: Env, lead: Lead): Promise<void> {
     return;
   }
 
-  const to = env.BOOKING_NOTIFY_TO || 'cd@xfcgym.com.au';
+  // Default recipient confirmed by the business, 27 Jul 2026. Jamie also owns the
+  // Resend account, so this address can receive notifications even while the domain
+  // is unverified (with a resend.dev sender).
+  const to = env.BOOKING_NOTIFY_TO || 'jamie@xfcgym.com.au';
   const classLabel = CLASS_LABELS[lead.class_interest] || lead.class_interest || 'Not specified';
   const day = lead.preferred_day || 'Not specified';
   const received = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Melbourne' });

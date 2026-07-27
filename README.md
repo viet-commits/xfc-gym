@@ -84,7 +84,7 @@ the form.
 | `DB` | **yes** | D1 binding (configured as a binding, not a plain variable) |
 | `RESEND_API_KEY` | strongly recommended | Enables the lead notification email and the enquirer autoresponder. Without it, bookings are still saved to D1 but **nobody is told**. |
 | `BOOKING_FROM` | with `RESEND_API_KEY` | Verified sender, e.g. `XFC Carrum Downs <noreply@xfcgym.com.au>` |
-| `BOOKING_NOTIFY_TO` | no | Inbox that receives new leads. Defaults to `cd@xfcgym.com.au`. |
+| `BOOKING_NOTIFY_TO` | no | Inbox that receives new leads. Defaults to `jamie@xfcgym.com.au` (confirmed by the business). |
 | `ALLOWED_ORIGIN` | no | Exact origin permitted to POST the form, e.g. `https://xfcgym.com.au`. Defaults to the request's own origin. Set it explicitly in production. |
 | `TURNSTILE_SECRET_KEY` | no | When set, the booking endpoint requires a valid Cloudflare Turnstile token. Leave unset until the widget is added to the form. |
 | `PUBLIC_GA_ID` | no | GA4 measurement ID (e.g. `G-XXXXXXXXXX`). **Build-time**, so a redeploy is needed after changing it. Without it no analytics tag is emitted at all, which is why the site currently reports nothing. The form fires a `generate_lead` event on success. |
@@ -110,7 +110,13 @@ The pipeline was tested end-to-end locally with the production Resend key:
   Resend.** Until it is, Resend refuses to send from `@xfcgym.com.au` addresses and only
   delivers test mail to the account owner.
 
-**To finish (10 minutes, needs DNS access):**
+**Interim option that works today (no DNS needed):** because Jamie owns the Resend
+account, setting `BOOKING_FROM` = `XFC Carrum Downs <onboarding@resend.dev>` delivers lead
+notifications to `jamie@xfcgym.com.au` immediately, even before the domain is verified.
+Only the autoresponder to the enquirer is skipped (it fails safe and is logged). Switch
+`BOOKING_FROM` to `noreply@xfcgym.com.au` once the domain verifies.
+
+**To finish properly (10 minutes, needs DNS access):**
 
 1. Log in to Resend (Jamie's account) → https://resend.com/domains → Add Domain →
    `xfcgym.com.au`.
@@ -119,7 +125,7 @@ The pipeline was tested end-to-end locally with the production Resend key:
 3. In Cloudflare Pages → Settings → Environment variables, set:
    - `RESEND_API_KEY` = the key (encrypted)
    - `BOOKING_FROM` = `XFC Carrum Downs <noreply@xfcgym.com.au>`
-   - `BOOKING_NOTIFY_TO` = the inbox that should receive leads (defaults to cd@xfcgym.com.au)
+   - `BOOKING_NOTIFY_TO` = `jamie@xfcgym.com.au` (also the code default, so this can be omitted)
 4. Redeploy, then run the verification below on the live domain.
 
 > The key was shared in a chat conversation during setup. After the environment variable
