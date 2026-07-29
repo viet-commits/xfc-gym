@@ -12,3 +12,13 @@ copy of their content:
 
 Everything else removed in this pass was either a byte-identical duplicate of a retained
 file or a PNG superseded by a smaller WebP.
+
+## Broken video files (moved 29 Jul 2026)
+
+`13.mp4`, `15.mp4`, `21.mp4` were served on `/videos/` behind `<video>` players, but they
+are **fragmented-MP4 media segments without an initialisation header** (each begins with a
+`moof` box; there is no `ftyp`/`moov`). No browser can play them — every visitor saw three
+dead players. Their `mfhd` sequence numbers (1, 2, 4) suggest they are consecutive
+segments of a single streamed video, saved mid-download. The Videos page now links to the
+gym's Instagram and YouTube instead. If the original full videos can be re-exported, they
+can go back behind native players.

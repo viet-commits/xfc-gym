@@ -765,3 +765,58 @@ native form fully removed, FAQ schema intact, no JS errors. **One environment li
 sandbox proxy resets Chromium's connections to the CRM domain (curl reaches it fine), so
 the remote form document could not be rendered here — confirm visually on the deployed
 site that the form loads and a test submission reaches the CRM.
+
+
+---
+
+## Changelog — full image/label sweep (29 Jul 2026)
+
+The business flagged that class-card photos still didn't match their labels (adult
+fighters under "Ages 7–9", a lone coach under "Ages 2–4"). The Phase 4 relabel had fixed
+the facilities strip but trusted filenames elsewhere — and the filenames lie
+(`team-floor-training.jpg` is a fight-night crowd; `class-strength.webp` is a grappling
+class). This pass reviewed **every image on the site by eye** via labelled contact sheets,
+then re-verified the rebuilt pages visually.
+
+### Key constraint discovered
+
+**The library contains no photographs of children**, while four cards advertise ages 2–13.
+One partial exception: `kick-technique.jpg` shows junior students in class uniforms
+watching a demonstration. Junior cards therefore use coach/venue/demo imagery with alt
+text that describes the actual photo instead of claiming it shows toddlers.
+
+### New defect found: the three "videos" were never playable
+
+`13/15/21.mp4` are fragmented-MP4 media segments with no initialisation header (they begin
+with a `moof` box; no `ftyp`/`moov`). No browser can play such files — every visitor to
+/videos/ saw three dead players. The page now presents link tiles to the gym's Instagram
+and YouTube (where the videos actually live), the broken files moved to
+`docs/unused-assets/` with a forensic note, and the now-pointless `/videos/*` cache rule
+was dropped.
+
+### Reassignments
+
+| Slot | Was | Now |
+| --- | --- | --- |
+| Little Warriors (2–4) | lone adult coach | bright junior training floor (venue) |
+| Junior Warriors (5–6) | overhead adult sparring | coach introducing the program |
+| Rising Warriors (7–9) | fight-night crowd | class watching a striking demo (juniors visible) |
+| Elite Warriors (10–13) | adult in cage | supervised headgear sparring, overhead (faces hidden) |
+| KB Advanced | near-duplicate of KB Beginner | cage sparring |
+| Adults Sparring | grappling close-up (kept) | unchanged, alt corrected |
+| Home "Kids" tab | lone adult coach | class demo with juniors visible |
+
+### Other corrections
+
+- **Class cards now carry `imageAlt`** describing the photo; previously `alt={cls.name}`
+  claimed "Junior MMA — Little Warriors" over a photo of an adult.
+- **Instagram carousel curated 23 → 13 slides**: removed two timetable screenshots
+  shipping as "posts" (05, 15), a logo graphic (22), and seven duplicates
+  (14/16/17/19/20/21/23 duplicate 02/07/08/11/10/03/13). Every remaining slide has
+  descriptive alt text instead of "Instagram post N".
+- **Facilities strip**: `team-floor-training.jpg` ("Team training session") is actually a
+  fight-night crowd — replaced with a real mat-drilling photo; `facility-6` alt corrected
+  (no heavy bags in shot).
+
+Verified by rebuilding and visually reviewing /classes/, /videos/, /facilities/ and the
+homepage Kids tab, plus reference integrity (35/35 image refs resolve) and a clean build.

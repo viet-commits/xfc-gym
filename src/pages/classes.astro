@@ -9,7 +9,8 @@ const classes = [
     badge: 'Ages 2-4',
     categories: ['junior'],
     desc: 'Our youngest members discover movement, coordination, and the joy of martial arts in a fun, safe environment. Classes focus on basic motor skills, listening, and respect. Parents join on the mat.',
-    image: '/images/instagram/coach-joey-intro.jpg',
+    image: '/images/facility-6.jpg',
+    imageAlt: 'Bright matted training floor where our junior classes run'
   },
   {
     name: 'Junior MMA — Junior Warriors',
@@ -17,7 +18,8 @@ const classes = [
     badge: 'Ages 5-6',
     categories: ['junior'],
     desc: 'Building on foundations with introductory striking and basic grappling concepts. Kids learn discipline, confidence, and how to work as part of a team.',
-    image: '/images/class-boxing.webp',
+    image: '/images/instagram/coach-joey-intro.jpg',
+    imageAlt: 'An XFC coach introducing the junior program'
   },
   {
     name: 'Junior MMA — Rising Warriors',
@@ -25,7 +27,8 @@ const classes = [
     badge: 'Ages 7-9',
     categories: ['junior'],
     desc: 'A step up in technique and conditioning. Rising Warriors develop real martial arts skills across MMA, striking, and ground work with structured grading.',
-    image: '/images/instagram/team-floor-training.jpg',
+    image: '/images/instagram/kick-technique.jpg',
+    imageAlt: 'The class watches a striking demonstration'
   },
   {
     name: 'Junior MMA — Elite Warriors',
@@ -33,7 +36,8 @@ const classes = [
     badge: 'Ages 10-13',
     categories: ['junior'],
     desc: 'High-intensity technical training for our most advanced juniors. Elite Warriors prepare for competition with full MMA, sparring, and tactical coaching.',
-    image: '/images/instagram/fighter-stance-cage.jpg',
+    image: '/images/class-boxing.webp',
+    imageAlt: 'Supervised sparring in headgear, seen from above'
   },
   {
     name: 'Kickboxing / Muay Thai Beginner',
@@ -41,7 +45,8 @@ const classes = [
     badge: 'All Levels',
     categories: ['striking', 'fitness'],
     desc: 'Learn the fundamentals of stand-up striking — jabs, crosses, kicks, and combos. Perfect for anyone starting their striking journey or looking to build fitness.',
-    image: '/images/instagram/kick-technique.jpg',
+    image: '/images/class-thai.webp',
+    imageAlt: 'A kick lands on the pads during partner drills'
   },
   {
     name: 'Kickboxing / Muay Thai Advanced',
@@ -49,7 +54,8 @@ const classes = [
     badge: 'Intermediate-Advanced',
     categories: ['striking'],
     desc: 'Fast-paced technical drilling, pad work, and sparring for experienced strikers. Sharpen your Muay Thai game with advanced combinations and ring craft.',
-    image: '/images/class-thai.webp',
+    image: '/images/instagram/sparring-cage.jpg',
+    imageAlt: 'Hard sparring rounds inside the cage'
   },
   {
     name: 'Mixed Martial Arts',
@@ -58,6 +64,7 @@ const classes = [
     categories: ['grappling', 'striking'],
     desc: 'The complete combat sport — integrating striking, wrestling, and grappling. Learn to transition fluidly between stand-up and ground in a dynamic class environment.',
     image: '/images/class-strength.webp',
+    imageAlt: 'Ground-work rounds during an MMA class'
   },
   {
     name: 'Brazilian Jiu Jitsu',
@@ -66,6 +73,7 @@ const classes = [
     categories: ['grappling'],
     desc: 'Ground-based grappling art focused on leverage, control, and submission. Train no-gi or with a gi — both beginners and experienced grapplers are welcome.',
     image: '/images/class-jitsu.webp',
+    imageAlt: 'Gi training on the mats'
   },
   {
     name: 'Boxing',
@@ -74,6 +82,7 @@ const classes = [
     categories: ['striking', 'fitness'],
     desc: 'The sweet science. Technical boxing training covering footwork, head movement, combinations, and pad/bag work. Great for fitness and competition prep.',
     image: '/images/facility-1.jpg',
+    imageAlt: 'The XFC boxing ring'
   },
   {
     name: 'Adults Sparring',
@@ -81,6 +90,7 @@ const classes = [
     categories: ['striking', 'grappling'],
     desc: 'Open sparring session for intermediate and advanced adult members. Apply your techniques in a controlled, supervised environment with structured rounds.',
     image: '/images/class-mma.webp',
+    imageAlt: 'A grappling exchange during supervised sparring'
   },
 ];
 ---
@@ -180,7 +190,7 @@ const classes = [
           {classes.map((cls) => (
             <div class={`class-card cat-${cls.categories.join(' cat-')} group bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden hover:border-xfc-gold/30 transition-all duration-300`}>
               <div class="aspect-[16/10] overflow-hidden">
-                <img src={cls.image} alt={cls.name} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" width="600" height="375" loading="lazy" />
+                <img src={cls.image} alt={cls.imageAlt} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" width="600" height="375" loading="lazy" />
               </div>
               <div class="p-6">
                 <h3 class="font-montserrat font-bold text-base text-white uppercase tracking-wide leading-tight mb-1">{cls.name}</h3>

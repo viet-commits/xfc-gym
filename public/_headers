@@ -19,9 +19,6 @@
 /images/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
-/videos/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
 # HTML must revalidate so a deploy is picked up immediately.
 /
   Cache-Control: public, max-age=0, must-revalidate

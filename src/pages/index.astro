@@ -40,7 +40,7 @@ const programs = [
     label: 'Kids',
     title: 'Kids & Junior MMA',
     desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.',
-    image: '/images/instagram/coach-joey-intro.jpg',
+    image: '/images/instagram/kick-technique.jpg',
     link: '/classes/',
   },
 ];
@@ -314,7 +314,7 @@ const starRatings = [1,2,3,4,5];
       { label: 'Kickboxing', title: 'Kickboxing / Muay Thai', desc: 'One of Melbourne\'s best striking programs. Four levels — Beginner, Intermediate, Advanced, and Fighter — mean there\'s always a class at your pace. Learn punches, kicks, knees, elbows, and defensive movement from competition-proven coaches.', image: '/images/class-thai.webp', link: '/classes/' },
       { label: 'BJJ', title: 'Brazilian Jiu Jitsu', desc: 'The art of ground fighting — using leverage, technique, and submissions rather than strength. We offer both Gi and No-Gi classes, catering to complete beginners through to competitors. A fantastic complement to any striking discipline.', image: '/images/class-jitsu.webp', link: '/classes/' },
       { label: 'Boxing', title: 'Boxing', desc: 'The sweet science. Our Boxing program covers everything from fundamentals to advanced combinations, footwork, head movement, and ring craft. Junior and Senior classes available. Great for fitness, self-defence, and competition preparation.', image: '/images/facility-1.jpg', link: '/classes/' },
-      { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/coach-joey-intro.jpg', link: '/classes/' },
+      { label: 'Kids', title: 'Kids & Junior MMA', desc: 'Our Junior MMA program runs across four age groups: Little Warriors (2-4), Junior Warriors (5-6), Rising Warriors (7-9), and Elite Warriors (10-13). Each level is age-appropriate — building confidence, discipline, coordination, and real martial arts skills.', image: '/images/instagram/kick-technique.jpg', link: '/classes/' },
     ];
     // Update the individual text nodes rather than rewriting innerHTML. The old
     // version injected a literal `<Icon …>` string — Astro components do not exist
@@ -406,17 +406,30 @@ const starRatings = [1,2,3,4,5];
     <!-- Carousel -->
     <div class="ig-gym-gallery" id="ig-gym-gallery">
       <div class="ig-gym-track" id="ig-gym-track">
+        {/* Curated from the numbered exports after reviewing every file:
+            05 and 15 are timetable screenshots (illegible at carousel size),
+            22 is a logo graphic, and 14/16/17/19/20/21/23 duplicate 02/07/08/11/10/03/13.
+            Each remaining slide gets alt text describing what the photo shows —
+            the old "Instagram post N" said nothing. */}
         {[
-          '01.jpg','02.jpg','03.jpg','04.jpg','05.jpg',
-          '06.jpg','07.jpg','08.jpg','09.jpg','10.jpg',
-          '11.jpg','12.jpg','13.jpg','14.jpg','15.jpg',
-          '16.jpg','17.jpg','18.jpg','19.jpg','20.jpg',
-          '21.jpg','22.jpg','23.jpg',
-        ].map((img, i) => (
+          { img: '01.jpg', alt: 'Coach in an XFC jacket crouched beside the cage' },
+          { img: '02.jpg', alt: 'A coach talks the class through the session' },
+          { img: '03.jpg', alt: 'Fighters and teammates ringside at a fight night' },
+          { img: '04.jpg', alt: 'Fighter shadowboxing beside the XFC cage' },
+          { img: '06.jpg', alt: 'Grappler holding his medal after a tournament win' },
+          { img: '07.jpg', alt: 'Fight-night promo card for XFC fighter Luke Rosowski' },
+          { img: '08.jpg', alt: 'A sparring exchange inside the cage' },
+          { img: '09.jpg', alt: 'Two members gloved up on the mats' },
+          { img: '10.jpg', alt: 'Black-and-white portrait in an XFC Gym 24/7 tee' },
+          { img: '11.jpg', alt: 'A high kick lands on the pads while the class looks on' },
+          { img: '12.jpg', alt: 'Smiling member in a hoodie beside the cage' },
+          { img: '13.jpg', alt: 'Coach holding a stack of XFC championship belts' },
+          { img: '18.jpg', alt: 'Partner drills on the matted floor' },
+        ].map((slide, i) => (
           <div class="ig-gym-slide">
             <img
-              src={`/images/instagram/${img}`}
-              alt={`XFC Carrum Downs Instagram post ${i + 1}`}
+              src={`/images/instagram/${slide.img}`}
+              alt={slide.alt}
               loading={i < 6 ? 'eager' : 'lazy'}
               width="480"
               height="480"

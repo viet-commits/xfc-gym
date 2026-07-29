@@ -3,40 +3,69 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { gym } from '../data/gym';
 
-const videos = [
-  { src: '/videos/13.mp4', title: 'XFC Training Highlights', poster: '/images/instagram/sparring-cage.jpg' },
-  { src: '/videos/15.mp4', title: 'Coach Sessions', poster: '/images/instagram/kick-technique.jpg' },
-  { src: '/videos/21.mp4', title: 'Fight Night Recap', poster: '/images/instagram/champion-belts.jpg' },
+/**
+ * The three .mp4 files that used to sit behind <video> players here were
+ * fragmented-MP4 media segments with no initialisation header (they begin with a
+ * `moof` box — no `ftyp`/`moov`). No browser can play such a file, so every
+ * visitor got three dead players. Until real video files are supplied, this page
+ * links out to where the gym's videos actually live. Each tile's image is
+ * described as what it shows, not as the video it links toward.
+ */
+const tiles = [
+  {
+    href: gym.instagram,
+    label: 'Training clips on Instagram',
+    image: '/images/instagram/08.jpg',
+    imageAlt: 'A sparring exchange inside the cage',
+  },
+  {
+    href: gym.instagram,
+    label: 'Class highlights on Instagram',
+    image: '/images/instagram/11.jpg',
+    imageAlt: 'A high kick lands on the pads while the class looks on',
+  },
+  {
+    href: gym.youtube,
+    label: 'Fight footage on YouTube',
+    image: '/images/instagram/13.jpg',
+    imageAlt: 'Coach holding a stack of XFC championship belts',
+  },
 ];
 ---
 
-<Layout title="Videos" description="Watch XFC Carrum Downs in action — training highlights, coach sessions, and fight night recaps.">
+<Layout title="Videos" description="Watch XFC Carrum Downs in action — training clips, class highlights and fight footage on our Instagram and YouTube.">
 
   <section class="py-24 md:py-32 px-4 text-center bg-[var(--bg-secondary)]">
     <div class="max-w-3xl mx-auto reveal">
       <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">Watch Us in Action</p>
       <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">Our Videos</h1>
-      <p class="font-inter text-[var(--text-muted)] text-lg">Watch our fighters, classes, and community in action.</p>
+      <p class="font-inter text-[var(--text-muted)] text-lg">Our fighters, classes and community — filmed where it happens.</p>
     </div>
   </section>
 
   <section class="bg-[var(--bg-primary)] py-16 md:py-24 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
-        {videos.map(v => (
-          <div class="bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group">
-            <video controls poster={v.poster} class="w-full aspect-video object-cover bg-black" preload="none">
-              <source src={v.src} type="video/mp4" />
-            </video>
-            <div class="p-4">
-              <h3 class="font-montserrat font-bold text-sm text-white uppercase tracking-wide">{v.title}</h3>
+        {tiles.map(t => (
+          <a href={t.href} target="_blank" rel="noopener" class="block bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group hover:border-xfc-gold/30 transition-colors duration-300">
+            <div class="relative aspect-video overflow-hidden">
+              <img src={t.image} alt={t.imageAlt} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" width="480" height="270" loading="lazy" />
+              <span class="absolute inset-0 flex items-center justify-center bg-black/35 group-hover:bg-black/20 transition-colors">
+                <span class="w-14 h-14 rounded-full bg-[var(--accent-primary)] text-black flex items-center justify-center">
+                  <Icon name="player-play" size={26} />
+                </span>
+              </span>
             </div>
-          </div>
+            <div class="p-4 flex items-center justify-between gap-2">
+              <h2 class="font-montserrat font-bold text-sm text-white uppercase tracking-wide">{t.label}</h2>
+              <Icon name="arrow-right" class="text-[var(--accent-primary)] flex-shrink-0" />
+            </div>
+          </a>
         ))}
       </div>
 
       <div class="text-center mt-12 reveal">
-        <p class="font-inter text-[var(--text-muted)] mb-4">More videos on our Instagram</p>
+        <p class="font-inter text-[var(--text-muted)] mb-4">New clips land on Instagram first</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/join/" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
           <a href={gym.instagram} target="_blank" rel="noopener" class="btn-outline">
