@@ -1,0 +1,59 @@
+---
+/**
+ * The gym's CRM-hosted enquiry form (GoHighLevel, white-labelled as
+ * links.xfcgymcarrumdowns.com). Submissions land directly in the gym's CRM
+ * pipeline — this supersedes the native /api/booking + D1 + Resend path as the
+ * site's lead capture (that endpoint remains deployed as a documented fallback).
+ *
+ * form_embed.js is a postMessage resizer (verified: no network calls) that sets
+ * the iframe's height to fit the form content. The min-height below is the
+ * no-script/slow-script fallback so the form is never rendered collapsed.
+ *
+ * If the CSP in public/_headers changes, keep frame-src and script-src allowing
+ * https://links.xfcgymcarrumdowns.com or this component goes blank.
+ */
+import { gym, telHref } from '../data/gym';
+
+const FORM_ID = 'HnwaMqL7BCifiD79Dfj4';
+const FORM_BASE = 'https://links.xfcgymcarrumdowns.com';
+---
+
+<div class="ghl-form-wrap">
+  <iframe
+    src={`${FORM_BASE}/widget/form/${FORM_ID}`}
+    style="width:100%;height:100%;border:none;border-radius:3px"
+    id={`inline-${FORM_ID}`}
+    data-layout="{'id':'INLINE'}"
+    data-trigger-type="alwaysShow"
+    data-trigger-value=""
+    data-activation-type="alwaysActivated"
+    data-activation-value=""
+    data-deactivation-type="neverDeactivate"
+    data-deactivation-value=""
+    data-form-name="Website Contact Us Form"
+    data-height="undefined"
+    data-layout-iframe-id={`inline-${FORM_ID}`}
+    data-form-id={FORM_ID}
+    title="Website Contact Us Form"
+  ></iframe>
+</div>
+
+<p class="font-inter text-sm text-[var(--text-muted)] text-center mt-4">
+  Form not loading?
+  Call <a href={telHref} class="text-[var(--accent-primary)] hover:underline">{gym.phone}</a>
+  or email <a href={`mailto:${gym.email}`} class="text-[var(--accent-primary)] hover:underline">{gym.email}</a>.
+</p>
+
+<script src={`${FORM_BASE}/js/form_embed.js`} is:inline></script>
+
+<style>
+  /* The resizer script grows the iframe to fit its content; until it runs (or if
+     it is blocked), this floor keeps the form usable instead of collapsed to 0. */
+  .ghl-form-wrap {
+    min-height: 640px;
+  }
+  .ghl-form-wrap iframe {
+    min-height: 640px;
+    display: block;
+  }
+</style>

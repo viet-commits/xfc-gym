@@ -740,3 +740,28 @@ lazy-loaded images report an empty `currentSrc` (read as duplicates), Adults Spa
 legitimately carries the `bjj` category so it *should* appear under that filter, and an
 upscale is only actionable when a larger copy actually exists in the repo — otherwise it is
 an asset ceiling, which is now reported separately as information rather than failure.
+
+
+---
+
+## Changelog — CRM contact form adoption (29 Jul 2026)
+
+At the business's direction, lead capture moved to the gym's CRM-hosted form
+(GoHighLevel, white-labelled as `links.xfcgymcarrumdowns.com`, form
+`HnwaMqL7BCifiD79Dfj4`), so enquiries land directly in the CRM pipeline.
+
+| Change | Detail |
+| --- | --- |
+| `ContactForm.astro` | Reusable wrapper around the vendor embed. Keeps the exact snippet attributes the resize script keys off, adds a 640px min-height so the form never renders collapsed before the resizer runs, and a phone/email fallback line beneath it. |
+| `/join/` | The native booking form (fields, honeypot, submit handler, success/error banners, `generate_lead` event) replaced by the embed. Hero, pricing cards, FAQ and FAQ schema unchanged. |
+| `/contact/` | New page: the form beside address/phone/hours cards, plus a trial CTA. Added to the nav (desktop + mobile), the 404 quick links (with Videos, keeping the grid even) and the generated sitemap. |
+| CSP | `frame-src` and `script-src` now allow `links.xfcgymcarrumdowns.com`. Verified: zero CSP violations with the real header applied. `form_embed.js` was inspected — it is a postMessage iframe resizer with no network calls of its own. |
+| Privacy policy | "How it is stored" and "Embedded content" rewritten: submissions go to the CRM platform, not D1/email. New TO CONFIRM: CRM retention period and whether automated SMS/email follow-ups fire (they must be disclosed if so). |
+| Native pipeline | `/api/booking` + D1 + Resend stays deployed as a documented fallback but is no longer in the submission path. The Resend domain-verification task now only matters if that fallback is ever reactivated. |
+
+**Verification (18 assertions):** exact embed markup on both pages, resizer script present,
+no-collapse fallback holds, CSP clean, endpoints live (HTTP 200), nav/404/sitemap updated,
+native form fully removed, FAQ schema intact, no JS errors. **One environment limit:** the
+sandbox proxy resets Chromium's connections to the CRM domain (curl reaches it fine), so
+the remote form document could not be rendered here — confirm visually on the deployed
+site that the form loads and a test submission reaches the CRM.

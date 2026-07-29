@@ -1,7 +1,8 @@
 # XFC Carrum Downs
 
 Marketing site for XFC Carrum Downs — an Astro static build deployed to Cloudflare Pages,
-with Pages Functions and a D1 database behind the trial booking form.
+with Pages Functions and a D1 database available behind the (now fallback) native booking
+API. **Lead capture on the site uses the gym's CRM-hosted form** — see below.
 
 ## Stack
 
@@ -53,6 +54,25 @@ src/layouts/          Layout.astro — <head>, global CSS, structured data
 src/pages/            One file per route
 schema.sql            D1 schema + seed data for the classes table
 ```
+
+## Lead capture: CRM form (current) vs native API (fallback)
+
+As of 29 Jul 2026 all site forms (`/join/` and `/contact/`) embed the gym's CRM form
+(GoHighLevel, white-labelled as `links.xfcgymcarrumdowns.com`, form id
+`HnwaMqL7BCifiD79Dfj4`) via `src/components/ContactForm.astro`. Submissions land directly
+in the CRM — the D1/Resend pipeline below is **no longer in the submission path**, but the
+endpoint stays deployed as a working fallback. If the CRM is ever dropped, swap
+`<ContactForm />` back for a native form posting to `/api/booking` and set the Resend
+variables.
+
+Notes:
+- The CSP in `public/_headers` allowlists `links.xfcgymcarrumdowns.com` in `frame-src`
+  and `script-src`; removing that breaks the form (it renders blank).
+- `form_embed.js` from that domain is a postMessage iframe resizer (verified: no network
+  calls of its own).
+- Conversion tracking for form submits should now be configured inside the CRM, which has
+  its own analytics — the previous on-site `generate_lead` event was removed with the
+  native form.
 
 ## Database
 

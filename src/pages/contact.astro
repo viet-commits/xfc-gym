@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { gym, hours, telHref, mapsUrl } from '../data/gym';
+---
+
+<Layout title="Contact Us" description="Get in touch with XFC Carrum Downs — questions, trials, memberships. Call (03) 9770 8401 or send us a message.">
+
+  <!-- HERO -->
+  <section class="py-24 md:py-32 px-4 text-center bg-[var(--bg-secondary)]">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-4">We're Here to Help</p>
+      <h1 class="font-bebas text-white text-5xl md:text-7xl uppercase tracking-wide mb-4">
+        Contact <span style="color:var(--accent-primary)">Us</span>
+      </h1>
+      <p class="font-inter text-[var(--text-muted)] text-lg max-w-xl mx-auto">
+        Questions about classes, trials or memberships? Send us a message and we'll get back to you, or call during gym hours.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORM + DETAILS -->
+  <section class="bg-[var(--bg-primary)] py-16 md:py-20 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+
+      <!-- Form -->
+      <div class="lg:col-span-3 reveal">
+        <div class="bg-[var(--bg-secondary)] border border-white/[0.08] p-4 md:p-6">
+          <ContactForm />
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="lg:col-span-2 space-y-5 reveal">
+        <div class="bg-[var(--bg-secondary)] border border-white/[0.06] p-7">
+          <h2 class="font-montserrat font-bold text-xs uppercase tracking-[0.12em] text-white mb-4">Visit Us</h2>
+          <a href={mapsUrl} target="_blank" rel="noopener" class="flex items-start gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-1">
+            <Icon name="map-pin" class="text-[var(--accent-primary)] mt-0.5 flex-shrink-0" />
+            <span>{gym.street}<br />{gym.suburb} {gym.state} {gym.postcode}<br /><span class="text-xs text-white/60">Free on-site parking</span></span>
+          </a>
+        </div>
+
+        <div class="bg-[var(--bg-secondary)] border border-white/[0.06] p-7">
+          <h2 class="font-montserrat font-bold text-xs uppercase tracking-[0.12em] text-white mb-4">Call or Email</h2>
+          <a href={telHref} class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2">
+            <Icon name="phone" class="text-[var(--accent-primary)] flex-shrink-0" /> {gym.phone}
+          </a>
+          <a href={`mailto:${gym.email}`} class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2">
+            <Icon name="mail" class="text-[var(--accent-primary)] flex-shrink-0" /> {gym.email}
+          </a>
+          <a href={gym.instagram} target="_blank" rel="noopener" class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2">
+            <Icon name="brand-instagram" class="text-[var(--accent-primary)] flex-shrink-0" /> {gym.instagramHandle}
+          </a>
+        </div>
+
+        <div class="bg-[var(--bg-secondary)] border border-white/[0.06] p-7">
+          <h2 class="font-montserrat font-bold text-xs uppercase tracking-[0.12em] text-white mb-4">Gym Hours</h2>
+          <ul class="space-y-1.5 font-inter text-sm text-[var(--text-muted)]">
+            {hours.map(h => (
+              <li class="flex justify-between gap-4">
+                <span class="font-medium text-white">{h.day}</span>
+                <span>{h.display}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[var(--bg-secondary)] py-20 px-4 text-center border-t border-white/[0.04]">
+    <div class="max-w-2xl mx-auto reveal">
+      <h2 class="font-bebas text-white text-3xl md:text-4xl uppercase tracking-wide mb-4">Ready to Train Instead?</h2>
+      <p class="font-inter text-[var(--text-muted)] mb-8">Skip the small talk — start your $39 two-week trial and meet us on the mats.</p>
+      <a href="/join/" class="btn-primary">$39 Trial <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+</Layout>

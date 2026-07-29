@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import ContactForm from '../components/ContactForm.astro';
 
 // FAQPage markup for the questions rendered below. Kept adjacent to the source data
 // so the two cannot drift.
@@ -25,157 +26,11 @@ const faqSchema = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
   <!-- FORM -->
   <section class="bg-[var(--bg-primary)] py-20 px-4">
     <div class="max-w-2xl mx-auto reveal">
-      <div class="bg-[var(--bg-secondary)] border border-white/[0.08] p-8 md:p-10">
-        <h2 class="font-montserrat font-bold text-xl text-white uppercase tracking-wide mb-8 pb-4 border-b border-white/[0.06]">Your Details</h2>
-
-        <!-- Status messages -->
-        <div id="form-success" role="status" aria-live="polite" tabindex="-1" class="hidden bg-green-900/30 border border-green-700/50 text-green-300 p-4 mb-6 font-inter text-sm">
-          You're booked in. Our team will contact you shortly to confirm your trial and help organise your first session.
-        </div>
-        <div id="form-error" role="alert" tabindex="-1" class="hidden bg-red-900/30 border border-red-700/50 text-red-300 p-4 mb-6 font-inter text-sm">
-          <span id="form-error-text">Something went wrong.</span>
-          Please try again or call us on <strong>(03) 9770 8401</strong>.
-        </div>
-
-        <form id="booking-form" class="space-y-5">
-          <!-- Honeypot: hidden from people, filled in by bots. Positioned off-screen
-               rather than display:none, which some bots skip. -->
-          <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-            <label for="website">Website</label>
-            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
-          </div>
-
-          <!-- Name -->
-          <div>
-            <label for="name" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
-              Full Name <span class="text-[var(--accent-primary)]">*</span>
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              autocomplete="name"
-              placeholder="Your full name"
-              class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
-            />
-          </div>
-
-          <!-- Email -->
-          <div>
-            <label for="email" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
-              Email Address <span class="text-[var(--accent-primary)]">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              autocomplete="email"
-              inputmode="email"
-              placeholder="your@email.com"
-              class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
-            />
-          </div>
-
-          <!-- Phone -->
-          <div>
-            <label for="phone" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              autocomplete="tel"
-              inputmode="tel"
-              placeholder="0400 000 000"
-              class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
-            />
-          </div>
-
-          <!-- Class Interest -->
-          <div>
-            <label for="class_interest" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
-              Class Interest
-            </label>
-            <select
-              id="class_interest"
-              name="class_interest"
-              class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm focus:outline-none focus:border-[var(--accent-primary)] transition-colors appearance-none"
-              style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23AAAAAA%22 stroke-width=%222%22><path d=%22M6 9l6 6 6-6%22/></svg>'); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1rem;"
-            >
-              <option value="">Select a class</option>
-              <option value="junior-little-warriors">Junior MMA — Little Warriors (Ages 2-4)</option>
-              <option value="junior-junior-warriors">Junior MMA — Junior Warriors (Ages 5-6)</option>
-              <option value="junior-rising-warriors">Junior MMA — Rising Warriors (Ages 7-9)</option>
-              <option value="junior-elite-warriors">Junior MMA — Elite Warriors (Ages 10-13)</option>
-              <option value="kickboxing-beginner">Kickboxing / Muay Thai — Beginner</option>
-              <option value="kickboxing-advanced">Kickboxing / Muay Thai — Advanced</option>
-              <option value="mma-adults">Adult MMA</option>
-              <option value="bjj">Brazilian Jiu Jitsu</option>
-              <option value="boxing">Boxing</option>
-              <option value="not-sure">Not sure yet</option>
-            </select>
-          </div>
-
-          <!-- Preferred Day -->
-          <div>
-            <label for="preferred_day" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
-              Preferred Day
-            </label>
-            <select
-              id="preferred_day"
-              name="preferred_day"
-              class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm focus:outline-none focus:border-[var(--accent-primary)] transition-colors appearance-none"
-              style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23AAAAAA%22 stroke-width=%222%22><path d=%22M6 9l6 6 6-6%22/></svg>'); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1rem;"
-            >
-              <option value="">Select a day</option>
-              <option value="monday">Monday</option>
-              <option value="tuesday">Tuesday</option>
-              <option value="wednesday">Wednesday</option>
-              <option value="thursday">Thursday</option>
-              <option value="friday">Friday</option>
-              <option value="saturday">Saturday</option>
-              <option value="flexible">Flexible</option>
-            </select>
-          </div>
-
-          <!-- Message -->
-          <div>
-            <label for="message" class="block font-inter text-sm font-medium text-[var(--text-muted)] mb-1.5">
-              Anything else we should know?
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              placeholder="Previous experience, injuries, age of child, any questions..."
-              class="w-full bg-[var(--bg-primary)] border border-white/[0.08] px-4 py-3 text-white font-inter text-sm placeholder-white/20 focus:outline-none focus:border-[var(--accent-primary)] transition-colors resize-none"
-            ></textarea>
-          </div>
-
-          <!-- Submit -->
-          <!-- Both icons are pre-rendered and toggled. Rewriting innerHTML with an
-               `<Icon …>` string produced an unrendered element: no spinner, and the
-               arrow never came back. -->
-          <button
-            type="submit"
-            id="submit-btn"
-            class="w-full btn-primary text-base justify-center"
-          >
-            <span id="submit-label">Start My $39 Trial</span>
-            <Icon name="arrow-right" class="submit-arrow" />
-            <Icon name="loader" class="submit-spinner hidden animate-spin" />
-          </button>
-
-          <p class="font-inter text-white/60 text-xs text-center pt-2 leading-relaxed">
-            By submitting this form you agree to be contacted by XFC Carrum Downs about your enquiry.
-            We handle your details as described in our
-            <a href="/privacy/" class="text-[var(--accent-primary)] underline underline-offset-2 hover:no-underline">Privacy Policy</a>.
-            Enquiring for a child? Please have a parent or guardian complete this form.
-          </p>
-        </form>
+      <div class="bg-[var(--bg-secondary)] border border-white/[0.08] p-4 md:p-6">
+        {/* Lead capture is the gym's CRM-hosted form (see ContactForm.astro). The
+            native /api/booking pipeline remains deployed as a fallback but no page
+            posts to it any more. */}
+        <ContactForm />
       </div>
 
       <!-- Pricing info cards -->
@@ -232,72 +87,5 @@ const faqSchema = {"@context": "https://schema.org", "@type": "FAQPage", "mainEn
   </section>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline></script>
-
-  <!-- Booking form handler -->
-  <script>
-    const form = document.getElementById('booking-form') as HTMLFormElement | null;
-    const successEl = document.getElementById('form-success');
-    const errorEl = document.getElementById('form-error');
-    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
-    const submitLabel = document.getElementById('submit-label');
-    const arrow = document.querySelector('.submit-arrow');
-    const spinner = document.querySelector('.submit-spinner');
-
-    /** Toggle the pre-rendered icons instead of rewriting the button's markup. */
-    const setSubmitting = (busy: boolean) => {
-      if (submitBtn) submitBtn.disabled = busy;
-      if (submitLabel) submitLabel.textContent = busy ? 'Submitting…' : 'Start My $39 Trial';
-      arrow?.classList.toggle('hidden', busy);
-      spinner?.classList.toggle('hidden', !busy);
-    };
-
-    const reveal = (el: HTMLElement) => {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      el.focus();
-    };
-
-    if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        setSubmitting(true);
-        if (successEl) successEl.classList.add('hidden');
-        if (errorEl) errorEl.classList.add('hidden');
-
-        try {
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData.entries());
-          const res = await fetch('/api/booking', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-          });
-          let payload: { success?: boolean; error?: string } = {};
-          try { payload = await res.json(); } catch { /* non-JSON response */ }
-
-          if (res.ok && payload.success) {
-            if (successEl) { successEl.classList.remove('hidden'); reveal(successEl); }
-            // Conversion event. No-ops when analytics is not configured.
-            (window as any).gtag?.('event', 'generate_lead', {
-              event_category: 'booking',
-              event_label: 'trial_form',
-            });
-            form.reset();
-          } else {
-            // Surface the server's message (e.g. an invalid email) instead of a
-            // generic failure the user cannot act on.
-            const detail = document.getElementById('form-error-text');
-            if (detail) detail.textContent = payload.error || 'Something went wrong.';
-            if (errorEl) { errorEl.classList.remove('hidden'); reveal(errorEl); }
-          }
-        } catch {
-          const detail = document.getElementById('form-error-text');
-          if (detail) detail.textContent = 'We could not reach the server.';
-          if (errorEl) { errorEl.classList.remove('hidden'); reveal(errorEl); }
-        } finally {
-          setSubmitting(false);
-        }
-      });
-    }
-  </script>
 
 </Layout>
