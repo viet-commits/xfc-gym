@@ -2,35 +2,37 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 
-const headCoach = {
-  name: 'Haysem Abdallah',
-  title: 'Head Coach & Co-Founder',
-  image: '/images/haysem-abdallah-c.jpg',
-  bio: 'Haysem has competed at elite level in MMA and Boxing. A lifelong martial artist and co-founder of XFC Carrum Downs, he brings world-class coaching to every session. His philosophy is simple: technique over talent, discipline over motivation, and community over competition.',
-  credentials: ['MMA & Boxing Coach', 'Co-Founder XFC', 'Competition Experience'],
-};
-
+// Bios supplied by the business, 30 Jul 2026. All four coaches carry the
+// Head Coach title, so the page presents them with equal billing (the old
+// layout featured one coach above the rest).
 const coaches = [
   {
     name: 'Jamie Abdallah',
-    title: 'Muay Thai & Kickboxing Coach',
+    title: 'Head Coach',
     image: '/images/jamie-abdallah-c.jpg',
-    bio: 'Jamie is a highly experienced Muay Thai fighter and instructor with numerous titles across Australia. His technical precision and competitive fire make him one of the best striking coaches in Melbourne.',
-    credentials: ['Muay Thai & Kickboxing Coach', '15+ Years Experience', 'Competition Background'],
+    bio: 'With a lifelong passion for martial arts, Jamie\u2019s foundation is in MMA, while his love extends across all martial arts disciplines. Having coached athletes from complete beginners through to world champions in kickboxing, he is passionate about helping every student reach their potential. Jamie believes martial arts is about far more than competition \u2014 it\u2019s about building confidence, discipline, resilience, and creating a positive environment where every member can succeed.',
+    credentials: ['MMA & All Disciplines', 'Coached World Champions'],
+  },
+  {
+    name: 'Haysem Abdallah',
+    title: 'Head Coach',
+    image: '/images/haysem-abdallah-c.jpg',
+    bio: 'Haysem is passionate about helping students build confidence, develop strong fundamentals, and enjoy their martial arts journey. His supportive coaching style ensures every member, regardless of age or experience, feels welcomed, challenged, and encouraged to improve each time they step onto the mats. He believes consistency, hard work, and a positive attitude are the keys to long-term success.',
+    credentials: ['All Ages & Levels', 'Fundamentals First'],
+  },
+  {
+    name: 'Joey Haddad',
+    title: 'Head Coach',
+    image: '/images/joseph-haddad-c.png',
+    bio: 'Joey is an all-round martial artist with experience across multiple disciplines and a passion for developing well-rounded athletes. His coaching focuses on building strong fundamentals while helping students progress technically, physically, and mentally. Whether working with beginners or experienced competitors, Joey creates an environment where members are challenged, supported, and motivated to continually improve.',
+    credentials: ['Multi-Discipline', 'Beginners to Competitors'],
   },
   {
     name: 'Kelly Seif',
-    title: 'Coach — MMA & Kickboxing',
+    title: 'Head Coach',
     image: '/images/kelly-seif-c.png',
-    bio: 'Kelly brings high-level experience and coaching expertise to the XFC team. A dedicated instructor with a passion for developing athletes across MMA and kickboxing disciplines.',
-    credentials: ['MMA & Kickboxing Coach', 'Competition Experience'],
-  },
-  {
-    name: 'Joseph Haddad',
-    title: 'Coach',
-    image: '/images/joseph-haddad-c.png',
-    bio: 'Joseph rounds out the XFC coaching team with comprehensive martial arts knowledge and a commitment to helping members of all levels achieve their goals.',
-    credentials: ['Coach', 'All-Levels Instructor'],
+    bio: 'With over 30 years in the martial arts industry, Kelly brings a wealth of knowledge and experience to XFC. Her passion for coaching, mentoring, and developing students has helped shape countless martial artists over the years. Kelly is dedicated to creating a welcoming environment where members of all ages can grow in confidence, develop lifelong skills, and enjoy their martial arts journey.',
+    credentials: ['30+ Years in Martial Arts', 'Coach & Mentor'],
   },
 ];
 ---
@@ -57,36 +59,14 @@ const coaches = [
     </div>
   </section>
 
-  <!-- HEAD COACH — editorial feature -->
-  <section class="bg-[var(--bg-primary)] py-16 md:py-24 px-4">
-    <div class="max-w-5xl mx-auto reveal">
-      <div class="flex flex-col md:flex-row border border-white/[0.06] overflow-hidden bg-[var(--bg-secondary)]">
-        <div class="md:w-2/5 overflow-hidden">
-          <img src={headCoach.image} alt={headCoach.name} class="w-full h-full object-cover object-top" style="min-height:400px;" width="600" height="750" loading="eager" />
-        </div>
-        <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
-          <p class="font-inter text-[var(--accent-primary)] text-xs uppercase tracking-[0.2em] font-medium mb-2">Head Coach</p>
-          <h2 class="font-bebas text-white text-4xl md:text-5xl uppercase tracking-wide mb-2">{headCoach.name}</h2>
-          <p class="font-montserrat font-bold text-sm text-[var(--accent-primary)] uppercase tracking-widest mb-5">{headCoach.title}</p>
-          <div class="flex flex-wrap gap-2 mb-5">
-            {headCoach.credentials.map(c => (
-              <span class="font-inter text-xs text-white/85 bg-white/[0.06] px-3 py-1 rounded-full border border-white/[0.06]">{c}</span>
-            ))}
-          </div>
-          <p class="font-inter text-[var(--text-muted)] text-base leading-relaxed">{headCoach.bio}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- COACHING TEAM GRID -->
-  <section class="bg-[var(--bg-primary)] pb-24 px-4">
+  <section class="bg-[var(--bg-primary)] py-16 md:py-24 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="reveal text-center mb-14">
         <h2 class="font-bebas text-white text-3xl md:text-4xl uppercase tracking-wide">The Coaching Team</h2>
         <div class="gold-sep mx-auto mt-3"></div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
         {coaches.map(coach => (
           <div class="bg-[var(--bg-secondary)] border border-white/[0.06] overflow-hidden group hover:border-xfc-gold/20 transition-colors duration-300">
             {coach.image ? (
