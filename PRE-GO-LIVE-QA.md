@@ -820,3 +820,27 @@ was dropped.
 
 Verified by rebuilding and visually reviewing /classes/, /videos/, /facilities/ and the
 homepage Kids tab, plus reference integrity (35/35 image refs resolve) and a clean build.
+
+
+---
+
+## Changelog — final 2024 logo applied (7 Aug 2026)
+
+The business supplied the master logo as an Illustrator file
+(`docs/brand/xfc-logo-2024-v3-FINAL.ai`, PDF-compatible stream). It is the 2024 roundel —
+ring text "KICKBOXING · MMA · BJJ · BOXING" — replacing the retired "Australian Top Team ·
+Mixed Martial Arts" mark that the site had carried, which also resolves the "logo is wrong
+colours" report (the old asset was a muddy 96px re-compression of the retired mark).
+
+All logo assets are now rendered from the master at 2048px:
+
+- `/images/xfc-logo.png` — 512px transparent PNG for the nav and footer. This also closes
+  P2-22 (the nav logo was a 96px source painted at 160+ device px, blurry on every phone).
+- `favicon.ico` — multi-size (16/32/48) PNG-in-ICO container.
+- `favicon.png` — 180px apple-touch-icon with the site background baked in (iOS composites
+  transparency onto black).
+- `favicon.svg` — wrapper embedding a 128px render (no vector converter in this
+  environment; indistinguishable at favicon sizes).
+
+Verified in the built nav at 2x on desktop and mobile: crisp, correct colours, white
+keyline separating the roundel from the dark background.
