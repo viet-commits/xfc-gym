@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260722.1",
-    "playwright": "^1.62.0",
     "wrangler": "^4.85.0"
   },
   "packageManager": "pnpm@11.17.0"

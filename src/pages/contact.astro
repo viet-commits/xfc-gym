@@ -43,13 +43,13 @@ import { gym, hours, telHref, mapsUrl } from '../data/gym';
 
         <div class="bg-[var(--bg-secondary)] border border-white/[0.06] p-7">
           <h2 class="font-montserrat font-bold text-xs uppercase tracking-[0.12em] text-white mb-4">Call or Email</h2>
-          <a href={telHref} class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2">
+          <a href={telHref} class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2.5 min-h-[44px]">
             <Icon name="phone" class="text-[var(--accent-primary)] flex-shrink-0" /> {gym.phone}
           </a>
-          <a href={`mailto:${gym.email}`} class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2">
+          <a href={`mailto:${gym.email}`} class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2.5 min-h-[44px]">
             <Icon name="mail" class="text-[var(--accent-primary)] flex-shrink-0" /> {gym.email}
           </a>
-          <a href={gym.instagram} target="_blank" rel="noopener" class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2">
+          <a href={gym.instagram} target="_blank" rel="noopener" class="flex items-center gap-3 font-inter text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors py-2.5 min-h-[44px]">
             <Icon name="brand-instagram" class="text-[var(--accent-primary)] flex-shrink-0" /> {gym.instagramHandle}
           </a>
         </div>
