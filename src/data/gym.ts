@@ -40,12 +40,12 @@ export const mapsUrl =
  * contradict itself the way a "Mon–Thu" block plus per-day overrides did.
  */
 export const hours = [
-  { day: 'Mon', schemaDay: 'Monday', opens: '16:30', closes: '20:45', display: '4:30pm – 8:45pm' },
+  { day: 'Mon', schemaDay: 'Monday', opens: '16:30', closes: '20:30', display: '4:30pm – 8:30pm' },
   { day: 'Tue', schemaDay: 'Tuesday', opens: '15:45', closes: '20:45', display: '3:45pm – 8:45pm' },
   { day: 'Wed', schemaDay: 'Wednesday', opens: '16:30', closes: '20:30', display: '4:30pm – 8:30pm' },
   { day: 'Thu', schemaDay: 'Thursday', opens: '15:45', closes: '20:45', display: '3:45pm – 8:45pm' },
-  { day: 'Fri', schemaDay: 'Friday', opens: '15:45', closes: '19:30', display: '3:45pm – 7:30pm' },
-  { day: 'Sat', schemaDay: 'Saturday', opens: '09:00', closes: '11:00', display: '9:00am – 11:00am' },
+  { day: 'Fri', schemaDay: 'Friday', opens: '17:30', closes: '19:30', display: '5:30pm – 7:30pm' },
+  { day: 'Sat', schemaDay: 'Saturday', opens: '09:15', closes: '11:00', display: '9:15am – 11:00am' },
   { day: 'Sun', schemaDay: 'Sunday', opens: null, closes: null, display: 'Closed' },
 ] as const;
 

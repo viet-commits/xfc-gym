@@ -886,3 +886,35 @@ Verified with a browser pass over the built site: all 10 cards map to the intend
 every image loads and is unique, no alt text carries an HTML entity, no image is upscaled
 past its intrinsic width, and all 10 routes are free of broken images — 26 assertions, all
 passing.
+
+## Changelog — 2026 timetable applied (19 Aug 2026)
+
+The business supplied the updated 2026 timetable. Three things changed, and each had to be
+applied in more than one place because the schedule is expressed four times in this repo:
+the timetable page, the opening hours in `src/data/gym.ts` (which feed the footer *and* the
+JSON-LD Google reads), and the D1 seed in `schema.sql`.
+
+- **Monday** no longer runs Mixed Martial Arts (6:45pm) or Brazilian Jiu Jitsu (7:45pm).
+  Monday now closes at 8:30pm rather than 8:45pm.
+- **Friday** no longer runs the three junior assessment slots. The gym now opens at 5:30pm
+  on Friday rather than 3:45pm, leaving Adults Sparring and Kickboxing / Boxing.
+- **Saturday** opens at 9:15am rather than 9:00am.
+
+Tuesday, Wednesday and Thursday were already correct and were left untouched.
+
+### The seed needed a delete, not just an edit
+
+`schema.sql` seeds with `INSERT OR IGNORE` against fixed primary keys, so deleting rows from
+the seed does not remove them from a database that was already seeded — re-applying the
+schema would have silently left the retired Monday and Friday classes in place. An explicit
+`DELETE FROM classes WHERE id IN (4,6,26,27,28)` now follows the insert so the file converges
+whether it runs against an empty or an existing database.
+
+No filter button was orphaned: the assessment rows carried `cats: "junior"`, and there was
+never an assessment filter.
+
+Verified against the built site: all six day columns match the supplied timetable
+class-for-class and hour-for-hour, no Assessment row survives anywhere on the page, Monday
+carries neither MMA nor BJJ, all five category filters still return results, the footer
+hours agree with the timetable, and the structured data carries the new Monday close and
+Friday/Saturday open times — 31 assertions, all passing.
