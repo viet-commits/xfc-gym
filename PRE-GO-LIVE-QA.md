@@ -844,3 +844,45 @@ All logo assets are now rendered from the master at 2048px:
 
 Verified in the built nav at 2x on desktop and mobile: crisp, correct colours, white
 keyline separating the roundel from the dark background.
+
+## Changelog — real class photography applied (19 Aug 2026)
+
+The business supplied six genuine photos from the gym, each tied to a named class. These
+replace the stock/adjacent imagery that the earlier sweep could only approximate from an
+aliased library, so every class card now shows that actual class.
+
+| Card | Was | Now |
+| --- | --- | --- |
+| Junior Warriors (5-6) | `instagram/coach-joey-intro.jpg` | `junior-warriors.webp` |
+| Rising Warriors (7-9) | `instagram/kick-technique.jpg` | `rising-warriors.webp` |
+| Kickboxing / Muay Thai Advanced | `instagram/sparring-cage.jpg` | `kickboxing-advanced.webp` |
+| Mixed Martial Arts | `class-strength.webp` | `mma-cage.webp` |
+| Boxing | `facility-1.jpg` (empty ring) | `boxing-pads.webp` |
+| Adults Sparring | `class-mma.webp` | `adults-sparring.webp` |
+
+Each source was cropped to the card's exact 16:10 box rather than left to `object-cover`,
+so the framing is chosen deliberately instead of by the browser. Alt text was rewritten
+from what is actually visible in each frame.
+
+### Two things worth recording
+
+The uploads arrived faster than they could be applied, so they were mapped to classes by
+upload timestamp and then **confirmed by viewing each image** before use — filename and
+arrival order have both misled this project before.
+
+The first Junior Warriors crop was centred on the action and clipped the children's heads
+at the top edge. Caught by looking at the rendered card, not the crop preview: the preview
+had headroom that the card did not. Re-cut top-anchored, sacrificing a strip of mat at the
+bottom instead.
+
+### Retired
+
+`class-mma.webp`, `instagram/coach-joey-intro.jpg`, and `instagram/sparring-cage.jpg` were
+left unreferenced by these swaps and moved to `docs/unused-assets/` so they stop shipping.
+`facility-1.jpg`, `class-strength.webp`, and `instagram/kick-technique.jpg` are still used
+elsewhere (facilities page and homepage) and stay in `public/`.
+
+Verified with a browser pass over the built site: all 10 cards map to the intended file,
+every image loads and is unique, no alt text carries an HTML entity, no image is upscaled
+past its intrinsic width, and all 10 routes are free of broken images — 26 assertions, all
+passing.
