@@ -918,3 +918,36 @@ class-for-class and hour-for-hour, no Assessment row survives anywhere on the pa
 carries neither MMA nor BJJ, all five category filters still return results, the footer
 hours agree with the timetable, and the structured data carries the new Monday close and
 Friday/Saturday open times — 31 assertions, all passing.
+
+## Changelog — homepage program tiles matched to the class cards (19 Aug 2026)
+
+The "Choose Your Path" tiles on the homepage still carried the pre-swap imagery, so the
+Boxing tile showed the empty ring and the Kids tile a stock striking shot while the class
+cards showed the real photos. Both now use the same file as their class card:
+
+- **Boxing** → `boxing-pads.webp` (was `facility-1.jpg`, the empty ring)
+- **Kids** → `rising-warriors.webp` (was `instagram/kick-technique.jpg`)
+
+Each tile is declared twice — once in the frontmatter for the server-rendered default and
+once in the `programData` mirror the tab handler reads at runtime. Both copies were updated;
+changing only one would have produced a tile that renders correctly until the visitor clicks
+a tab, which is exactly the failure mode this mirror has caused before.
+
+`instagram/kick-technique.jpg` is now unreferenced and moves to `docs/unused-assets/`. Its
+`.webp` sibling is a different file and is still in the hero rotation, so it stays.
+
+`facility-1.jpg` and `class-strength.webp` are still used by the facilities page and the MMA
+tile respectively, so both stay in `public/`.
+
+### A test false positive worth recording
+
+The first verification run reported the Kickboxing and Boxing tiles showing the *previous*
+tab's image. The cause was in the harness, not the site: `.program-image` cross-fades
+`background-image` over 500ms, and `getComputedStyle` returns the interpolated value while
+that transition is running, so a read at 250ms saw the outgoing image. The check now reads
+the inline style the handler sets and separately asserts the computed value settles on the
+right file after the fade.
+
+Verified on a 390px viewport: all five tabs load the intended file, each cross-fade settles
+correctly, every referenced image decodes, no request 404s, and no page still references the
+retired asset — 22 assertions, all passing.
